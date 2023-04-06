@@ -306,6 +306,8 @@ class ApiFoxController extends Controller
         //Get Data from URL
         $content = $this->getContentFromUrl($url, $validate_url, $validate_ssl);
     
+        //return json_encode(['Success' => $content]);
+
         return $content;
 
     }
