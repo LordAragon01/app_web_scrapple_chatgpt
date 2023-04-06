@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use DOMDocument;
 use DOMXPath;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use stdClass;
@@ -16,11 +17,20 @@ class FoxController extends Controller
     public function index()
     {
 
-        $title = "Web Crawler & Scrapping";
+        //Set a title
+        $title = "Projeto Fox";
 
+        //Indicate Url
         $url = $this->url;
 
-        $content = $this->getContentFromUrl($url);
+        //Validate URL
+        $validate_url = $this->checkUrl($url);
+
+        //Validate HTTPS
+        $validate_ssl = $this->checkUrl($url);
+
+        //Get Data from URL
+        $content = $this->getContentFromUrl($url, $validate_url, $validate_ssl);
 
         dd($content);
 
@@ -30,78 +40,157 @@ class FoxController extends Controller
 
     }
 
-    public function getContentFromUrl($url)
+     /**
+     * Check if the URL is validate
+     *
+     * @param string $urlapi
+     * @return boolean
+     */
+    public function checkUrl(string $urlapi):bool
     {
 
-        //Get Http response status
-        $response = Http::timeout(5)
-                    ->get($url);
+        if(filter_var($urlapi, FILTER_VALIDATE_URL)){
 
-        //add this line to suppress any warnings
-        libxml_use_internal_errors(true); 
-        
-        $doc = new DOMDocument();
-        $doc->loadHTML($response->body());
+            return true;
 
-        //Get Xml structure
-        $xpath = new DOMXPath($doc);
+        }else{
 
-        //Data from xml
-        $product_data = [
-            'title' => $xpath->evaluate('//h1[@id="product_title"]'),
-            'price' => $xpath->evaluate('//div[@class="price-info__final_price_sku"]')
-        ];
+            return false;
 
-        //Get clean Data
-        $get_title = implode("", $this->filterData($product_data, 'title'));
-        //$get_price = intval(str_replace('$', '', implode($this->filterData($product_data, 'price'))));
-        $get_price = floatval(str_replace('$', '', implode($this->filterData($product_data, 'price'))));
-
-        //List of Clean Data
-        $list_of_clean_data = new stdClass();
-        $list_of_clean_data->title = $get_title;
-        $list_of_clean_data->price = $get_price;
-
-        return $list_of_clean_data;
-
+        }
 
     }
 
-    public function filterData(array $list_of_data, string $type_of_data)
+    /**
+     * Verify if the url contain https
+     *
+     * @param string $urlapi
+     * @return boolean
+     */
+    public function httpsVerify(string $urlapi):bool
+    {
+
+        return parse_url($urlapi, PHP_URL_SCHEME) === 'https' ? true : false;
+
+    }
+
+
+    public function getContentFromUrl(
+        string $url,
+        bool $validateurl,
+        bool $validatehttps
+        ):object|string
+    {
+
+     
+        
+        if($validateurl === true && $validatehttps === true){
+
+            //Get Http response status
+            $response = Http::timeout(5)
+                        ->accept('text/html; charset=utf-8')
+                        ->get($url);
+
+            //dd($response->headers()); 
+
+            try{
+
+                //Url Http Response Verificarion
+                if($response->successful()){
+    
+                    //add this line to suppress any warnings
+                    libxml_use_internal_errors(true); 
+                    
+                    $doc = new DOMDocument();
+                    $doc->loadHTML($response->body());
+    
+                    //Get Xml structure
+                    $xpath = new DOMXPath($doc);
+    
+                    //Data from xml
+                    $product_data = [
+                        'title' => $xpath->evaluate('//h1[@id="product_title"]'),
+                        'price' => $xpath->evaluate('//div[@class="price-info__final_price_sku"]'),
+                        'stars' => $xpath->evaluate('//span[@id="core-sku-rating-label"]'),
+                        'reviews' => $xpath->evaluate('//span[@id="core-sku-review-count"]')
+                    ];
+    
+                    //Get clean Data
+                    $get_title = implode("", $this->filterData($product_data, 'title'));
+                    //$get_price = intval(str_replace('$', '', implode($this->filterData($product_data, 'price'))));
+                    $get_price = floatval(str_replace('$', '', implode($this->filterData($product_data, 'price'))));
+                    $get_total_of_starts = intval(implode("", $this->filterData($product_data, 'stars')));
+                    $get_total_of_reviews = intval(str_replace(' Review', '', implode("", $this->filterData($product_data, 'reviews'))));
+
+                    //List of Clean Data
+                    $list_of_clean_data = new stdClass();
+                    $list_of_clean_data->title = $get_title;
+                    $list_of_clean_data->price = $get_price;
+                    $list_of_clean_data->total_stars = $get_total_of_starts;
+                    $list_of_clean_data->total_reviews = $get_total_of_reviews;
+    
+                    return $list_of_clean_data;
+    
+                }
+
+    
+            }catch(Exception $err){
+    
+                //Message error
+                $message_error = $err->getMessage("Erro ao processar requisição");
+    
+                //Url Http Response Verificarion
+                if($response->failed()){
+    
+                    return $message_error;
+    
+                }
+    
+            }
+
+        }
+
+        return "Erro ao Processar Requisição";
+        
+    }
+
+    public function filterData(array $list_of_data, string $type_of_data):array
     {
 
         //Verify if array is not empty 
         if(is_array($list_of_data) && count($list_of_data) > 0){
-
-            //Get clean data from Url
-            $list_of_clean_data = [];
 
             //Add correspondent data
             switch($type_of_data){
 
                 case 'title':
 
-                    foreach($list_of_data[$type_of_data] as $value){
-
-                        array_push($list_of_clean_data, $value->textContent);
-        
-                    }
-        
-                    return $list_of_clean_data;
+                    //Get Data from Helper
+                    return $this->helperFilterData($list_of_data, $type_of_data);
 
                 break; 
                 
                 case 'price':
 
-                    foreach($list_of_data[$type_of_data] as $value){
-        
-                        array_push($list_of_clean_data, $value->textContent);
-        
-                    }
-        
-                    return $list_of_clean_data;
+                    //Get Data from Helper
+                    return $this->helperFilterData($list_of_data, $type_of_data);
 
                 break; 
+
+                case 'stars':
+
+                    //Get Data from Helper
+                    return $this->helperFilterData($list_of_data, $type_of_data);
+
+                break; 
+
+                
+                case 'reviews':
+
+                    //Get Data from Helper
+                    return $this->helperFilterData($list_of_data, $type_of_data);
+
+                break;
 
 
             }
@@ -113,8 +202,23 @@ class FoxController extends Controller
     
     }
 
+    public function helperFilterData(array $list_of_data, string $type_of_data):array
+    {
 
-    public function getAllContentFromUrl($response_http)
+        //Get clean data from Url
+        $list_of_clean_data = [];
+
+        foreach($list_of_data[$type_of_data] as $value){
+
+            array_push($list_of_clean_data, $value->textContent);
+
+        }
+
+        return $list_of_clean_data;
+
+    }
+
+    public function getAllContentFromUrl(string $response_http):string
     {
 
         $doc = new DOMDocument();
