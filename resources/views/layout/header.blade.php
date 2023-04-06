@@ -9,3 +9,26 @@
     <link rel="stylesheet" href="{{ url(mix('css/style.min.css')) }}" />
 </head>
 <body>
+
+    <header>
+        <nav class="d-flex flex-row justify-content-end w-100 mt-3">
+
+            <ul class="list-group list-group-horizontal d-flex flex-row justify-content-between mr-3">
+
+                <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
+                    <a href="{{ route('home') }}" class="my-3 linkweb" target="_self">Home</a>
+                </li>
+    
+                <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
+                    <a href="{{ route('webcrawler') }}" class="my-3 linkweb" target="_self">Web Crawler</a>
+                </li>
+    
+                <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
+                    <a href="{{ route('fox_search') }}" class="my-3 linkweb" target="_self">Search Data</a>
+                </li>
+    
+            </ul>
+    
+        </nav>
+    </header>
+ 

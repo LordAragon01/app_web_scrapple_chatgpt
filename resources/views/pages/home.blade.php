@@ -4,9 +4,7 @@
 
     <div class="row">
 
-        <div class="w-100 d-flex flex-row justify-content-center align-items-center">
-
-            <a href="{{ route('webcrawler') }}" class="my-3 linkweb" target="_self">Web Crawler</a>
+        <div class="w-100 d-flex flex-column justify-content-center align-items-center">
 
             @if($check_apiurl)
 
