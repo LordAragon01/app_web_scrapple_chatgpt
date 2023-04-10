@@ -28,6 +28,7 @@
                     <thead>
                       <tr>
                         <th scope="col">#</th>
+                        <th scope="col">Site</th>
                         <th scope="col">Title</th>
                         <th scope="col">Price</th>
                         <th scope="col">Reviews</th>
@@ -37,8 +38,6 @@
                     </thead>
 
                     <tbody>
-
-
                     </tbody>
                     
                 </table>    
