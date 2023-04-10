@@ -3,6 +3,9 @@ let host = window.location.hostname;
 let protocol = window.location.protocol;
 let default_url = "http://projeto_fox.test:8080/api/searchapi";
 
+//Get Date
+const d = new Date();
+
 //Count Id Row
 let count = 0;
 
@@ -27,6 +30,10 @@ $(function(){
         let getNameFromUrl = getSiteName(urlvalue);
         let capitalizeSiteName = getNameFromUrl.charAt(0).toUpperCase() + getNameFromUrl.slice(1);
 
+        //Get Data Current Date
+        //let currentDate = d.getFullYear() + '/' + d.getMonth()  + '/' + d.getDay();
+        let currentDate = d;
+        
         //console.log(capitalizeSiteName);
 
         //let getUrlContent = searchUrl(default_url, urlvalue);
@@ -52,6 +59,7 @@ $(function(){
                             trcontent += '<td>$ ' + data.price + '</td>';
                             trcontent += '<td>' + data.total_reviews + '</td>';
                             trcontent += '<td>' + data.total_stars + '</td>';
+                            trcontent += '<td>' + currentDate + '</td>';
                         trcontent += '</tr>';
 
                     //Append Content
