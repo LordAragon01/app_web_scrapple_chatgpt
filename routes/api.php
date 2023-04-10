@@ -19,6 +19,6 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 }); */
 
-Route::get('/searchapi', [ApiFoxController::class, 'requestUrlContent']);
-//Route::get('/searchapi?indicateurl=""', [ApiFoxController::class, 'requestUrlContent']);
+//Route::get('/searchapi', [ApiFoxController::class, 'requestUrlContent'])->name('searchapi');
+Route::post('/searchapi', [ApiFoxController::class, 'getRequestUrl'])->name('getsearchapi');
 //Route::post('/searchapiget?indicateurl=""', [ApiFoxController::class, 'getRequestUrl']);

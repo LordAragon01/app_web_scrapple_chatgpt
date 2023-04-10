@@ -276,26 +276,36 @@ class ApiFoxController extends Controller
 
     }
 
-    public function getRequestUrl(Request $request)
+    /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @return object|string
+     */
+    public function getRequestUrl(Request $request):object|string
     {
 
-        var_dump($request->indicateurl);
+        $this->setUrl($request->indicateurl);
 
-        //return $request->indicateurl;
+        $url = $this->getUrl();
+
+        return $this->requestUrlContent($url);
+        
 
     }
+
 
     /**
      * Send Data request API
      *
      * @return object|string
      */
-    public function requestUrlContent():object|string
+    public function requestUrlContent($url):object|string
     {
 
         //Indicate Url
-        $this->setUrl("https://www.staples.com/tru-red-melamine-dry-erase-board-black-frame-6-x-4-tr59365/product_24534067");
-        $url = $this->getUrl();
+        //$this->setUrl("https://www.staples.com/tru-red-melamine-dry-erase-board-black-frame-6-x-4-tr59365/product_24534067");
+        //$url = $this->getUrl();
 
         //Validate URL
         $validate_url = $this->checkUrl($url);
