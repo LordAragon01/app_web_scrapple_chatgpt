@@ -1,19 +1,20 @@
+let href = window.location.href;
+let host = window.location.hostname;
+let protocol = window.location.protocol;
+let default_url = "http://projeto_fox.test:8080/api/searchapi";
+
+let responseData;
+
 $(function(){
 
     //Send data for search Content From URL
     $('.searchurl_form').on('submit', function(e){
 
         e.preventDefault();
-
-        let href = window.location.href;
-        let host = window.location.hostname;
-        let protocol = window.location.protocol;
         
         let urlvalue = $('#urlsearch').val();
-        let default_url = "http://projeto_fox.test:8080/api/searchapi";
 
-        //console.log("Enviado com Sucesso - " + url);
-        //console.log(href + '----' + host + '----' + protocol);
+        //let getUrlContent = searchUrl(default_url, urlvalue);
 
         $.ajax({
             type: 'POST',
@@ -22,12 +23,28 @@ $(function(){
                 indicateurl: urlvalue
             },
             headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-            success: function(){
+            success: function(data, status, xhr){
 
-                console.log("Enviado Por Ajax");
+                if(status === 'success'){
+
+                    //Get Content when the request is success
+                    console.log(data);
+                    console.log(data.title);
+                    let trcontent = '<tr>';
+                            trcontent += '<th scope="row">1</th>';  
+                            trcontent += '<td>' + data.title + '</td>';
+                            trcontent += '<td>' + data.price + '</td>';
+                            trcontent += '<td>' + data.total_reviews + '</td>';
+                            trcontent += '<td>' + data.total_stars + '</td>';
+                        trcontent += '</tr>';
+
+                    //Append Content
+                    $(trcontent).appendTo($('table tbody'));    
+
+                }
 
             }, 
-            error: function(){
+            error: function(jqXhr, textStatus, errorMessage){
 
                 console.log("Erro ao enviar");
 
@@ -40,3 +57,39 @@ $(function(){
 
 
 });
+
+/*---SEARCH DATA FUNCTION---*/
+
+/* async function searchUrl(url, urldata){
+
+    try{
+
+        let response = await fetch(url, {  
+            method: 'POST',
+            body: urldata,
+            mode: 'no-cors',
+            credentials: 'same-origin', 
+            headers: {
+                'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content'),
+                "Content-Type": "application/json;charset=utf-8",
+                "Access-Control-Allow-Origin": "*",
+                "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
+                "Access-Control-Allow-Credentials": true
+            }
+        });
+
+        let data = await response.json();
+    
+        return data;
+
+
+    }catch(error){
+
+        let errorMessage = new Error(error);
+
+        console.log(errorMessage);
+
+    }
+
+
+} */
