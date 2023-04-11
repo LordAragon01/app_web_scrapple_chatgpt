@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use stdClass;
 
+/**
+ * 
+ * Class for CRUD structure
+ * 
+ * @author Joene Galdeano <joene.goncalves@bibright.com>
+ * @since Fox Project 1.0.0
+ */
 class FoxController extends Controller
 {
     //private $url = "https://www.worten.pt/escritorio-e-papelaria/material-de-apresentacao/quadros-e-ardosias/quadro-branco-bi-office-pinho-60x45cm-MRKEAN-5603750304005";

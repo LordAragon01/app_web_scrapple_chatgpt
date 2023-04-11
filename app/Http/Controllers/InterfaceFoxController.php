@@ -2,7 +2,13 @@
 
 namespace App\Http\Controllers;
 
-
+/**
+ * 
+ * Principal methods for get content from Url
+ * 
+ * @author Joene Galdeano <joene.goncalves@bibright.com>
+ * @since Fox Project 1.0.0
+ */
 Interface InterfaceFoxController
 {
     

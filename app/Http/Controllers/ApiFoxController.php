@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use stdClass;
 
+/**
+ * 
+ * Class to increment methods to send content from URL Search Web Scrapping Rendering
+ * 
+ * @author Joene Galdeano <joene.goncalves@bibright.com>
+ * @since Fox Project 1.0.0
+ */
 class ApiFoxController extends Controller
 {
 

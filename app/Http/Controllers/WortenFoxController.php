@@ -9,6 +9,13 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use stdClass;
 
+/**
+ * 
+ * Get Content from Worten
+ * 
+ * @author Joene Galdeano <joene.goncalves@bibright.com>
+ * @since Fox Project 1.0.0
+ */
 class WortenFoxController extends ApiFoxController implements InterfaceFoxController
 {
     
