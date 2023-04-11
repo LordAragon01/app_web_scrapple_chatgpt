@@ -21,6 +21,10 @@ $(function(){
 
         //Prevent Default
         e.preventDefault();
+
+        //Disabled Button
+        let button = $(this).find('button');
+        button.prop('disabled', true);
         
         //Get Data from input
         let urlvalue = $('#urlsearch').val();
@@ -75,13 +79,21 @@ $(function(){
                         document.getElementById('urlsearch').value = ""; 
 
                         //Append Content
-                        $(trcontent).appendTo($('table tbody'));  
+                        $(trcontent).appendTo($('table tbody')); 
+                        
+                        //Active Button
+                        button.prop('disabled', false);
 
                    }else{
 
                      //Inform Error --- Get Error Message  
                      alert("Erro ao processar requisição");
 
+                     //Clean Input
+                     document.getElementById('urlsearch').value = ""; 
+
+                     //Active Button
+                     button.prop('disabled', false);
 
                    }
 
@@ -98,6 +110,9 @@ $(function(){
 
                 //Inform Error from Ajax Request
                 alert("A url informada não é válida");
+
+                //Active Button
+                button.prop('disabled', false);
 
             }
 
