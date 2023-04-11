@@ -74,6 +74,31 @@ class ApiFoxController extends Controller
 
     }
 
+    /**
+     * Verify If the Url is compatible 
+     *
+     * @param string $urlapi
+     * @param string|null $indicate
+     * @return boolean
+     */
+    public function verifyUrlIntegrity(string $urlapi, ?string $indicate):bool
+    {
+
+        //Get Hostname
+        $url = explode(".", parse_url($urlapi, PHP_URL_HOST));
+
+        //List of authorize hosts
+        $host_list = ["com", "pt", "uk", "org", "net", "br"];
+        $add_host_list = !is_null($indicate) ? array_push($host_list, $indicate) : $host_list;
+
+        //Get Boolean from url integrity
+        $verifyintegrity = in_array(end($url), $add_host_list);
+
+        return $verifyintegrity;
+        
+
+    }
+
 
     /**
      * Helper for filter Data Function
@@ -177,7 +202,7 @@ class ApiFoxController extends Controller
         $staples = new StaplesFoxController();
 
         //Get Data from URL
-        $content = $staples->getContentFromUrl($url, $validate_url, $validate_ssl);
+        $content = $staples->getContentFromUrl($url, $validate_url, $validate_ssl, null);
     
         //return json_encode(['Success' => $content]);
 

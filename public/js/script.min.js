@@ -38,7 +38,7 @@ $(function(){
 
                 if(status === 'success'){
 
-                     //console.log(xhr);
+                    //console.log(xhr);
 
                    if(typeof data === 'object'){
 
@@ -82,6 +82,9 @@ $(function(){
             error: function(jqXhr, textStatus, errorMessage){
 
                 console.log("Erro ao enviar");
+
+                //Inform Error from Ajax Request
+                alert("A url informada não é válida");
 
             }
 
