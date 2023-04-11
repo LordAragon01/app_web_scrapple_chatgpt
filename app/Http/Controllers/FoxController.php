@@ -11,7 +11,7 @@ use stdClass;
 
 class FoxController extends Controller
 {
-    //private $url = "https://www.amazon.com/Glass-Whiteboard-Magnetic-Erase-Board/dp/B08RYQS9JL?th=1";
+    private $url = "https://www.worten.pt/escritorio-e-papelaria/material-de-apresentacao/quadros-e-ardosias/quadro-branco-flip-chart-mk-easy-easel-70x100cm-cinza-MRKEAN-5603750509981";
     
     public function index(ApiFoxController $apiFoxController)
     {
@@ -22,6 +22,10 @@ class FoxController extends Controller
         //$verifyintegrate = $apiFoxController->getHostName("https://www.staples.com/tru-red-melamine-dry-erase-board-black-frame-6-x-4-tr59365/product_24534067");
 
         //dd($verifyintegrate);
+        $worten = new WortenFoxController();
+        $content = $worten->getContentFromUrl($this->url, true, true, null);
+
+        //dd($content);
 
         return view('pages.fox_project', compact(
             'title'

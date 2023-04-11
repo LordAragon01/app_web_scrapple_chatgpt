@@ -86,14 +86,9 @@ class StaplesFoxController extends ApiFoxController
                 }catch(Exception $err){
 
                     //Message error
-                    $message_error = $err->getMessage("Erro ao processar requisição");
+                    $message_error = $err->getMessage();
 
-                    //Url Http Response Verificarion
-                    if($response->failed()){
-
-                        return $message_error;
-
-                    }
+                    return $message_error;
 
                 }
 
@@ -107,7 +102,7 @@ class StaplesFoxController extends ApiFoxController
         
     }
 
-      /**
+    /**
      * Filter Data and Create Array with select data
      *
      * @param array $list_of_data
