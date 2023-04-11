@@ -11,7 +11,7 @@ use stdClass;
 
 class FoxController extends Controller
 {
-    //private $url = "https://www.worten.pt/escritorio-e-papelaria/material-de-apresentacao/quadros-e-ardosias/quadro-branco-bi-office-maya-90-x-60-cm-aluminio-magnetico-sim-MRKEAN-5603750113072";
+    //private $url = "https://www.worten.pt/escritorio-e-papelaria/material-de-apresentacao/quadros-e-ardosias/quadro-branco-bi-office-pinho-60x45cm-MRKEAN-5603750304005";
     
     public function index(ApiFoxController $apiFoxController)
     {

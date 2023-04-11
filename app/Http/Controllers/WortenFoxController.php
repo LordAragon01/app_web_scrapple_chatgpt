@@ -69,9 +69,9 @@ class WortenFoxController extends ApiFoxController implements InterfaceFoxContro
                         //Get clean Data                    
                         $get_title = implode("", $this->filterData($product_data, 'title'));
                         //$get_price = sprintf('%01.2f', intval($this->filterData($product_data, 'price')));
-                        //$get_price = number_format(intval($this->filterData($product_data, 'price')), 2, '.', '');
+                        $get_price = number_format(intval($this->filterData($product_data, 'price')), 0, '', '.');
                         //$get_price = intval(implode("", $this->filterData($product_data, 'price')));
-                        $get_price = intval($this->filterData($product_data, 'price'));
+                        //$get_price = intval($this->filterData($product_data, 'price'));
                         $get_seller = implode("", $this->filterData($product_data, 'seller'));
                         $get_total_of_starts = floatval(implode("", $this->filterData($product_data, 'stars')));
                         $get_total_of_reviews = intval(str_replace(' opiniões', '', implode("", $this->filterData($product_data, 'reviews'))));                      
@@ -79,7 +79,8 @@ class WortenFoxController extends ApiFoxController implements InterfaceFoxContro
                         //List of Clean Data
                         $list_of_clean_data = new stdClass();
                         $list_of_clean_data->title = $get_title;
-                        $list_of_clean_data->price = $get_price;
+                        $list_of_clean_data->price = abs($get_price);
+                        //$list_of_clean_data->price = sprintf('%01.2f', $get_price);
                         $list_of_clean_data->seller = $get_seller;
                         $list_of_clean_data->total_stars = $get_total_of_starts;
                         $list_of_clean_data->total_reviews = $get_total_of_reviews;
@@ -168,7 +169,7 @@ class WortenFoxController extends ApiFoxController implements InterfaceFoxContro
 
                     }
 
-                    return $list_of_clean_data[0];
+                    return $list_of_clean_data[0] . 00;
                    
 
                 break; 
