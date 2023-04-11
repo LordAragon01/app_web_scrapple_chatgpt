@@ -11,7 +11,7 @@ use stdClass;
 
 class FoxController extends Controller
 {
-    private $url = "https://www.worten.pt/escritorio-e-papelaria/material-de-apresentacao/quadros-e-ardosias/quadro-branco-flip-chart-mk-easy-easel-70x100cm-cinza-MRKEAN-5603750509981";
+    private $url = "https://www.worten.pt/escritorio-e-papelaria/material-de-apresentacao/quadros-e-ardosias/quadro-branco-bi-office-maya-90-x-60-cm-aluminio-magnetico-sim-MRKEAN-5603750113072";
     
     public function index(ApiFoxController $apiFoxController)
     {
@@ -25,7 +25,7 @@ class FoxController extends Controller
         $worten = new WortenFoxController();
         $content = $worten->getContentFromUrl($this->url, true, true, null);
 
-        //dd($content);
+        dd($content);
 
         return view('pages.fox_project', compact(
             'title'

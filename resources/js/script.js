@@ -53,6 +53,9 @@ $(function(){
                         //let currentDate = d.getFullYear() + '/' + d.getMonth()  + '/' + d.getDay();
                         let currentDate = d;
 
+                        //Get sellers
+                        let sellers = data.seller ? data.seller : getNameFromUrl;
+
                         //Get Content when the request is success
                         let trcontent = '<tr data-refere="'+ count +'" >';
                                 trcontent += '<th scope="row">'+ count +'</th>';
@@ -61,6 +64,7 @@ $(function(){
                                 trcontent += '<td>$ ' + data.price + '</td>';
                                 trcontent += '<td>' + data.total_reviews + '</td>';
                                 trcontent += '<td>' + data.total_stars + '</td>';
+                                trcontent += '<td>' + sellers + '</td>';
                                 trcontent += '<td>' + currentDate + '</td>';
                             trcontent += '</tr>';
 

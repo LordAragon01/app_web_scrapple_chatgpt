@@ -33,6 +33,7 @@
                         <th scope="col">Price</th>
                         <th scope="col">Reviews</th>
                         <th scope="col">Stars</th>
+                        <th scope="col">Vendedor</th>
                         <th scope="col">Última Atualização</th>
                       </tr>
                     </thead>

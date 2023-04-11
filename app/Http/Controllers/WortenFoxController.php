@@ -58,11 +58,13 @@ class WortenFoxController extends ApiFoxController
                         //Data from xml
                         $product_data = [
                             'title' => $xpath->evaluate('//h1[@class="title"]//span'),
+                            'stars' => $xpath->evaluate('//span[@class="rating__star-value semibold"]'),
                             'price' => $xpath->evaluate('//div[@class="product-price-info"]//span//span//span//span//span'),
-                            'seller' => $xpath->evaluate('//div[@class="product-price-info__seller"]//div'),
-                            //'stars' => $xpath->evaluate('//span[@id="core-sku-rating-label"]'),
+                            'seller' => $xpath->evaluate('//div[@class="product-price-info__seller"]//div'),                      
                             //'reviews' => $xpath->evaluate('//span[@id="core-sku-review-count"]')
                         ];
+
+                        //return $product_data['stars'];
 
                         //Get clean Data                    
                         $get_title = implode("", $this->filterData($product_data, 'title'));
@@ -70,7 +72,7 @@ class WortenFoxController extends ApiFoxController
                         //$get_price = number_format(intval($this->filterData($product_data, 'price')), 2, '.', '');
                         $get_price = intval($this->filterData($product_data, 'price'));
                         $get_seller = $this->filterData($product_data, 'seller');
-                        //$get_total_of_starts = floatval(implode("", $this->filterData($product_data, 'stars')));
+                        $get_total_of_starts = $this->filterData($product_data, 'stars');
                         //$get_total_of_reviews = intval(str_replace(' Review', '', implode("", $this->filterData($product_data, 'reviews'))));
 
                         //List of Clean Data
@@ -78,7 +80,7 @@ class WortenFoxController extends ApiFoxController
                         $list_of_clean_data->title = $get_title;
                         $list_of_clean_data->price = $get_price;
                         $list_of_clean_data->seller = $get_seller;
-                        //$list_of_clean_data->total_stars = $get_total_of_starts;
+                        $list_of_clean_data->total_stars = $get_total_of_starts;
                         //$list_of_clean_data->total_reviews = $get_total_of_reviews;
 
                         return $list_of_clean_data;
@@ -210,7 +212,21 @@ class WortenFoxController extends ApiFoxController
                 case 'stars':
 
                     //Get Data from Helper
-                    return $this->helperFilterData($list_of_data, $type_of_data);
+                    $list_of_clean_data = [];
+
+                    foreach($list_of_data[$type_of_data] as $value){
+
+                        return $value;
+
+                       /*  if(!ctype_space($value->textContent)){
+
+                            array_push($list_of_clean_data, trim($value->textContent));
+
+                        }
+ */
+                    }
+
+                    return $list_of_clean_data;
 
                 break; 
 
