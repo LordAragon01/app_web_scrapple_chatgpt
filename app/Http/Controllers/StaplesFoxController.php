@@ -9,7 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
 use stdClass;
 
-class StaplesFoxController extends ApiFoxController
+class StaplesFoxController extends ApiFoxController implements InterfaceFoxController
 {
 
 
