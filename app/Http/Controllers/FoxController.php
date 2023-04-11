@@ -19,7 +19,7 @@ class FoxController extends Controller
         //Set a title
         $title = "Projeto Fox";
 
-        //$verifyintegrate = $apiFoxController->verifyUrlIntegrity("https://www.staples.com/tru-red-melamine-dry-erase-board-black-frame-6-x-4-tr59365/product_24534067", null);
+        //$verifyintegrate = $apiFoxController->getHostName("https://www.staples.com/tru-red-melamine-dry-erase-board-black-frame-6-x-4-tr59365/product_24534067");
 
         //dd($verifyintegrate);
 

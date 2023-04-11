@@ -179,6 +179,33 @@ class ApiFoxController extends Controller
 
     }
 
+    /**
+     * Get the name of site reference
+     *
+     * @param string $url
+     * @return string
+     */
+    public function getHostName(string $url):string
+    {
+
+        //Get Hostname
+        $url = explode(".", parse_url($url, PHP_URL_HOST));
+
+        //Get Hostname
+        $sitename = array_filter($url, function($value){
+
+            //List of Valid Hostnames
+            $hostname = ["worten", "staples", "amazon"];
+
+            return in_array($value, $hostname) ? $value : null;
+
+        });
+
+        return implode("", $sitename);
+
+
+    }
+
 
     /**
      * Send Data request API
@@ -198,13 +225,17 @@ class ApiFoxController extends Controller
         //Validate HTTPS
         $validate_ssl = $this->checkUrl($url);
 
+        //Get Hostname
+        $host = $this->getHostName($url);
+
         //Get Staples Content
         $staples = new StaplesFoxController();
 
-        //Get Data from URL
-        $content = $staples->getContentFromUrl($url, $validate_url, $validate_ssl, null);
-    
-        //return json_encode(['Success' => $content]);
+        $content = match($host){
+            "staples" => $staples->getContentFromUrl($url, $validate_url, $validate_ssl, null),
+            "worten" => "Class Create"
+
+        };
 
         return $content;
 
