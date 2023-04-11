@@ -15,7 +15,7 @@
                     <div class="form-group">
     
                       <label for="urlsearch">Inform URL for search</label>
-                      <input type="text" name="indicateurl" class="form-control" id="urlsearch" aria-describedby="serachUrl">
+                      <input type="text" name="indicateurl" class="form-control" id="urlsearch" aria-describedby="serachUrl" value="">
                      
                     </div>
                

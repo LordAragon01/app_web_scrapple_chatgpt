@@ -25,7 +25,7 @@ class WortenFoxController extends ApiFoxController
         ?bool $validateurl,
         ?bool $validatehttps,
         ?string $indicate
-        )//:object|string|array
+        ):object|string
     {
      
         //Validate URL structure
@@ -61,7 +61,7 @@ class WortenFoxController extends ApiFoxController
                             'stars' => $xpath->evaluate('//span[@class="rating__star-value semibold"]'),
                             'price' => $xpath->evaluate('//div[@class="product-price-info"]//span//span//span//span//span'),
                             'seller' => $xpath->evaluate('//div[@class="product-price-info__seller"]//div'),                      
-                            //'reviews' => $xpath->evaluate('//span[@id="core-sku-review-count"]')
+                            'reviews' => $xpath->evaluate('//span[@class="rating__opinions"]//span')
                         ];
 
                         //return $product_data['stars'];
@@ -70,10 +70,11 @@ class WortenFoxController extends ApiFoxController
                         $get_title = implode("", $this->filterData($product_data, 'title'));
                         //$get_price = sprintf('%01.2f', intval($this->filterData($product_data, 'price')));
                         //$get_price = number_format(intval($this->filterData($product_data, 'price')), 2, '.', '');
+                        //$get_price = intval(implode("", $this->filterData($product_data, 'price')));
                         $get_price = intval($this->filterData($product_data, 'price'));
-                        $get_seller = $this->filterData($product_data, 'seller');
-                        $get_total_of_starts = $this->filterData($product_data, 'stars');
-                        //$get_total_of_reviews = intval(str_replace(' Review', '', implode("", $this->filterData($product_data, 'reviews'))));
+                        $get_seller = implode("", $this->filterData($product_data, 'seller'));
+                        $get_total_of_starts = floatval(implode("", $this->filterData($product_data, 'stars')));
+                        $get_total_of_reviews = intval(str_replace(' opiniões', '', implode("", $this->filterData($product_data, 'reviews'))));                      
 
                         //List of Clean Data
                         $list_of_clean_data = new stdClass();
@@ -81,7 +82,7 @@ class WortenFoxController extends ApiFoxController
                         $list_of_clean_data->price = $get_price;
                         $list_of_clean_data->seller = $get_seller;
                         $list_of_clean_data->total_stars = $get_total_of_starts;
-                        //$list_of_clean_data->total_reviews = $get_total_of_reviews;
+                        $list_of_clean_data->total_reviews = $get_total_of_reviews;
 
                         return $list_of_clean_data;
 
@@ -118,7 +119,7 @@ class WortenFoxController extends ApiFoxController
      * @param string $type_of_data
      * @return array
      */
-    public function filterData(array $list_of_data, string $type_of_data)//:array
+    public function filterData(array $list_of_data, string $type_of_data):array|string|int
     {
 
         //Verify if array is not empty 
@@ -204,7 +205,7 @@ class WortenFoxController extends ApiFoxController
 
                     }
 
-                    return $list_of_clean_data[0];
+                    return $list_of_clean_data;
 
 
                 break; 
@@ -216,28 +217,39 @@ class WortenFoxController extends ApiFoxController
 
                     foreach($list_of_data[$type_of_data] as $value){
 
-                        return $value;
+                        foreach($value->childNodes as $val_child){
 
-                       /*  if(!ctype_space($value->textContent)){
+                            if(!ctype_space($val_child->textContent) && !empty($val_child->textContent)){
 
-                            array_push($list_of_clean_data, trim($value->textContent));
+                                array_push($list_of_clean_data, trim($val_child->textContent));
+
+                            }
 
                         }
- */
+
                     }
 
                     return $list_of_clean_data;
 
                 break; 
 
-                
                 case 'reviews':
 
                     //Get Data from Helper
-                    return $this->helperFilterData($list_of_data, $type_of_data);
+                    $list_of_clean_data = [];
+
+                    foreach($list_of_data[$type_of_data] as $value){
+
+                        if(!ctype_space($value->textContent) && !empty($value->textContent)){
+
+                            array_push($list_of_clean_data, trim($value->textContent));
+
+                        }
+                    }
+
+                    return $list_of_clean_data;
 
                 break;
-
 
             }
 

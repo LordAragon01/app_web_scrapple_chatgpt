@@ -56,17 +56,23 @@ $(function(){
                         //Get sellers
                         let sellers = data.seller ? data.seller : getNameFromUrl;
 
+                        //Currency
+                        let currency = getNameFromUrl === 'worten' ? '€' : '$';
+
                         //Get Content when the request is success
                         let trcontent = '<tr data-refere="'+ count +'" >';
                                 trcontent += '<th scope="row">'+ count +'</th>';
                                 trcontent += '<td>' + capitalizeSiteName + '</td>';  
                                 trcontent += '<td>' + data.title + '</td>';
-                                trcontent += '<td>$ ' + data.price + '</td>';
+                                trcontent += '<td>' + currency + ' ' + data.price + '</td>';
                                 trcontent += '<td>' + data.total_reviews + '</td>';
                                 trcontent += '<td>' + data.total_stars + '</td>';
                                 trcontent += '<td>' + sellers + '</td>';
                                 trcontent += '<td>' + currentDate + '</td>';
                             trcontent += '</tr>';
+
+                        //Clean Input
+                        document.getElementById('urlsearch').value = ""; 
 
                         //Append Content
                         $(trcontent).appendTo($('table tbody'));  
@@ -86,6 +92,9 @@ $(function(){
             error: function(jqXhr, textStatus, errorMessage){
 
                 console.log("Erro ao enviar");
+
+                //Clean Input
+                document.getElementById('urlsearch').value = ""; 
 
                 //Inform Error from Ajax Request
                 alert("A url informada não é válida");

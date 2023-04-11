@@ -230,10 +230,11 @@ class ApiFoxController extends Controller
 
         //Get Staples Content
         $staples = new StaplesFoxController();
+        $worten = new WortenFoxController();
 
         $content = match($host){
             "staples" => $staples->getContentFromUrl($url, $validate_url, $validate_ssl, null),
-            "worten" => "Class Create"
+            "worten" => $worten->getContentFromUrl($url, $validate_url, $validate_ssl, null)
 
         };
 
