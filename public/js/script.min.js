@@ -1,7 +1,7 @@
 let href = window.location.href;
 let host = window.location.hostname;
 let protocol = window.location.protocol;
-let default_url = "http://projeto_fox.test:8080/api/searchapi";
+let default_url = protocol + '//' + host + ':8080/api/searchapi';
 
 //Get Date
 const d = new Date();
