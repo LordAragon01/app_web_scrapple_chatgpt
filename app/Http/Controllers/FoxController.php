@@ -18,7 +18,7 @@ use stdClass;
  */
 class FoxController extends Controller
 {
-    //private $url = "https://www.worten.pt/escritorio-e-papelaria/material-de-apresentacao/quadros-e-ardosias/quadro-branco-bi-office-pinho-60x45cm-MRKEAN-5603750304005";
+    //private $url = "https://www.staples.com/Avery-Laser-Inkjet-Embossed-Tent-Cards-3-1-2-x-11/product_466045";
     
     public function index(ApiFoxController $apiFoxController)
     {
@@ -31,6 +31,9 @@ class FoxController extends Controller
         //dd($verifyintegrate);
         //$worten = new WortenFoxController();
         //$content = $worten->getContentFromUrl($this->url, true, true, null);
+
+        //$staples = new StaplesFoxController();
+        //$content = $staples->getContentFromUrl($this->url, true, true, null);
 
         //dd($content);
 
