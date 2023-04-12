@@ -76,7 +76,7 @@ class WortenFoxController extends ApiFoxController implements InterfaceFoxContro
                         //Get clean Data                    
                         $get_title = implode("", $this->filterData($product_data, 'title'));
                         //$get_price = sprintf('%01.2f', intval($this->filterData($product_data, 'price')));
-                        $get_price = number_format(intval($this->filterData($product_data, 'price')), 0, '', '.');
+                        $get_price = floatval(number_format(intval($this->filterData($product_data, 'price')), 0, '', '.'));
                         //$get_price = intval(implode("", $this->filterData($product_data, 'price')));
                         //$get_price = intval($this->filterData($product_data, 'price'));
                         $get_seller = implode("", $this->filterData($product_data, 'seller'));
