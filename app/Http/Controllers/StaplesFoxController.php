@@ -73,8 +73,8 @@ class StaplesFoxController extends ApiFoxController implements InterfaceFoxContr
 
                         //Get clean Data
                         $get_title = implode("", $this->filterData($product_data, 'title'));
-                        //$get_price = intval(str_replace('$', '', implode($this->filterData($product_data, 'price'))));
-                        $get_price = floatval(str_replace('$', '', implode($this->filterData($product_data, 'price'))));
+                        $get_price = floatval(str_replace(',', '.', (str_replace('$', '', implode($this->filterData($product_data, 'price'))))));
+                        //$get_price = floatval((str_replace('$', '', implode($this->filterData($product_data, 'price')))));
                         $get_total_of_starts = floatval(implode("", $this->filterData($product_data, 'stars')));
                         $get_total_of_reviews = intval(str_replace(' Review', '', implode("", $this->filterData($product_data, 'reviews'))));
 
