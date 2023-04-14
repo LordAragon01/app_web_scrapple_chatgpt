@@ -1,8 +1,9 @@
 let href = window.location.href;
 let host = window.location.hostname;
 let protocol = window.location.protocol;
-let default_url = protocol + '//' + host + ':8080/api/searchapi';
-//let default_url = "http://192.168.20.112/project_fox/public/api/searchapi";
+let url_local = protocol + '//' + host + ':8080/api/searchapi';
+let url_stage = "http://192.168.20.112/project_fox/public/api/searchapi";
+let default_url;
 
 //Get Date
 const d = new Date();
@@ -15,6 +16,15 @@ const listOfSites = ["staples", "worten", "amazon"];
 
 let responseData;
 
+//Get Base Search Url
+window.addEventListener('load', function(){
+
+    return default_url = host.includes('projeto_fox.test') ? url_local : url_stage;
+
+});
+
+
+//Logic for search data from url
 $(function(){
 
     //Send data for search Content From URL
@@ -34,7 +44,9 @@ $(function(){
 
         $.ajax({
             type: 'POST',
-            url: default_url,
+            url: default_url !== undefined ? default_url : '',
+            //timeout: 500,
+            dataType: 'json',
             data: {
                 indicateurl: urlvalue
             },
