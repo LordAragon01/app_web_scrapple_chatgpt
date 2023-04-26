@@ -86,7 +86,7 @@ class ChatGptController extends Controller
                     CURLOPT_CUSTOMREQUEST => 'POST',
                     CURLOPT_POSTFIELDS =>'{
                         "model": "'. $this->model .'",
-                        "prompt": "'. strval(trim($request->indicateprompt)) .'",
+                        "prompt": "'. strval(trim(filter_var(strip_tags($request->indicateprompt), FILTER_DEFAULT))) .'",
                         "temperature": 0.7,
                         "max_tokens": 2048,
                         "top_p": 1.0,

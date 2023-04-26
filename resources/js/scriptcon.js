@@ -64,33 +64,45 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
     //Get Value from input
     let prompt = document.getElementById('promptsearch').value;
 
-    //Send value to search in the Api
-    let contentResponse = getDataOpenApi(prompt.trim());
+    //Verify prompt Value
+    if(typeof prompt === 'string' && !containsOnlyNumbers(prompt)){
 
-    console.log(contentResponse);
+        //Send value to search in the Api
+        let contentResponse = getDataOpenApi(prompt.trim());
 
-    //Structure a Promise and get Object Data
-    contentResponse.then((data) => {
+        console.log(contentResponse);
 
-        let content = data.content;
-        let text = '<p>' + content.trim() + '</p>';
+        //Structure a Promise and get Object Data
+        contentResponse.then((data) => {
 
-        //console.log(text);
-        //Add search in the Front
-        $(text).appendTo($('#resultgpt'));
+            let content = data.content;
+            let text = '<p>' + content.trim() + '</p>';
+
+            //Add search in the Front
+            $(text).appendTo($('#resultgpt'));
+
+            //Enabled Button
+            $('#chatgptbtn').prop('disabled', false);
+        
+
+        }).catch((error) => {
+
+            console.error(error.message);
+
+        });
+
+    }else{
+
+        alert('Por favor só informar prompts válidos');
 
         //Enabled Button
         $('#chatgptbtn').prop('disabled', false);
-    
 
-    }).catch((error) => {
-
-        console.error(error.message);
-
-    });
-
-    //Enabled Button
-    //btnchatgpt.setAttribute('disabled', false);
-    //$('#chatgptbtn').prop('disabled', false);
+    }
 
 });
+
+//Check if the Value from Input contain only number
+function containsOnlyNumbers(str) {
+    return /^[0-9]+$/.test(str);
+}
