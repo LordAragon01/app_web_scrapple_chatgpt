@@ -8,17 +8,17 @@ let default_url;
 //Get Base Search Url
 window.addEventListener('load', function(){
 
-    return default_url = host.includes('projeto_fox.test') ? url_local : url_stage;
+    return default_url = host.includes('projects_mvp.test') ? url_local : url_stage;
 
 });
 
 //Get Data From Open Api with a Promise
 async function getDataOpenApi(prompt) {
 
-    //let url = default_url !== undefined ? default_url : '';
+    let url = default_url !== undefined ? default_url : '';
     
     try {
-      const response = await fetch(url_local, {
+      const response = await fetch(url, {
         method: "POST",
         headers: {
           'Content-Type': "application/json",
