@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use CurlHandle;
 use Exception;
 use Illuminate\Http\Request;
+use stdClass;
 
 class ChatGptController extends Controller
 {
@@ -12,6 +13,7 @@ class ChatGptController extends Controller
     private $openapi = 'https://api.openai.com/v1/completions';
     //private $openapi = 'http';
     private $model = "text-davinci-003";
+    //private $model = "text-davi";
     private $tolken = "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";
     //private $tolken = "sk-";
     
@@ -64,7 +66,8 @@ class ChatGptController extends Controller
     protected function openApiCon()
     {
 
-        $content = "Url Não Adequada";
+        //Create a Object to send for FrontEnd
+        $chatGptContent = new stdClass();
 
         //Check if the apiUrl is security
         if($this->checkUrl($this->openapi) && $this->httpsVerify($this->openapi)){
@@ -124,14 +127,45 @@ class ChatGptController extends Controller
                
             curl_close($curl);
 
-            dd($content);
+            //Helper Create
+            if(!is_string($content)){
+
+                //Get All Data From OpenApi
+                foreach($content as $value){
+
+                  /*   $text = mb_convert_encoding($value->text, 'UTF-8');
+                    $text2 = htmlentities($value->text);
+                    $text3 = htmlspecialchars($value->text); */
+
+                    $text4 = html_entity_decode($value->text);
+
+                    $chatGptContent->content = $text4;
+                    //dd($text);
+                    //dd($text2);
+
+                }
+
+                //Return an object
+                return $chatGptContent;
+
+            }
+
+            //Send Error Message
+            $chatGptContent->content = $content;
+
+            //Return an object
+            return $chatGptContent;
 
         }else{
 
             //Verify if the Debug is true
             if(env('APP_DEBUG')){
 
-                return $content;
+                //Send Error Message
+                $chatGptContent->content = "A Url informada é inadequada";
+
+                //Return an object
+                return $chatGptContent;
 
             }else{
 
