@@ -55,12 +55,15 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
 
     }
 
+    //Get Value from input
     let prompt = document.getElementById('promptsearch').value;
 
+    //Send value to search in the Api
     let contentResponse = getDataOpenApi(prompt.trim());
 
     console.log(contentResponse);
 
+    //Structure a Promise and get Object Data
     contentResponse.then((data) => {
 
         let content = data.content;
