@@ -15,6 +15,8 @@ window.addEventListener('load', function(){
 //Get Data From Open Api with a Promise
 async function getDataOpenApi(prompt) {
 
+    "use strict";
+
     let url = default_url !== undefined ? default_url : '';
     
     try {
@@ -45,6 +47,8 @@ async function getDataOpenApi(prompt) {
 document.querySelector('.searchchatgpt_form').addEventListener('submit', function(e){
 
     e.preventDefault();
+
+    "use strict";
 
     //Disabled Button
     //let btnchatgpt = document.getElementById('chatgptbtn');
@@ -83,8 +87,27 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
         contentResponse.then((data) => {
 
             let content = data.content;
-            let text = '<p>' + content.trim() + '</p>';
+            let text = '<p>' + content.trim() + '<span class="cursor blink">&nbsp;</span></p>';
+            //let text = content.trim();
+            //let textArray = text.split(" ");
 
+            //Typewriter sequence
+            /* let typedText = resultList[0];
+            let cursor = document.querySelector(".cursor");
+            let textArrayIndex = 0;
+            let charIndex = 0; */
+
+            //console.log(typedText);
+
+            /* textArray.forEach((value) => {
+
+                console.log(value);
+                $(typedText).text(value);
+                typedText.textContent += value;
+                cursor.classList.remove('blink');
+
+            }); */
+     
             //Add search in the Front
             $(text).appendTo($('#resultgpt'));
 
@@ -120,3 +143,44 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
 function containsOnlyNumbers(str) {
     return /^[0-9]+$/.test(str);
 }
+
+/*===Typewrite Effect==*/
+/* const typedText = $('.result').find('p');
+const cursor = document.querySelector(".cursor");
+
+const textArray = ["Web Developer", "Web Designer", "Tutor", "Learner..."];
+
+let textArrayIndex = 0;
+let charIndex = 0;
+ */
+/* const erase = () => {
+  if (charIndex > 0) {
+    cursor.classList.remove('blink');
+    typedText.textContent = textArray[textArrayIndex].slice(0, charIndex - 1);
+    charIndex--;
+    setTimeout(erase, 80);
+  } else {
+    cursor.classList.add('blink');
+    textArrayIndex++;
+    if (textArrayIndex > textArray.length - 1) {
+      textArrayIndex = 0;
+    }
+    setTimeout(type, 1000);
+  }
+} */
+
+/* const type = () => {
+  if (charIndex <= textArray[textArrayIndex].length - 1) {
+    cursor.classList.remove('blink');
+    typedText.textContent += textArray[textArrayIndex].charAt(charIndex);
+    charIndex++;
+    setTimeout(type, 120);
+  } else {
+    cursor.classList.add('blink');
+    //setTimeout(erase, 1000);
+  }
+} */
+
+/* document.addEventListener("DOMContentLoaded", () => {
+    type();
+}) */

@@ -69,6 +69,26 @@
     display:flex !important;
 }
 
+/*==Typewriter Effect==*/
+.cursor {
+    display: inline-block;
+    width: 3px;
+    margin-left: 4px;
+    background: #333;
+  }
+  
+  .cursor.blink {
+    animation: blink 0.8s ease-in-out infinite;
+  }
+  
+  @keyframes blink {
+    0%, 100% {
+      background: #333;
+    }
+    40%, 50% {
+      background: transparent;
+    }
+  }
 
 /*===Link Web==*/
 .linkweb{

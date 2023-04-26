@@ -63,8 +63,14 @@ class ChatGptController extends Controller
 
     }
 
-    protected function openApiCon(Request $request)
+    protected function openApiCon(Request $request):object
     {
+
+        //More PostFileds for Api
+       /*  "n": 1,
+        "stream": false,
+        "logprobs": null,
+        "stop": "\n" */
 
         //Create a Object to send for FrontEnd
         $chatGptContent = new stdClass();

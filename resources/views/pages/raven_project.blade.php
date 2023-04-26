@@ -23,7 +23,9 @@
 
             </form>
 
-            <div class="result order-3" id="resultgpt"></div>
+            <div class="result order-3" id="resultgpt">
+               {{--  <p class="typedtext"><span class="cursor blink"></span></p> --}}
+            </div>
 
         </div>
         
