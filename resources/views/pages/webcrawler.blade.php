@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="container">
+    <div class="w-100">
 
         <div class="row d-flex flex-column">
 

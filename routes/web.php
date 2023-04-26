@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiFoxController;
+use App\Http\Controllers\ChatGptController;
 use App\Http\Controllers\FoxController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\WebCrawlerController;
@@ -17,9 +18,15 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+/*===Home===*/
 Route::get('/', [GalleryController::class, 'index'])->name('home');
+
+/*===Webcrawler Example get all Information===*/
 Route::get('/webcrawler', [WebCrawlerController::class, 'index'])->name('webcrawler');
 
 /*===Search Content Scrapp===*/
 Route::get('/search', [FoxController::class, 'index'])->name('fox_search');
 //Route::post('/search', [ApiFoxController::class, 'getRequestUrl'])->name('fox_urlsearch');
+
+/*===ChatGpt===*/
+Route::get('/chatgptcustom', [ChatGptController::class, 'index'])->name('chatgpt');

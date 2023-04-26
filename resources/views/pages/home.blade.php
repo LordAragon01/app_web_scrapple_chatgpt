@@ -2,7 +2,7 @@
 
 @section('content')
 
-    <div class="row">
+    <div class="row my-3">
 
         <div class="w-100 d-flex flex-column justify-content-center align-items-center">
 

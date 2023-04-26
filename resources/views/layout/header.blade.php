@@ -27,9 +27,18 @@
                 <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
                     <a href="{{ route('fox_search') }}" class="my-3 linkweb" target="_self">Search Data</a>
                 </li>
+
+                <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
+                    <a href="{{ route('chatgpt') }}" class="my-3 linkweb" target="_self">ChatGpt</a>
+                </li>
     
             </ul>
     
         </nav>
     </header>
+
+    <h1 class="w-100 text-center my-3">MVP Projects</h1>
  
+{{-- Content --}}
+
+<div class="container">
