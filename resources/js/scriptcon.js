@@ -46,6 +46,12 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
 
     e.preventDefault();
 
+    //Disabled Button
+    //let btnchatgpt = document.getElementById('chatgptbtn');
+    $('#chatgptbtn').prop('disabled', true);
+    //btnchatgpt.setAttribute('disabled', true);
+
+    //Remove old searchs structures
     let resultList = [...document.getElementById('resultgpt').children];
 
     if(resultList.length > 0){
@@ -72,6 +78,9 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
         //console.log(text);
         //Add search in the Front
         $(text).appendTo($('#resultgpt'));
+
+        //Enabled Button
+        $('#chatgptbtn').prop('disabled', false);
     
 
     }).catch((error) => {
@@ -79,5 +88,9 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
         console.error(error.message);
 
     });
+
+    //Enabled Button
+    //btnchatgpt.setAttribute('disabled', false);
+    //$('#chatgptbtn').prop('disabled', false);
 
 });

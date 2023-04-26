@@ -19,7 +19,7 @@
                   
                 </div>
             
-                <button type="submit" class="btn btn-primary float-right">Send</button>
+                <button type="submit" class="btn btn-primary float-right" id="chatgptbtn">Send</button>
 
             </form>
 
