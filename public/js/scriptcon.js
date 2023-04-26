@@ -48,11 +48,10 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
 
     let resultList = [...document.getElementById('resultgpt').children];
 
-    console.log(resultList);
+    if(resultList.length > 0){
 
-    if(resultList > 0){
-
-        console.log(resultList);
+        //Remove old search
+        resultList[0].remove();
 
     }
 
@@ -68,7 +67,7 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
         let text = '<p>' + content.trim() + '</p>';
 
         //console.log(text);
-
+        //Add search in the Front
         $(text).appendTo($('#resultgpt'));
     
 
