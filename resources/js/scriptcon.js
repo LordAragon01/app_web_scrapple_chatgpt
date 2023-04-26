@@ -51,6 +51,13 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
     $('#chatgptbtn').prop('disabled', true);
     //btnchatgpt.setAttribute('disabled', true);
 
+    //Add Loader
+    if(!document.querySelector('.loading').classList.contains('activedload')){
+
+        document.querySelector('.loading').classList.add('activedload')
+
+    }
+
     //Remove old searchs structures
     let resultList = [...document.getElementById('resultgpt').children];
 
@@ -80,6 +87,13 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
 
             //Add search in the Front
             $(text).appendTo($('#resultgpt'));
+
+            //Remove Loader
+            if(document.querySelector('.loading').classList.contains('activedload')){
+
+                document.querySelector('.loading').classList.remove('activedload')
+
+            }
 
             //Enabled Button
             $('#chatgptbtn').prop('disabled', false);

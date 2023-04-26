@@ -11,6 +11,12 @@
 </head>
 <body>
 
+    <div class="w-100 loading">
+
+        <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+
+    </div>
+
     <header>
         <nav class="d-flex flex-row justify-content-end w-100 mt-3">
 
