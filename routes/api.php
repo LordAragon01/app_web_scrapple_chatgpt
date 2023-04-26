@@ -26,4 +26,5 @@ Route::post('/searchapi', [ApiFoxController::class, 'getRequestUrl'])->name('get
 //Route::post('/searchapiget?indicateurl=""', [ApiFoxController::class, 'getRequestUrl']);
 
 /*=== OpenApi ChatGpt ===*/
-Route::get('/openapicon', [ChatGptController::class, 'openApiCon'])->name('openapicon');
+//Route::get('/openapicon', [ChatGptController::class, 'openApiCon'])->name('openapicon');
+Route::post('/openapicon', [ChatGptController::class, 'openApiCon'])->name('openapicon');

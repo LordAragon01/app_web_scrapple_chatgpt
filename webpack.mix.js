@@ -26,3 +26,7 @@ mix.minify('public/css/style.css');
 mix.scripts([
     'resources/js/script.js'
 ], 'public/js/script.js').minify('public/js/script.js');
+
+mix.scripts([
+    'resources/js/scriptcon.js'
+], 'public/js/scriptcon.js').minify('public/js/scriptcon.js');

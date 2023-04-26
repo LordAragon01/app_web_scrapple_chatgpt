@@ -38,7 +38,3 @@
     </header>
 
     <h1 class="w-100 text-center my-3">MVP Projects</h1>
- 
-{{-- Content --}}
-
-<div class="container">

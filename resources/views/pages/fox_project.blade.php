@@ -46,3 +46,8 @@
       </div>
 
 @endsection
+
+{{-- Add Scripts for Page --}}
+@section('scripts')
+<script src="{{ url(mix('js/script.min.js')) }}"></script>
+@endsection

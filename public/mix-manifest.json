@@ -2,5 +2,7 @@
     "/css/style.css": "/css/style.css",
     "/css/style.min.css": "/css/style.min.css",
     "/js/script.js": "/js/script.js",
-    "/js/script.min.js": "/js/script.min.js"
+    "/js/script.min.js": "/js/script.min.js",
+    "/js/scriptcon.js": "/js/scriptcon.js",
+    "/js/scriptcon.min.js": "/js/scriptcon.min.js"
 }
