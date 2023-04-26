@@ -46,6 +46,16 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
 
     e.preventDefault();
 
+    let resultList = [...document.getElementById('resultgpt').children];
+
+    console.log(resultList);
+
+    if(resultList > 0){
+
+        console.log(resultList);
+
+    }
+
     let prompt = document.getElementById('promptsearch').value;
 
     let contentResponse = getDataOpenApi(prompt.trim());
@@ -55,8 +65,11 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
     contentResponse.then((data) => {
 
         let content = data.content;
+        let text = '<p>' + content.trim() + '</p>';
 
-        console.log(content.trim());
+        //console.log(text);
+
+        $(text).appendTo($('#resultgpt'));
     
 
     }).catch((error) => {

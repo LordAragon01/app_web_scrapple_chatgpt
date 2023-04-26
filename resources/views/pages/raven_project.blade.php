@@ -6,9 +6,9 @@
 
         <div class="d-flex flex-column w-100">
 
-            <h1>ChatGpt Search</h1>
+            <h1 class="order-1">ChatGpt Search</h1>
 
-            <form class="searchchatgpt_form w-100 order-1 my-3" method="post">
+            <form class="searchchatgpt_form w-100 order-2 my-3" method="post">
   
                 @csrf
 
@@ -23,9 +23,10 @@
 
             </form>
 
+            <div class="result order-3" id="resultgpt"></div>
+
         </div>
         
-
     </div>
 
 @endsection
