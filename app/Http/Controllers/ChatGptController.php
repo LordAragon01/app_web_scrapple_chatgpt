@@ -7,6 +7,11 @@ use Exception;
 use Illuminate\Http\Request;
 use stdClass;
 
+/**
+ * Structure for get data from OpenApi
+ * @author Joene Galdeano
+ * @version 1.0.0
+ */
 class ChatGptController extends Controller
 {
 
@@ -14,8 +19,7 @@ class ChatGptController extends Controller
     //private $openapi = 'http';
     private $model = "text-davinci-003";
     //private $model = "text-davi";
-    private $tolken = "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";
-    //private $tolken = "sk-";
+    //private $tolken = "";
     
 
     public function index()
@@ -29,7 +33,7 @@ class ChatGptController extends Controller
 
     }
 
-        /**
+    /**
      * Check if the URL is validate
      *
      * @param string $urlapi
@@ -63,6 +67,12 @@ class ChatGptController extends Controller
 
     }
 
+    /**
+     * Get data from OpenApi
+     *
+     * @param Request $request
+     * @return object
+     */
     protected function openApiCon(Request $request):object
     {
 
@@ -100,7 +110,7 @@ class ChatGptController extends Controller
                         "presence_penalty": 0.0
                     }',
                     CURLOPT_HTTPHEADER => array(
-                        'Authorization: Bearer ' . $this->tolken,
+                        'Authorization: Bearer ' . config('app.openapi_key'),
                         'Content-Type: application/json'
                     ),
                 ));

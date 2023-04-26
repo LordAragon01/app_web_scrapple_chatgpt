@@ -127,6 +127,10 @@ return [
 
     'flickr_key' => env('FLICKR_API_KEY'),
 
+    /*===OpenApi===*/
+
+    'openapi_key' => env('OPEN_API_KEY'),
+
     /*
     |--------------------------------------------------------------------------
     | Autoloaded Service Providers
