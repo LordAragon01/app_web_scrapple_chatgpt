@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ApiFoxController;
+use App\Http\Controllers\ChatGptController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -19,6 +20,10 @@ use Illuminate\Support\Facades\Route;
     return $request->user();
 }); */
 
+/*=== WebCrawler Search ===*/
 //Route::get('/searchapi', [ApiFoxController::class, 'requestUrlContent'])->name('searchapi');
 Route::post('/searchapi', [ApiFoxController::class, 'getRequestUrl'])->name('getsearchapi');
 //Route::post('/searchapiget?indicateurl=""', [ApiFoxController::class, 'getRequestUrl']);
+
+/*=== OpenApi ChatGpt ===*/
+Route::get('/openapicon', [ChatGptController::class, 'openApiCon'])->name('openapicon');

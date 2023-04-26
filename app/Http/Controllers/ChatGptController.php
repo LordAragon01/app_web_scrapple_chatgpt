@@ -2,11 +2,20 @@
 
 namespace App\Http\Controllers;
 
+use CurlHandle;
+use Exception;
 use Illuminate\Http\Request;
 
 class ChatGptController extends Controller
 {
+
+    private $openapi = 'https://api.openai.com/v1/completions';
+    //private $openapi = 'http';
+    private $model = "text-davinci-003";
+    private $tolken = "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";
+    //private $tolken = "sk-";
     
+
     public function index()
     {
 
@@ -15,6 +24,124 @@ class ChatGptController extends Controller
         return view('pages.raven_project', compact(
             'title'
         ));
+
+    }
+
+        /**
+     * Check if the URL is validate
+     *
+     * @param string $urlapi
+     * @return boolean
+     */
+    private function checkUrl(string $urlapi):bool
+    {
+
+        if(filter_var($urlapi, FILTER_VALIDATE_URL)){
+
+            return true;
+
+        }else{
+
+            return false;
+
+        }
+
+    }
+
+    /**
+     * Verify if the url contain https
+     *
+     * @param string $urlapi
+     * @return boolean
+     */
+    private function httpsVerify(string $urlapi):bool
+    {
+
+        return parse_url($urlapi, PHP_URL_SCHEME) === 'https' ? true : false;
+
+    }
+
+    protected function openApiCon()
+    {
+
+        $content = "Url Não Adequada";
+
+        //Check if the apiUrl is security
+        if($this->checkUrl($this->openapi) && $this->httpsVerify($this->openapi)){
+
+            $curl = curl_init();
+
+                curl_setopt_array($curl,
+                array(
+                    CURLOPT_URL => $this->openapi,
+                    CURLOPT_RETURNTRANSFER => true,
+                    CURLOPT_ENCODING => '',
+                    CURLOPT_MAXREDIRS => 10,
+                    CURLOPT_TIMEOUT => 0,
+                    CURLOPT_FOLLOWLOCATION => true,
+                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                    CURLOPT_CUSTOMREQUEST => 'POST',
+                    CURLOPT_POSTFIELDS =>'{
+                        "model": "'. $this->model .'",
+                        "prompt": "História da Cidade de Lisboa",
+                        "temperature": 0.7,
+                        "max_tokens": 2048,
+                        "top_p": 1.0,
+                        "frequency_penalty": 0.0,
+                        "presence_penalty": 0.0
+                    }',
+                    CURLOPT_HTTPHEADER => array(
+                        'Authorization: Bearer ' . $this->tolken,
+                        'Content-Type: application/json'
+                    ),
+                ));
+
+                //Get Content
+                $response = curl_exec($curl);
+
+                //Get Header Content
+                $header  = curl_getinfo($curl);
+
+                //Get Error
+                $err = curl_errno($curl);
+
+                //Get Error Message
+                $errmsg  = curl_error($curl) ;
+
+                //Curl Structure
+                $header['errno']   = $err;
+
+                $header['errmsg']  = $errmsg;
+
+                //Get Header Response
+                $header['content'] = $response;
+
+                //Decode Content from OpenApi
+                $contentDecode = json_decode($response);
+
+                //Get Error Message ou send Content
+                $content = $header['http_code'] === 200 ? $contentDecode->choices : $contentDecode->error->message ; 
+               
+            curl_close($curl);
+
+            dd($content);
+
+        }else{
+
+            //Verify if the Debug is true
+            if(env('APP_DEBUG')){
+
+                return $content;
+
+            }else{
+
+                //Finished Exxecution
+                die;
+
+            }
+
+        }
+
 
     }
 
