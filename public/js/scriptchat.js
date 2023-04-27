@@ -1,8 +1,8 @@
 let href = window.location.href;
 let host = window.location.hostname;
 let protocol = window.location.protocol;
-let url_local = protocol + '//' + host + ':8080/api/openapicon';
-let url_stage = "http://192.168.20.112/projects_mvp/public/api/openapicon";
+let url_local = protocol + '//' + host + ':8080/api/openapiconchat';
+let url_stage = "http://192.168.20.112/projects_mvp/public/api/openapiconchat";
 let default_url;
 
 //Get Base Search Url
@@ -26,7 +26,7 @@ async function getDataOpenApi(prompt) {
           'Content-Type': "application/json",
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        body: JSON.stringify({indicateprompt: prompt}),
+        body: JSON.stringify({chatindicateprompt: prompt}),
       });
 
       const data = await response.json();
@@ -44,7 +44,7 @@ async function getDataOpenApi(prompt) {
 }
 
 //Get Data and send Result for Front
-document.querySelector('.searchchatgpt_form').addEventListener('submit', function(e){
+document.querySelector('.chatgptform').addEventListener('submit', function(e){
 
     e.preventDefault();
 
@@ -65,12 +65,12 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
     //Remove old searchs structures
     let resultList = [...document.getElementById('resultgptchat').children];
 
-    if(resultList.length > 0){
+    /* if(resultList.length > 0){
 
         //Remove old search
         resultList[0].remove();
 
-    }
+    } */
 
     //Get Value from input
     let prompt = document.getElementById('chatpromptsearch').value;
@@ -86,8 +86,13 @@ document.querySelector('.searchchatgpt_form').addEventListener('submit', functio
         //Structure a Promise and get Object Data
         contentResponse.then((data) => {
 
+            let role = data.role;
             let content = data.content;
-            let text = '<p>' + content.trim() + '<span class="cursor blink">&nbsp;</span></p>';
+
+            let text = '<p><strong>USER</strong></p>';
+                text += '<p>'+  prompt +'</p>';    
+                text += '<p><strong>'+ role.trim().toUpperCase()  +'</strong></p>';
+                text += '<p>' + content.trim() + '<span class="cursor blink">&nbsp;</span></p>';
             //let text = content.trim();
             //let textArray = text.split(" ");
 

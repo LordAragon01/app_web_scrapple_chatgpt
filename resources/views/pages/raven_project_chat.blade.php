@@ -8,7 +8,11 @@
 
             <h1 class="order-1">ChatGpt Conversation</h1>
 
-            <form class="searchchatgpt_form w-100 order-2 my-3" method="post">
+            <div class="result order-2 my-3" id="resultgptchat">
+                {{--  <p class="typedtext"><span class="cursor blink"></span></p> --}}
+            </div>
+
+            <form class="searchchatgpt_form chatgptform w-100 order-3 my-3" method="post">
 
                 @csrf
 
@@ -22,10 +26,6 @@
                 <button type="submit" class="btn btn-primary float-right" id="chatgptbtnconv">Send</button>
 
             </form>
-
-            <div class="result order-3" id="resultgptchat">
-            {{--  <p class="typedtext"><span class="cursor blink"></span></p> --}}
-            </div>
 
         </div>
         

@@ -74,6 +74,11 @@
   display: flex !important;
 }
 
+/*====Body===*/
+body {
+  overflow-x: hidden;
+}
+
 /*==Typewriter Effect==*/
 .cursor {
   display: inline-block;

@@ -100,7 +100,7 @@ class ChatGptController extends Controller
      * @param string $prompt
      * @return array|string
      */
-    protected function curlStructure(string $postfields):array|string
+    protected function curlStructure(string $apiurl, string $postfields):array|string
     {
 
         //Curl Structure
@@ -108,7 +108,7 @@ class ChatGptController extends Controller
 
             curl_setopt_array($curl,
             array(
-                CURLOPT_URL => $this->openapi,
+                CURLOPT_URL => $apiurl,
                 CURLOPT_RETURNTRANSFER => true,
                 CURLOPT_ENCODING => '',
                 CURLOPT_SSL_VERIFYHOST => 2, 
@@ -204,7 +204,7 @@ class ChatGptController extends Controller
         if($this->checkUrl($this->openapi) && $this->httpsVerify($this->openapi)){
 
             //Get content from Curl Connect
-            $content = $this->curlStructure($this->postFiledsStructure($request->indicateprompt));
+            $content = $this->curlStructure($this->openapi, $this->postFiledsStructure($request->indicateprompt));
 
             //Get Content from API
             if(!is_string($content)){
