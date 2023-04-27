@@ -19,7 +19,7 @@
                 <div class="form-group">
 
                 <label for="chatpromptsearch">Inform your prompt </label>
-                <input type="text" name="chatindicateprompt" class="form-control" id="chatpromptsearch" aria-describedby="ChatGpt Conversation" value="{{ old('chatindicateprompt') }}">
+                <input type="text" name="chatindicateprompt" class="form-control" id="chatpromptsearch" aria-describedby="ChatGpt Conversation" value="">
                 
                 </div>
             

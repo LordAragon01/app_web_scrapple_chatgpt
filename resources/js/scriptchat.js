@@ -92,7 +92,7 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
             let text = '<p><strong>USER</strong></p>';
                 text += '<p>'+  prompt +'</p>';    
                 text += '<p><strong>'+ role.trim().toUpperCase()  +'</strong></p>';
-                text += '<p>' + content.trim() + '<span class="cursor blink">&nbsp;</span></p>';
+                text += '<p>' + content.trim() + '</p>';
             //let text = content.trim();
             //let textArray = text.split(" ");
 
@@ -125,6 +125,9 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
 
             //Enabled Button
             $('#chatgptbtnconv').prop('disabled', false);
+
+            //Clean Input
+            prompt = "";
         
 
         }).catch((error) => {
