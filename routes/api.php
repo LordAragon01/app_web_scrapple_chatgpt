@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiFoxController;
 use App\Http\Controllers\ChatGptController;
+use App\Http\Controllers\ChatGptConversationController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -28,3 +29,4 @@ Route::post('/searchapi', [ApiFoxController::class, 'getRequestUrl'])->name('get
 /*=== OpenApi ChatGpt ===*/
 //Route::get('/openapicon', [ChatGptController::class, 'openApiCon'])->name('openapicon');
 Route::post('/openapicon', [ChatGptController::class, 'openApiCon'])->name('openapicon');
+Route::get('/openapiconchat', [ChatGptConversationController::class, 'openApiChat'])->name('openapiconchat');

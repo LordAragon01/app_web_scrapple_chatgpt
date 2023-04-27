@@ -10,7 +10,7 @@ class ChatGptConversationController extends ChatGptController
 
     private $openapi = 'https://api.openai.com/v1/completions';
     private $model = "text-davinci-003";
-    private $prompt = "";
+    private $prompt = "What is human life expectancy in the United States?";
 
     public function index()
     {
