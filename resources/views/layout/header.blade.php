@@ -35,7 +35,11 @@
                 </li>
 
                 <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
-                    <a href="{{ route('chatgpt') }}" class="my-3 linkweb" target="_self">ChatGpt</a>
+                    <a href="{{ route('chatgpt') }}" class="my-3 linkweb" target="_self">Q&AGpt</a>
+                </li>
+
+                <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
+                    <a href="{{ route('chatgptconversation') }}" class="my-3 linkweb" target="_self">ChatGpt</a>
                 </li>
     
             </ul>

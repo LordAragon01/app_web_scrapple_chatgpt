@@ -25,7 +25,7 @@ class ChatGptController extends Controller
     public function index()
     {
 
-        $title = "ChatGpt Custom";
+        $title = "ChatGpt Answer";
 
         return view('pages.raven_project', compact(
             'title'
@@ -39,7 +39,7 @@ class ChatGptController extends Controller
      * @param string $urlapi
      * @return boolean
      */
-    private function checkUrl(string $urlapi):bool
+    protected function checkUrl(string $urlapi):bool
     {
 
         if(filter_var($urlapi, FILTER_VALIDATE_URL)){
@@ -60,10 +60,130 @@ class ChatGptController extends Controller
      * @param string $urlapi
      * @return boolean
      */
-    private function httpsVerify(string $urlapi):bool
+    protected function httpsVerify(string $urlapi):bool
     {
 
         return parse_url($urlapi, PHP_URL_SCHEME) === 'https' ? true : false;
+
+    }
+
+    /**
+     * Inform the Post Field for CURLOPT_POSTFIELDS
+     *
+     * @param string $prompt
+     * @return string
+     */
+    private function postFiledsStructure(string $prompt):string
+    {
+        //More PostFileds for Api
+       /*  "n": 1,
+        "stream": false,
+        "logprobs": null,
+        "stop": "\n" */
+
+        return '{
+            "model": "'. $this->model .'",
+            "prompt": "'. strval(trim(filter_var(strip_tags($prompt), FILTER_DEFAULT))) .'",
+            "temperature": 0.7,
+            "max_tokens": 2048,
+            "top_p": 1.0,
+            "frequency_penalty": 0.0,
+            "presence_penalty": 0.0
+        }';
+
+
+    }
+
+    /**
+     * Curl Structure to get Content from API
+     *
+     * @param string $prompt
+     * @return array|string
+     */
+    protected function curlStructure(string $prompt):array|string
+    {
+
+        //Curl Structure
+        $curl = curl_init();
+
+            curl_setopt_array($curl,
+            array(
+                CURLOPT_URL => $this->openapi,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_SSL_VERIFYHOST => 2, 
+                CURLOPT_SSL_VERIFYPEER => true,
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'POST',
+                CURLOPT_POSTFIELDS => $this->postFiledsStructure($prompt),
+                CURLOPT_HTTPHEADER => array(
+                    'Authorization: Bearer ' . config('app.openapi_key'),
+                    'Content-Type: application/json'
+                ),
+            ));
+
+            //Get Content
+            $response = curl_exec($curl);
+
+            //Get Header Content
+            $header  = curl_getinfo($curl);
+
+            //Get Error
+            $err = curl_errno($curl);
+
+            //Get Error Message
+            $errmsg  = curl_error($curl) ;
+
+            //Curl Structure
+            $header['errno']   = $err;
+
+            $header['errmsg']  = $errmsg;
+
+            //Get Header Response
+            $header['content'] = $response;
+
+            //Decode Content from OpenApi
+            $contentDecode = json_decode($response);
+
+            //Get Error Message ou send Content
+            $content = $header['http_code'] === 200 ? $contentDecode->choices : $contentDecode->error->message ; 
+        
+        curl_close($curl);
+
+        return $content;   
+
+    }
+
+    /**
+     * Helper to filter Content from API
+     *
+     * @param array $content
+     * @param object $chatGptContent
+     * @return object
+     */
+    private function transformContentFromApi(array $content, object $chatGptContent):object
+    {
+
+        //Get All Data From OpenApi
+        foreach($content as $value){
+
+            /* $text = mb_convert_encoding($value->text, 'UTF-8');
+            $text2 = htmlentities($value->text);
+            $text3 = htmlspecialchars($value->text); */
+
+            $text4 = html_entity_decode($value->text);
+
+            $chatGptContent->content = $text4;
+            //dd($text);
+            //dd($text2);
+
+        }
+
+        //Return an object
+        return $chatGptContent;
 
     }
 
@@ -76,93 +196,19 @@ class ChatGptController extends Controller
     protected function openApiCon(Request $request):object
     {
 
-        //More PostFileds for Api
-       /*  "n": 1,
-        "stream": false,
-        "logprobs": null,
-        "stop": "\n" */
-
         //Create a Object to send for FrontEnd
         $chatGptContent = new stdClass();
 
         //Check if the apiUrl is security
         if($this->checkUrl($this->openapi) && $this->httpsVerify($this->openapi)){
 
-            $curl = curl_init();
+            //Get content from Curl Connect
+            $content = $this->curlStructure($request->indicateprompt);
 
-                curl_setopt_array($curl,
-                array(
-                    CURLOPT_URL => $this->openapi,
-                    CURLOPT_RETURNTRANSFER => true,
-                    CURLOPT_ENCODING => '',
-                    CURLOPT_MAXREDIRS => 10,
-                    CURLOPT_TIMEOUT => 0,
-                    CURLOPT_FOLLOWLOCATION => true,
-                    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
-                    CURLOPT_CUSTOMREQUEST => 'POST',
-                    CURLOPT_POSTFIELDS =>'{
-                        "model": "'. $this->model .'",
-                        "prompt": "'. strval(trim(filter_var(strip_tags($request->indicateprompt), FILTER_DEFAULT))) .'",
-                        "temperature": 0.7,
-                        "max_tokens": 2048,
-                        "top_p": 1.0,
-                        "frequency_penalty": 0.0,
-                        "presence_penalty": 0.0
-                    }',
-                    CURLOPT_HTTPHEADER => array(
-                        'Authorization: Bearer ' . config('app.openapi_key'),
-                        'Content-Type: application/json'
-                    ),
-                ));
-
-                //Get Content
-                $response = curl_exec($curl);
-
-                //Get Header Content
-                $header  = curl_getinfo($curl);
-
-                //Get Error
-                $err = curl_errno($curl);
-
-                //Get Error Message
-                $errmsg  = curl_error($curl) ;
-
-                //Curl Structure
-                $header['errno']   = $err;
-
-                $header['errmsg']  = $errmsg;
-
-                //Get Header Response
-                $header['content'] = $response;
-
-                //Decode Content from OpenApi
-                $contentDecode = json_decode($response);
-
-                //Get Error Message ou send Content
-                $content = $header['http_code'] === 200 ? $contentDecode->choices : $contentDecode->error->message ; 
-               
-            curl_close($curl);
-
-            //Helper Create
+            //Get Content from API
             if(!is_string($content)){
 
-                //Get All Data From OpenApi
-                foreach($content as $value){
-
-                  /*   $text = mb_convert_encoding($value->text, 'UTF-8');
-                    $text2 = htmlentities($value->text);
-                    $text3 = htmlspecialchars($value->text); */
-
-                    $text4 = html_entity_decode($value->text);
-
-                    $chatGptContent->content = $text4;
-                    //dd($text);
-                    //dd($text2);
-
-                }
-
-                //Return an object
-                return $chatGptContent;
+                return $this->transformContentFromApi($content, $chatGptContent);
 
             }
 

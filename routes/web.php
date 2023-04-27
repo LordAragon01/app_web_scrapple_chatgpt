@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ApiFoxController;
 use App\Http\Controllers\ChatGptController;
+use App\Http\Controllers\ChatGptConversationController;
 use App\Http\Controllers\FoxController;
 use App\Http\Controllers\GalleryController;
 use App\Http\Controllers\WebCrawlerController;
@@ -30,3 +31,4 @@ Route::get('/search', [FoxController::class, 'index'])->name('fox_search');
 
 /*===ChatGpt===*/
 Route::get('/chatgptcustom', [ChatGptController::class, 'index'])->name('chatgpt');
+Route::get('/chatgptconversation', [ChatGptConversationController::class, 'index'])->name('chatgptconversation');
