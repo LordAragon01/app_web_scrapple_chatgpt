@@ -1,7 +1,8 @@
 let href = window.location.href;
 let host = window.location.hostname;
 let protocol = window.location.protocol;
-let url_local = protocol + '//' + host + ':8080/api/openapiconchat';
+let url_local = protocol + '//' + host + '/api/openapiconchat';
+//let url_local = protocol + '//' + host + ':8080/api/openapiconchat';
 let url_stage = "http://192.168.20.112/projects_mvp/public/api/openapiconchat";
 let default_url;
 
@@ -87,33 +88,45 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
         contentResponse.then((data) => {
 
             //Create List of Responses
-            data.forEach(value => {
+            if(Array.isArray(data)){
 
-                console.log(value);
+                data.forEach(value => {
 
-                let role = value.role;
-                let content = value.content;
+                  console.log(value);
+
+                  let role = value.role;
+                  let content = value.content;
+      
+                  if(role == 'user'){
+
+                      let text = '<p><strong>'+ role.trim().toUpperCase() +'</strong></p>';
+                      text += '<p>' + content.trim() + '</p>';
+          
+                      //Add search in the Front
+                      $(text).appendTo($('#resultgptchat'));
+
+                  }else{
+
+                      let text = '<p><strong>'+ role.trim().toUpperCase() +'</strong></p>';
+                      text += '<p>' + content.trim() + '</p>';
+          
+                      //Add search in the Front
+                      $(text).appendTo($('#resultgptchat'));
+
+                  }
+
+                  
+              });
+
+            }else{
+
+                let text = '<p><strong>'+ data.content.trim() +'</strong></p>';
     
-                if(role == 'user'){
+                //Add search in the Front
+                $(text).appendTo($('#resultgptchat'));
 
-                    let text = '<p><strong>'+ role.trim().toUpperCase() +'</strong></p>';
-                    text += '<p>' + content.trim() + '</p>';
+            }
          
-                    //Add search in the Front
-                    $(text).appendTo($('#resultgptchat'));
-
-                }else{
-
-                    let text = '<p><strong>'+ role.trim().toUpperCase() +'</strong></p>';
-                    text += '<p>' + content.trim() + '</p>';
-         
-                    //Add search in the Front
-                    $(text).appendTo($('#resultgptchat'));
-
-                }
-
-                
-            });
 
 
             //Remove Loader

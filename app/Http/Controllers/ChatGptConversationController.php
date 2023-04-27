@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\ChatMessages;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use stdClass;
 
 class ChatGptConversationController extends ChatGptController
@@ -12,7 +14,7 @@ class ChatGptConversationController extends ChatGptController
     //private $openapi = 'https://api.openai.com/v1/engines/davinci-codex/completions';
     private $model = "gpt-3.5-turbo";
     //private $model = "text-davinci-003";
-    //private $prompt = "Assist me with a list of wonderfull words";
+    //private $prompt = "Hello !";
     private $responseList = [];
 
     public function index()
@@ -26,41 +28,6 @@ class ChatGptConversationController extends ChatGptController
 
     }
 
-    /**
-     * Inform the Post Field for CURLOPT_POSTFIELDS
-     *
-     * @param string $prompt
-     * @return string
-     */
-    private function postFiledsStructure($prompt)
-    {
-        //More PostFileds for Api
-       /*  "n": 1,
-        "stream": false,
-        "logprobs": null,
-        "max_tokens": 150,
-        "stop": "\n",
-        "stop": [" Human:", " AI:"] 
-        "messages": [{"role": "user", "name": "user123456", "content": "'. strval(trim(filter_var(strip_tags($prompt), FILTER_DEFAULT))) .'"}],
-        */
-
-        $postFileds = [
-            'model' => $this->model,
-            'messages' => $prompt,
-            'temperature' => 0.9,
-            'max_tokens' => 150,
-            'top_p' => 1.0,
-            'frequency_penalty' => 0.0,
-            'presence_penalty' => 0.6,
-            'user' => "user123456"
-        ];
-
-        //dd($postFileds);
-
-        return json_encode($postFileds);
-
-
-    }
 
     /**
      * Helper to filter Content from API
@@ -85,8 +52,9 @@ class ChatGptConversationController extends ChatGptController
             $role = html_entity_decode($value->message->role);
             $text4 = html_entity_decode($value->message->content);
 
-            $chatGptContent->content = $text4;
             $chatGptContent->role = $role;
+            $chatGptContent->content = $text4;
+            
             //$chatGptContent->role = $name;
             //dd($text);
             //dd($text2);
@@ -122,45 +90,26 @@ class ChatGptConversationController extends ChatGptController
 
             //Get content from Curl Connect
             //$content = $this->curlStructure($this->openapi, $this->postFiledsStructure($request->chatindicateprompt));
-            $content = $this->curlStructure($this->openapi, $this->postFiledsStructure($this->responseList));
-
+            $content = $this->curlStructure($this->openapi, $this->postFiledsStructure());
 
             //Get Content from API
             if(!is_string($content)){
 
+                $getresponse = $this->transformContentFromApi($content, $chatGptContent);
+
                 //Conditional Loop for response
-                if(count($this->responseList) <= 1){
+                $chatDb = new ChatMessages();
+                    $chatDb->role_user = 'user';
+                    $chatDb->message_user = $request->chatindicateprompt;
+                    $chatDb->role_ai = $getresponse->role;
+                    $chatDb->message_ai = $getresponse->content;
+                $chatDb->save();
 
-                    $getresponse = $this->transformContentFromApi($content, $chatGptContent);
+                array_push($this->responseList, $getresponse);
 
-                    array_push($this->responseList, $getresponse);
+                //dd($this->postFiledsStructure());
 
-                    return $this->responseList;
-
-               /*      if(count($this->responseList) > 1){
-
-                        $contentsequence = $this->curlStructure($this->openapi, $this->postFiledsStructure($this->responseList));
-
-                        $getresponsesequence = $this->transformContentFromApi($contentsequence, $chatGptContent);
-
-                        array_push($this->responseList, $getresponse);
-
-                        return $this->responseList;
-
-                    } */
-    
-
-                }else{
-
-                    $content = $this->curlStructure($this->openapi, $this->postFiledsStructure($this->responseList));
-
-                    $getresponse = $this->transformContentFromApi($content, $chatGptContent);
-
-                    array_push($this->responseList, $getresponse);
-    
-                    return $getresponse;
-
-                }
+                return $this->responseList;
 
             }
 
@@ -190,6 +139,85 @@ class ChatGptConversationController extends ChatGptController
 
         }
 
+
+    }
+
+     /**
+     * Inform the Post Field for CURLOPT_POSTFIELDS
+     *
+     * @param string $prompt
+     * @return string
+     */
+    private function postFiledsStructure()
+    {
+        //More PostFileds for Api
+       /*  "n": 1,
+        "stream": false,
+        "logprobs": null,
+        "max_tokens": 150,
+        "stop": "\n",
+        "stop": [" Human:", " AI:"] 
+        "messages": [{"role": "user", "name": "user123456", "content": "'. strval(trim(filter_var(strip_tags($prompt), FILTER_DEFAULT))) .'"}],
+        */
+
+        //List Messages Save in the DB
+        $messages = $this->getAllMessage();
+
+        //dd($messages);
+
+        $postFileds = [
+            'model' => $this->model,
+            'messages' => $messages,
+            'temperature' => 0.9,
+            'max_tokens' => 2048,
+            'top_p' => 1.0,
+            'frequency_penalty' => 0.0,
+            'presence_penalty' => 0.6,
+            'user' => "user123456"
+        ];
+
+        //dd($postFileds);
+
+        return json_encode($postFileds);
+
+
+    }
+
+    protected function getAllMessage()
+    {
+
+        //Get Total Rows - Check if the table is empty
+       $db = new DB();
+       $query = "SELECT COUNT(id) AS 'totalrows' FROM `chatmessages`";
+       $totalRows = $db::select($query);
+
+       if($totalRows[0]->totalrows > 0){
+
+            $result = $db::select("SELECT * FROM `chatmessages`");
+
+            $messagesList = [];
+
+            foreach($result as $value){
+
+                $messagesInfra = new stdClass();
+                $messagesInfra->role = $value->role_user;
+                $messagesInfra->content = $value->message_user;
+
+                array_push($messagesList, $messagesInfra);
+
+                $messagesInfraAi = new stdClass();
+                $messagesInfraAi->role = $value->role_ai;
+                $messagesInfraAi->content = $value->message_ai;
+
+                array_push($messagesList, $messagesInfraAi);
+
+            }
+
+            return $messagesList;
+          
+       }
+
+       return $this->responseList;
 
     }
 
