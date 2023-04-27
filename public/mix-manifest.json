@@ -4,5 +4,7 @@
     "/js/script.js": "/js/script.js",
     "/js/script.min.js": "/js/script.min.js",
     "/js/scriptcon.js": "/js/scriptcon.js",
-    "/js/scriptcon.min.js": "/js/scriptcon.min.js"
+    "/js/scriptcon.min.js": "/js/scriptcon.min.js",
+    "/js/scriptchat.js": "/js/scriptchat.js",
+    "/js/scriptchat.min.js": "/js/scriptchat.min.js"
 }

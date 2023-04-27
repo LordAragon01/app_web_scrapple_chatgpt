@@ -30,3 +30,7 @@ mix.scripts([
 mix.scripts([
     'resources/js/scriptcon.js'
 ], 'public/js/scriptcon.js').minify('public/js/scriptcon.js');
+
+mix.scripts([
+    'resources/js/scriptchat.js'
+], 'public/js/scriptchat.js').minify('public/js/scriptchat.js');

@@ -32,3 +32,8 @@
     </div>
 
 @endsection
+
+{{-- Add Scripts for Page --}}
+@section('scripts')
+<script src="{{ url(mix('js/scriptchat.min.js')) }}"></script>
+@endsection
