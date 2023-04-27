@@ -127,7 +127,7 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
             $('#chatgptbtnconv').prop('disabled', false);
 
             //Clean Input
-            prompt = "";
+            document.getElementById('chatpromptsearch').value = '';
         
 
         }).catch((error) => {

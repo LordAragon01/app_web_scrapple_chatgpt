@@ -35,13 +35,14 @@ class ChatGptConversationController extends ChatGptController
        /*  "n": 1,
         "stream": false,
         "logprobs": null,
+        "max_tokens": 150,
         "stop": "\n" */
 
         return '{
             "model": "'. $this->model .'",
             "messages": [{"role": "user", "name": "user123456", "content": "'. strval(trim(filter_var(strip_tags($prompt), FILTER_DEFAULT))) .'"}],
             "temperature": 0.9,
-            "max_tokens": 150,
+            "max_tokens": 2048,
             "top_p": 1.0,
             "frequency_penalty": 0.0,
             "presence_penalty": 0.6,
