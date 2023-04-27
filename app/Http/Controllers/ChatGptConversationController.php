@@ -9,8 +9,11 @@ class ChatGptConversationController extends ChatGptController
 {
 
     private $openapi = 'https://api.openai.com/v1/chat/completions';
+    //private $openapi = 'https://api.openai.com/v1/engines/davinci-codex/completions';
     private $model = "gpt-3.5-turbo";
-    //private $prompt = "Hello !";
+    //private $model = "text-davinci-003";
+    //private $prompt = "Assist me with a list of wonderfull words";
+    private $responseList = [];
 
     public function index()
     {
@@ -29,26 +32,32 @@ class ChatGptConversationController extends ChatGptController
      * @param string $prompt
      * @return string
      */
-    private function postFiledsStructure(string $prompt):string
+    private function postFiledsStructure($prompt)
     {
         //More PostFileds for Api
        /*  "n": 1,
         "stream": false,
         "logprobs": null,
         "max_tokens": 150,
-        "stop": "\n" */
+        "stop": "\n",
+        "stop": [" Human:", " AI:"] 
+        "messages": [{"role": "user", "name": "user123456", "content": "'. strval(trim(filter_var(strip_tags($prompt), FILTER_DEFAULT))) .'"}],
+        */
 
-        return '{
-            "model": "'. $this->model .'",
-            "messages": [{"role": "user", "name": "user123456", "content": "'. strval(trim(filter_var(strip_tags($prompt), FILTER_DEFAULT))) .'"}],
-            "temperature": 0.9,
-            "max_tokens": 2048,
-            "top_p": 1.0,
-            "frequency_penalty": 0.0,
-            "presence_penalty": 0.6,
-            "user": "user123456",
-            "stop": [" Human:", " AI:"] 
-        }';
+        $postFileds = [
+            'model' => $this->model,
+            'messages' => $prompt,
+            'temperature' => 0.9,
+            'max_tokens' => 150,
+            'top_p' => 1.0,
+            'frequency_penalty' => 0.0,
+            'presence_penalty' => 0.6,
+            'user' => "user123456"
+        ];
+
+        //dd($postFileds);
+
+        return json_encode($postFileds);
 
 
     }
@@ -62,8 +71,6 @@ class ChatGptConversationController extends ChatGptController
      */
     private function transformContentFromApi(array $content, object $chatGptContent):object
     {
-
-        //dd($content);
 
         //Get All Data From OpenApi
         foreach($content as $value){
@@ -97,8 +104,15 @@ class ChatGptConversationController extends ChatGptController
      * @param Request $request
      * @return object
      */
-    protected function openApiChat(Request $request):object
+    protected function openApiChat(Request $request):object|array
     {
+
+        $lorem = new stdClass();
+        $lorem->role = 'user';
+        //$lorem->content = $this->prompt; //$request->chatindicateprompt
+        $lorem->content = $request->chatindicateprompt;
+
+        array_push($this->responseList, $lorem);
 
         //Create a Object to send for FrontEnd
         $chatGptContent = new stdClass();
@@ -107,12 +121,46 @@ class ChatGptConversationController extends ChatGptController
         if($this->checkUrl($this->openapi) && $this->httpsVerify($this->openapi)){
 
             //Get content from Curl Connect
-            $content = $this->curlStructure($this->openapi, $this->postFiledsStructure($request->chatindicateprompt));
+            //$content = $this->curlStructure($this->openapi, $this->postFiledsStructure($request->chatindicateprompt));
+            $content = $this->curlStructure($this->openapi, $this->postFiledsStructure($this->responseList));
+
 
             //Get Content from API
             if(!is_string($content)){
 
-                return $this->transformContentFromApi($content, $chatGptContent);
+                //Conditional Loop for response
+                if(count($this->responseList) <= 1){
+
+                    $getresponse = $this->transformContentFromApi($content, $chatGptContent);
+
+                    array_push($this->responseList, $getresponse);
+
+                    return $this->responseList;
+
+               /*      if(count($this->responseList) > 1){
+
+                        $contentsequence = $this->curlStructure($this->openapi, $this->postFiledsStructure($this->responseList));
+
+                        $getresponsesequence = $this->transformContentFromApi($contentsequence, $chatGptContent);
+
+                        array_push($this->responseList, $getresponse);
+
+                        return $this->responseList;
+
+                    } */
+    
+
+                }else{
+
+                    $content = $this->curlStructure($this->openapi, $this->postFiledsStructure($this->responseList));
+
+                    $getresponse = $this->transformContentFromApi($content, $chatGptContent);
+
+                    array_push($this->responseList, $getresponse);
+    
+                    return $getresponse;
+
+                }
 
             }
 

@@ -86,35 +86,35 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
         //Structure a Promise and get Object Data
         contentResponse.then((data) => {
 
-            let role = data.role;
-            let content = data.content;
-
-            let text = '<p><strong>USER</strong></p>';
-                text += '<p>'+  prompt +'</p>';    
-                text += '<p><strong>'+ role.trim().toUpperCase()  +'</strong></p>';
-                text += '<p>' + content.trim() + '</p>';
-            //let text = content.trim();
-            //let textArray = text.split(" ");
-
-            //Typewriter sequence
-            /* let typedText = resultList[0];
-            let cursor = document.querySelector(".cursor");
-            let textArrayIndex = 0;
-            let charIndex = 0; */
-
-            //console.log(typedText);
-
-            /* textArray.forEach((value) => {
+            //Create List of Responses
+            data.forEach(value => {
 
                 console.log(value);
-                $(typedText).text(value);
-                typedText.textContent += value;
-                cursor.classList.remove('blink');
 
-            }); */
-     
-            //Add search in the Front
-            $(text).appendTo($('#resultgptchat'));
+                let role = value.role;
+                let content = value.content;
+    
+                if(role == 'user'){
+
+                    let text = '<p><strong>'+ role.trim().toUpperCase() +'</strong></p>';
+                    text += '<p>' + content.trim() + '</p>';
+         
+                    //Add search in the Front
+                    $(text).appendTo($('#resultgptchat'));
+
+                }else{
+
+                    let text = '<p><strong>'+ role.trim().toUpperCase() +'</strong></p>';
+                    text += '<p>' + content.trim() + '</p>';
+         
+                    //Add search in the Front
+                    $(text).appendTo($('#resultgptchat'));
+
+                }
+
+                
+            });
+
 
             //Remove Loader
             if(document.querySelector('.loading').classList.contains('activedload')){
