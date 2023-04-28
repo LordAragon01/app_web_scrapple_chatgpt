@@ -8,6 +8,16 @@
     top: 50%;
 }
 
+.loadingform{
+
+  display: none;
+  flex-direction: row;
+  justify-content: center;
+  position: absolute;
+  left: 0;
+
+}
+
 .lds-ellipsis {
     display: inline-block;
     position: relative;

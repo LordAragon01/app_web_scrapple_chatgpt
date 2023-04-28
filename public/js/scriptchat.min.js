@@ -1,8 +1,8 @@
 let href = window.location.href;
 let host = window.location.hostname;
 let protocol = window.location.protocol;
-let url_local = protocol + '//' + host + '/api/openapiconchat';
-//let url_local = protocol + '//' + host + ':8080/api/openapiconchat';
+//let url_local = protocol + '//' + host + '/api/openapiconchat';
+let url_local = protocol + '//' + host + ':8080/api/openapiconchat';
 let url_stage = "http://192.168.20.112/projects_mvp/public/api/openapiconchat";
 let default_url;
 
@@ -44,6 +44,33 @@ async function getDataOpenApi(prompt) {
     }
 }
 
+
+//Modify Behavior of Loading Element
+/* window.addEventListener('scroll', function(e){
+
+  let loadingEl = document.getElementById('chatgptform');
+
+  e.target = loadingEl;
+
+  let getElDistanceFromTop = loadingEl.getBoundingClientRect();
+
+  //Add dynamic top for loading element
+  //let addDistanceFromTop = getElDistanceFromTop.top / 2;
+
+  //Real Distance
+  let addDistanceFromTop = getElDistanceFromTop.top > 850 ? Math.ceil(getElDistanceFromTop.top / 1.5) : Math.ceil(getElDistanceFromTop.top * 1.2);
+  
+  console.log(addDistanceFromTop);
+
+  //document.getElementById('loading').style.top= 'calc('+ getElDistanceFromTop.top +' / 2)';
+  $('#loading').css({
+    'top': addDistanceFromTop + 'px'
+  });
+
+  console.log(getElDistanceFromTop);
+
+}); */
+
 //Get Data and send Result for Front
 document.querySelector('.chatgptform').addEventListener('submit', function(e){
 
@@ -57,14 +84,14 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
     //btnchatgpt.setAttribute('disabled', true);
 
     //Add Loader
-    if(!document.querySelector('.loading').classList.contains('activedload')){
+    if(!document.querySelector('.loadingform').classList.contains('activedload')){
 
-        document.querySelector('.loading').classList.add('activedload')
+        document.querySelector('.loadingform').classList.add('activedload');
 
     }
 
     //Remove old searchs structures
-    let resultList = [...document.getElementById('resultgptchat').children];
+    //let resultList = [...document.getElementById('resultgptchat').children];
 
     /* if(resultList.length > 0){
 
@@ -130,9 +157,9 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
 
 
             //Remove Loader
-            if(document.querySelector('.loading').classList.contains('activedload')){
+            if(document.querySelector('.loadingform').classList.contains('activedload')){
 
-                document.querySelector('.loading').classList.remove('activedload')
+                document.querySelector('.loadingform').classList.remove('activedload')
 
             }
 

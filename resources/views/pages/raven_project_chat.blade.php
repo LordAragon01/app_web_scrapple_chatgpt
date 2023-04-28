@@ -12,14 +12,20 @@
                 {{--  <p class="typedtext"><span class="cursor blink"></span></p> --}}
             </div>
 
-            <form class="searchchatgpt_form chatgptform w-100 order-3 my-3" method="post">
+            <form class="searchchatgpt_form chatgptform w-100 order-3 my-3" id="chatgptform" method="post">
 
                 @csrf
 
+                <div class="w-100 loadingform mb-1" id="loadingform">
+
+                    <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
+            
+                </div>
+
                 <div class="form-group">
 
-                <label for="chatpromptsearch">Inform your prompt </label>
-                <input type="text" name="chatindicateprompt" class="form-control" id="chatpromptsearch" aria-describedby="ChatGpt Conversation" value="">
+                    <label for="chatpromptsearch">Inform your prompt </label>
+                    <input type="text" name="chatindicateprompt" class="form-control" id="chatpromptsearch" aria-describedby="ChatGpt Conversation" value="">
                 
                 </div>
             

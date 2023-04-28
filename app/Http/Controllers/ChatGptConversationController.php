@@ -161,19 +161,20 @@ class ChatGptConversationController extends ChatGptController
         */
 
         //List Messages Save in the DB
-        $messages = $this->getAllMessage();
+        //$messages = $this->getAllMessage();
 
         //dd($messages);
 
         $postFileds = [
             'model' => $this->model,
-            'messages' => $messages,
+            'messages' => $this->getAllMessage(),
             'temperature' => 0.9,
             'max_tokens' => 2048,
             'top_p' => 1.0,
             'frequency_penalty' => 0.0,
             'presence_penalty' => 0.6,
-            'user' => "user123456"
+            'user' => "user123456",
+            "stop" => [" user:", " assistant:"] 
         ];
 
         //dd($postFileds);
@@ -183,7 +184,12 @@ class ChatGptConversationController extends ChatGptController
 
     }
 
-    protected function getAllMessage()
+    /**
+     * Return a loop of messages for Conversation ChatGpt
+     *
+     * @return array
+     */
+    protected function getAllMessage():array
     {
 
         //Get Total Rows - Check if the table is empty

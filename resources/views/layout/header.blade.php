@@ -11,7 +11,7 @@
 </head>
 <body>
 
-    <div class="w-100 loading">
+    <div class="w-100 loading" id="loadingdefault">
 
         <div class="lds-ellipsis"><div></div><div></div><div></div><div></div></div>
 
