@@ -143,7 +143,7 @@ class ChatGptConversationController extends ChatGptController
 
     }
 
-     /**
+    /**
      * Inform the Post Field for CURLOPT_POSTFIELDS
      *
      * @param string $prompt
@@ -152,10 +152,18 @@ class ChatGptConversationController extends ChatGptController
     private function postFiledsStructure()
     {
         //More PostFileds for Api
+        //Relação de Models e Tolkens
+        //2048 tolkiens - text-davinci-003, gpt-3.5-turbo
+        //4096 tolkiens - gpt-3.5-turbo
+
+        //Temperature Definition
+        /* What sampling temperature to use, between 0 and 2. 
+        Higher values like 0.8 will make the output more random, 
+        while lower values like 0.2 will make it more focused and deterministic. */
        /*  "n": 1,
         "stream": false,
         "logprobs": null,
-        "max_tokens": 150,
+        "max_tokens": 150, // 2048
         "stop": "\n",
         "stop": [" Human:", " AI:"] 
         "messages": [{"role": "user", "name": "user123456", "content": "'. strval(trim(filter_var(strip_tags($prompt), FILTER_DEFAULT))) .'"}],
@@ -170,7 +178,7 @@ class ChatGptConversationController extends ChatGptController
             'model' => $this->model,
             'messages' => $this->getAllMessage(),
             'temperature' => 0.9,
-            'max_tokens' => 2048,
+            'max_tokens' => 150,
             'top_p' => 1.0,
             'frequency_penalty' => 0.0,
             'presence_penalty' => 0.6,
@@ -224,6 +232,7 @@ class ChatGptConversationController extends ChatGptController
           
        }
 
+       //Send Default Message from system
        $messagesInfraDefault = new stdClass();
        $messagesInfraDefault->role = 'system';
        $messagesInfraDefault->content = 'Sou uma Assitente Virtual, me chamo Assistant.';
