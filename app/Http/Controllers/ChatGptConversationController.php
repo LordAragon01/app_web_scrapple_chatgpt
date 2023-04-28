@@ -75,12 +75,13 @@ class ChatGptConversationController extends ChatGptController
     protected function openApiChat(Request $request):object|array
     {
 
-        $lorem = new stdClass();
-        $lorem->role = 'user';
-        //$lorem->content = $this->prompt; //$request->chatindicateprompt
-        $lorem->content = $request->chatindicateprompt;
+        //Create User Object
+        $userMessageDefault = new stdClass();
+        $userMessageDefault->role = 'user';
+        //$userMessageDefault->content = $this->prompt; //$request->chatindicateprompt
+        $userMessageDefault->content = $request->chatindicateprompt;
 
-        array_push($this->responseList, $lorem);
+        array_push($this->responseList, $userMessageDefault);
 
         //Create a Object to send for FrontEnd
         $chatGptContent = new stdClass();
@@ -97,7 +98,7 @@ class ChatGptConversationController extends ChatGptController
 
                 $getresponse = $this->transformContentFromApi($content, $chatGptContent);
 
-                //Conditional Loop for response
+                //Conditional Loop for save messages in the db
                 $chatDb = new ChatMessages();
                     $chatDb->role_user = 'user';
                     $chatDb->message_user = $request->chatindicateprompt;
@@ -177,7 +178,7 @@ class ChatGptConversationController extends ChatGptController
             "stop" => [" user:", " assistant:"] 
         ];
 
-        //dd($postFileds);
+        //dd(json_encode($postFileds));
 
         return json_encode($postFileds);
 
@@ -222,6 +223,12 @@ class ChatGptConversationController extends ChatGptController
             return $messagesList;
           
        }
+
+       $messagesInfraDefault = new stdClass();
+       $messagesInfraDefault->role = 'system';
+       $messagesInfraDefault->content = 'Sou uma Assitente Virtual, me chamo Assistant.';
+
+       array_unshift($this->responseList, $messagesInfraDefault);
 
        return $this->responseList;
 

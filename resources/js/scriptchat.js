@@ -124,7 +124,15 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
                   let role = value.role;
                   let content = value.content;
       
-                  if(role == 'user'){
+                  if(role == 'system'){
+
+                      let text = '<p><strong>'+ role.trim().toUpperCase() +'</strong></p>';
+                      text += '<p>' + content.trim() + '</p>';
+          
+                      //Add search in the Front
+                      $(text).appendTo($('#resultgptchat'));
+
+                  }else if(role == 'user'){
 
                       let text = '<p><strong>'+ role.trim().toUpperCase() +'</strong></p>';
                       text += '<p>' + content.trim() + '</p>';
