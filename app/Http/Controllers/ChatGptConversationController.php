@@ -91,7 +91,7 @@ class ChatGptConversationController extends ChatGptController
 
             //Get content from Curl Connect
             //$content = $this->curlStructure($this->openapi, $this->postFiledsStructure($request->chatindicateprompt));
-            $content = $this->curlStructure($this->openapi, $this->postFiledsStructure());
+            $content = $this->curlStructure($this->openapi, $this->postFiledsStructure($request->chatindicateprompt));
 
             //Get Content from API
             if(!is_string($content)){
@@ -101,11 +101,12 @@ class ChatGptConversationController extends ChatGptController
                 //Conditional Loop for save messages in the db
                 $chatDb = new ChatMessages();
                     $chatDb->role_user = 'user';
-                    $chatDb->message_user = $request->chatindicateprompt;
-                    $chatDb->role_ai = $getresponse->role;
-                    $chatDb->message_ai = $getresponse->content;
+                    $chatDb->message_user = filter_var(strval(strip_tags($request->chatindicateprompt)), FILTER_DEFAULT);
+                    $chatDb->role_ai = filter_var(strval(strip_tags($getresponse->role)), FILTER_DEFAULT);
+                    $chatDb->message_ai = filter_var(strval(strip_tags($getresponse->content)), FILTER_DEFAULT);
                 $chatDb->save();
 
+                //Add content to send for FrontEnd
                 array_push($this->responseList, $getresponse);
 
                 //dd($this->postFiledsStructure());
@@ -149,7 +150,7 @@ class ChatGptConversationController extends ChatGptController
      * @param string $prompt
      * @return string
      */
-    private function postFiledsStructure()
+    private function postFiledsStructure(string $prompt)
     {
         //More PostFileds for Api
         //Relação de Models e Tolkens
@@ -170,13 +171,24 @@ class ChatGptConversationController extends ChatGptController
         */
 
         //List Messages Save in the DB
-        //$messages = $this->getAllMessage();
+        $messages = $this->getAllMessage();
 
         //dd($messages);
 
+        //List of messages to question AI in the conversation
+        $listOfMessages = $messages;
+
+        //Convert String in Object
+        $userMessageDefault = new stdClass();
+        $userMessageDefault->role = 'user';
+        $userMessageDefault->content = strval($prompt);
+
+        //Add AI Message
+        array_push($listOfMessages, $userMessageDefault);
+
         $postFileds = [
             'model' => $this->model,
-            'messages' => $this->getAllMessage(),
+            'messages' => $listOfMessages,
             'temperature' => 0.9,
             'max_tokens' => 150,
             'top_p' => 1.0,
