@@ -1,8 +1,8 @@
 let href = window.location.href;
 let host = window.location.hostname;
 let protocol = window.location.protocol;
-//let url_local = protocol + '//' + host + '/api/openapiconchat';
-let url_local = protocol + '//' + host + ':8080/api/openapiconchat';
+let url_local = protocol + '//' + host + '/api/openapiconchat';
+//let url_local = protocol + '//' + host + ':8080/api/openapiconchat';
 let url_stage = "http://192.168.20.112/projects_mvp/public/api/openapiconchat";
 let default_url;
 
@@ -46,30 +46,39 @@ async function getDataOpenApi(prompt) {
 
 
 //Modify Behavior of Loading Element
-/* window.addEventListener('scroll', function(e){
+/*window.addEventListener('scroll', function(e){
 
   let loadingEl = document.getElementById('chatgptform');
 
-  e.target = loadingEl;
+  //e.target = loadingEl;
 
   let getElDistanceFromTop = loadingEl.getBoundingClientRect();
+
+  //Dynamic scroll element for bottom of page
+  if(getElDistanceFromTop.top >= 799){
+
+    window.scrollTo(0, document.body.scrollHeight);
+
+    console.log('Aqui');
+
+  }
 
   //Add dynamic top for loading element
   //let addDistanceFromTop = getElDistanceFromTop.top / 2;
 
   //Real Distance
-  let addDistanceFromTop = getElDistanceFromTop.top > 850 ? Math.ceil(getElDistanceFromTop.top / 1.5) : Math.ceil(getElDistanceFromTop.top * 1.2);
+  //let addDistanceFromTop = getElDistanceFromTop.top > 850 ? Math.ceil(getElDistanceFromTop.top / 1.5) : Math.ceil(getElDistanceFromTop.top * 1.2);
   
-  console.log(addDistanceFromTop);
+  //console.log(addDistanceFromTop);
 
   //document.getElementById('loading').style.top= 'calc('+ getElDistanceFromTop.top +' / 2)';
   $('#loading').css({
     'top': addDistanceFromTop + 'px'
   });
 
-  console.log(getElDistanceFromTop);
+  //console.log(getElDistanceFromTop);
 
-}); */
+});*/
 
 //Get Data and send Result for Front
 document.querySelector('.chatgptform').addEventListener('submit', function(e){
@@ -103,8 +112,10 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
     //Get Value from input
     let prompt = document.getElementById('chatpromptsearch').value;
 
+    //console.log(prompt);
+
     //Verify prompt Value
-    if(typeof prompt === 'string' && !containsOnlyNumbers(prompt)){
+    if(typeof prompt === 'string' && !containsOnlyNumbers(prompt) && prompt !== ''){
 
         //Send value to search in the Api
         let contentResponse = getDataOpenApi(prompt.trim());
@@ -124,7 +135,15 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
                   let role = value.role;
                   let content = value.content;
       
-                  if(role == 'user'){
+                  if(role == 'system'){
+
+                      let text = '<p><strong>'+ role.trim().toUpperCase() +'</strong></p>';
+                      text += '<p>' + content.trim() + '</p>';
+          
+                      //Add search in the Front
+                      $(text).appendTo($('#resultgptchat'));
+
+                  }else if(role == 'user'){
 
                       let text = '<p><strong>'+ role.trim().toUpperCase() +'</strong></p>';
                       text += '<p>' + content.trim() + '</p>';
@@ -153,8 +172,17 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
                 $(text).appendTo($('#resultgptchat'));
 
             }
-         
 
+
+            //Dynamic scroll element for bottom of page
+            let getElDistanceFromTop = this.getBoundingClientRect();
+
+            if(getElDistanceFromTop.top >= 799){
+          
+              window.scrollTo(0, document.body.scrollHeight);
+          
+            }
+         
 
             //Remove Loader
             if(document.querySelector('.loadingform').classList.contains('activedload')){
@@ -182,6 +210,13 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
 
         //Enabled Button
         $('#chatgptbtnconv').prop('disabled', false);
+
+        //Remove Loader
+        if(document.querySelector('.loadingform').classList.contains('activedload')){
+
+          document.querySelector('.loadingform').classList.remove('activedload')
+
+        }
 
     }
 

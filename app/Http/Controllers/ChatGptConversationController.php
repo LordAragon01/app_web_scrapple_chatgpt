@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\ChatMessages;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use stdClass;
@@ -11,7 +12,7 @@ class ChatGptConversationController extends ChatGptController
 {
 
     private $openapi = 'https://api.openai.com/v1/chat/completions';
-    //private $openapi = 'https://api.openai.com/v1/engines/davinci-codex/completions';
+    //private $openapi = 'http://api.openai';
     private $model = "gpt-3.5-turbo";
     //private $model = "text-davinci-003";
     //private $prompt = "Hello !";
@@ -89,58 +90,75 @@ class ChatGptConversationController extends ChatGptController
         //Check if the apiUrl is security
         if($this->checkUrl($this->openapi) && $this->httpsVerify($this->openapi)){
 
-            //Get content from Curl Connect
-            //$content = $this->curlStructure($this->openapi, $this->postFiledsStructure($request->chatindicateprompt));
-            $content = $this->curlStructure($this->openapi, $this->postFiledsStructure($request->chatindicateprompt));
+            //Verify data from input request
+            if(!empty($request->chatindicateprompt) || $request->chatindicateprompt !== '' && gettype($request->chatindicateprompt) === 'string'){
 
-            //Get Content from API
-            if(!is_string($content)){
+                //Get content from Curl Connect
+                //$content = $this->curlStructure($this->openapi, $this->postFiledsStructure($request->chatindicateprompt));
+                $content = $this->curlStructure($this->openapi, $this->postFiledsStructure(filter_var(strval(strip_tags($request->chatindicateprompt)), FILTER_DEFAULT)));
 
-                $getresponse = $this->transformContentFromApi($content, $chatGptContent);
+                //Get Content from API
+                if(!is_string($content)){
 
-                //Conditional Loop for save messages in the db
-                $chatDb = new ChatMessages();
-                    $chatDb->role_user = 'user';
-                    $chatDb->message_user = filter_var(strval(strip_tags($request->chatindicateprompt)), FILTER_DEFAULT);
-                    $chatDb->role_ai = filter_var(strval(strip_tags($getresponse->role)), FILTER_DEFAULT);
-                    $chatDb->message_ai = filter_var(strval(strip_tags($getresponse->content)), FILTER_DEFAULT);
-                $chatDb->save();
+                    $getresponse = $this->transformContentFromApi($content, $chatGptContent);
 
-                //Add content to send for FrontEnd
-                array_push($this->responseList, $getresponse);
+                    //Conditional Loop for save messages in the db
+                    $chatDb = new ChatMessages();
+                        $chatDb->role_user = 'user';
+                        $chatDb->message_user = filter_var(strval(strip_tags($request->chatindicateprompt)), FILTER_DEFAULT);
+                        $chatDb->role_ai = filter_var(strval(strip_tags($getresponse->role)), FILTER_DEFAULT);
+                        $chatDb->message_ai = filter_var(strval(strip_tags($getresponse->content)), FILTER_DEFAULT);
+                    $chatDb->save();
 
-                //dd($this->postFiledsStructure());
+                    //Add content to send for FrontEnd
+                    array_push($this->responseList, $getresponse);
 
-                return $this->responseList;
+                    //dd($this->postFiledsStructure());
+
+                    return $this->responseList;
+
+                }
+
+                //Send Error Message
+                $chatGptContent->content = $content;
+
+                //Return an object
+                return $chatGptContent;
 
             }
 
-            //Send Error Message
-            $chatGptContent->content = $content;
-
-            //Return an object
-            return $chatGptContent;
+            //Don´t continue execution
+            exit;
 
         }else{
 
             //Verify if the Debug is true
             if(env('APP_DEBUG')){
 
-                //Send Error Message
-                $chatGptContent->content = "A Url informada é inadequada";
+                //Throw error in the Laravel Log
+                throw new Exception("A Url informada é inadequada");
 
-                //Return an object
-                return $chatGptContent;
+                //Finished Exxecution
+                die;
 
             }else{
+
+                $error =  new Exception("A Url informada é inadequada");
+
+                //Redirect for an error page
+                abort(500, $error->getMessage());
 
                 //Finished Exxecution
                 die;
 
             }
+  
+            // Report all PHP errors
+            //error_reporting(E_ALL);
+            //set_error_handler();
+            //set_exception_handler();
 
         }
-
 
     }
 
@@ -190,7 +208,7 @@ class ChatGptConversationController extends ChatGptController
             'model' => $this->model,
             'messages' => $listOfMessages,
             'temperature' => 0.9,
-            'max_tokens' => 150,
+            'max_tokens' => 2048,
             'top_p' => 1.0,
             'frequency_penalty' => 0.0,
             'presence_penalty' => 0.6,

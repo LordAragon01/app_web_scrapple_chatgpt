@@ -1,8 +1,8 @@
 let href = window.location.href;
 let host = window.location.hostname;
 let protocol = window.location.protocol;
-//let url_local = protocol + '//' + host + '/api/openapicon';
-let url_local = protocol + '//' + host + ':8080/api/openapicon';
+let url_local = protocol + '//' + host + '/api/openapicon';
+//let url_local = protocol + '//' + host + ':8080/api/openapicon';
 let url_stage = "http://192.168.20.112/projects_mvp/public/api/openapicon";
 let default_url;
 
