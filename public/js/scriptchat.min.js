@@ -245,69 +245,85 @@ $('#chatgptbtnconvdel').on('click', function(){
 
     }
 
-    //Get Children chat elements
-    let resultList = [...$('#resultgptchat').children()];
+    //Confirm action before erase DB
+    if(confirm('Ao Limpar o Chat também será limpo a relação de mensagens') === true){
 
-    //Validate children existent 
-    if(resultList !== undefined){
+      //Get Children chat elements
+      let resultList = [...$('#resultgptchat').children()];
 
-      if(resultList.length > 0){
+      //Validate children existent 
+      if(resultList !== undefined){
 
-        //Verify url to send Data from post
-        let url = listDefaultUrl[1] !== undefined ? listDefaultUrl[1] : '';
+        if(resultList.length > 0){
 
-        //Send value to search in the Api
-        let response = getDataOpenApi(url, {removechatdata: true});
+          //Verify url to send Data from post
+          let url = listDefaultUrl[1] !== undefined ? listDefaultUrl[1] : '';
 
-        //Get object confirm
-        response.then((data) => {
+          //Send value to search in the Api
+          let response = getDataOpenApi(url, {removechatdata: true});
 
-          if(data.confirm === true){
+          //Get object confirm
+          response.then((data) => {
 
-            //Remove old chat elements
-            removeElements(resultList);
+            if(data.confirm === true){
 
-          }else{
+              //Remove old chat elements
+              removeElements(resultList);
 
-            alert("Ocorreu um Erro, Favor contatar a equipa do Software & Desenvolvimento da BiBright");
+            }else{
+
+              alert("Ocorreu um Erro, Favor contatar a equipa do Software & Desenvolvimento da BiBright");
+
+            }
+
+          }).catch((error) => {
+
+            console.error(error.message);
+
+          });
+
+        
+          //Remove Loader
+          if(document.querySelector('.loadingform').classList.contains('activedload')){
+
+            document.querySelector('.loadingform').classList.remove('activedload')
 
           }
+          
+          //Enabled Button
+          $('#chatgptbtnconvdel').prop('disabled', false);
 
-        }).catch((error) => {
+        }else{
 
-          console.error(error.message);
+          alert("Chat ainda não foi iniciado");
 
-        });
+          //Remove Loader
+          if(document.querySelector('.loadingform').classList.contains('activedload')){
 
-      
-        //Remove Loader
-        if(document.querySelector('.loadingform').classList.contains('activedload')){
+            document.querySelector('.loadingform').classList.remove('activedload')
 
-          document.querySelector('.loadingform').classList.remove('activedload')
-
+          }
+          
+          //Enabled Button
+          $('#chatgptbtnconvdel').prop('disabled', false);
+    
         }
         
-        //Enabled Button
-        $('#chatgptbtnconvdel').prop('disabled', false);
-
-      }else{
-
-        alert("Chat ainda não foi iniciado");
-
-        //Remove Loader
-        if(document.querySelector('.loadingform').classList.contains('activedload')){
-
-          document.querySelector('.loadingform').classList.remove('activedload')
-
-        }
-        
-        //Enabled Button
-        $('#chatgptbtnconvdel').prop('disabled', false);
-  
       }
-      
+
+
     }
 
+    //Remove Loader
+    if(document.querySelector('.loadingform').classList.contains('activedload')){
+
+      document.querySelector('.loadingform').classList.remove('activedload')
+
+    }
+    
+    //Enabled Button
+    $('#chatgptbtnconvdel').prop('disabled', false);
+ 
     return;
 
 });
