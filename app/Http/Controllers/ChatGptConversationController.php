@@ -6,6 +6,7 @@ use App\Models\ChatMessages;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 use stdClass;
 
 class ChatGptConversationController extends ChatGptController
@@ -75,6 +76,8 @@ class ChatGptConversationController extends ChatGptController
      */
     protected function openApiChat(Request $request):object|array
     {
+        //Delay Execution for better performance
+        usleep(500000);
 
         //Create User Object
         $userMessageDefault = new stdClass();
@@ -121,6 +124,9 @@ class ChatGptConversationController extends ChatGptController
 
                 //Send Error Message
                 $chatGptContent->content = $content;
+
+                //Add API Errors in the Log list
+                Log::error(array('OpenApiChatError' => $chatGptContent->content));
 
                 //Return an object
                 return $chatGptContent;
@@ -270,6 +276,14 @@ class ChatGptConversationController extends ChatGptController
        array_unshift($this->responseList, $messagesInfraDefault);
 
        return $this->responseList;
+
+    }
+
+    public function openApiClearChat()
+    {
+
+        return "Lorem Ipsum";
+
 
     }
 

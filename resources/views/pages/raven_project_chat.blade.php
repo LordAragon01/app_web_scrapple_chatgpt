@@ -28,8 +28,13 @@
                     <input type="text" name="chatindicateprompt" class="form-control" id="chatpromptsearch" aria-describedby="ChatGpt Conversation" value="">
                 
                 </div>
-            
-                <button type="submit" class="btn btn-primary float-right" id="chatgptbtnconv">Send</button>
+
+                <div class="d-flex-flex-row justify-content-between float-right">
+
+                    <button type="submit" class="btn btn-primary" id="chatgptbtnconv">Send</button>
+                    <button type="button" class="btn btn-danger" id="chatgptbtnconvdel">Clean Chat</button>
+
+                </div>
 
             </form>
 

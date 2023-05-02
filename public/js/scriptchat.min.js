@@ -1,8 +1,8 @@
 let href = window.location.href;
 let host = window.location.hostname;
 let protocol = window.location.protocol;
-let url_local = protocol + '//' + host + '/api/openapiconchat';
-//let url_local = protocol + '//' + host + ':8080/api/openapiconchat';
+//let url_local = protocol + '//' + host + '/api/openapiconchat';
+let url_local = protocol + '//' + host + ':8080/api/openapiconchat';
 let url_stage = "http://192.168.20.112/projects_mvp/public/api/openapiconchat";
 let default_url;
 
@@ -14,11 +14,9 @@ window.addEventListener('load', function(){
 });
 
 //Get Data From Open Api with a Promise
-async function getDataOpenApi(prompt) {
+async function getDataOpenApi(url, prompt) {
 
     "use strict";
-
-    let url = default_url !== undefined ? default_url : '';
     
     try {
       const response = await fetch(url, {
@@ -27,7 +25,7 @@ async function getDataOpenApi(prompt) {
           'Content-Type': "application/json",
           'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         },
-        body: JSON.stringify({chatindicateprompt: prompt}),
+        body: JSON.stringify(prompt),
       });
 
       const data = await response.json();
@@ -38,8 +36,10 @@ async function getDataOpenApi(prompt) {
       return data;
 
     } catch(error) {
+
+      console.log(error.message);
      
-      alert(error.message);
+      alert("Ocorreu um Erro, Favor contatar a equipa do Software & Desenvolvimento da BiBright");
 
     }
 }
@@ -99,16 +99,6 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
 
     }
 
-    //Remove old searchs structures
-    //let resultList = [...document.getElementById('resultgptchat').children];
-
-    /* if(resultList.length > 0){
-
-        //Remove old search
-        resultList[0].remove();
-
-    } */
-
     //Get Value from input
     let prompt = document.getElementById('chatpromptsearch').value;
 
@@ -117,8 +107,11 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
     //Verify prompt Value
     if(typeof prompt === 'string' && !containsOnlyNumbers(prompt) && prompt !== ''){
 
+        //Verify url to send Data from post
+        let url = default_url !== undefined ? default_url : '';
+
         //Send value to search in the Api
-        let contentResponse = getDataOpenApi(prompt.trim());
+        let contentResponse = getDataOpenApi(url, {chatindicateprompt: prompt.trim()});
 
         console.log(contentResponse);
 
@@ -219,6 +212,71 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
         }
 
     }
+
+});
+
+//Clear Chat and Data Base
+$('#chatgptbtnconvdel').on('click', function(){
+
+    "use strict";
+
+    //Disabled Button
+    $('#chatgptbtnconvdel').prop('disabled', true);
+
+    //Add Loader
+    if(!document.querySelector('.loadingform').classList.contains('activedload')){
+
+      document.querySelector('.loadingform').classList.add('activedload');
+
+    }
+
+    //Get Children chat elements
+    let resultList = [...document.getElementById('resultgptchat').children];
+
+    //Validate children existent 
+    if(resultList !== undefined){
+
+      if(resultList.length > 0){
+
+        //Remove old search
+        let i = 0;
+
+        do{
+
+          resultList[i].remove();
+          i++;
+
+        }while(i <= resultList.length);
+
+        //Remove Loader
+        if(document.querySelector('.loadingform').classList.contains('activedload')){
+
+          document.querySelector('.loadingform').classList.remove('activedload')
+
+        }
+        
+        //Enabled Button
+        $('#chatgptbtnconvdel').prop('disabled', false);
+
+      }else{
+
+        alert("Chat ainda não foi iniciado");
+
+        //Remove Loader
+        if(document.querySelector('.loadingform').classList.contains('activedload')){
+
+          document.querySelector('.loadingform').classList.remove('activedload')
+
+        }
+        
+        //Enabled Button
+        $('#chatgptbtnconvdel').prop('disabled', false);
+  
+      }
+      
+    }
+
+    return;
 
 });
 

@@ -31,3 +31,4 @@ Route::post('/searchapi', [ApiFoxController::class, 'getRequestUrl'])->name('get
 Route::post('/openapicon', [ChatGptController::class, 'openApiCon'])->name('openapicon');
 //Route::get('/openapiconchat', [ChatGptConversationController::class, 'openApiChat'])->name('openapiconchat');
 Route::post('/openapiconchat', [ChatGptConversationController::class, 'openApiChat'])->name('openapiconchat');
+Route::post('/openapiconclearchat', [ChatGptConversationController::class, 'openApiClearChat'])->name('openapiconclearchat');
