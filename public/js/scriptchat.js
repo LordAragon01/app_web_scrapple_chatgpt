@@ -1,15 +1,30 @@
 let href = window.location.href;
 let host = window.location.hostname;
 let protocol = window.location.protocol;
+
+//Url To Serach data 
 //let url_local = protocol + '//' + host + '/api/openapiconchat';
 let url_local = protocol + '//' + host + ':8080/api/openapiconchat';
 let url_stage = "http://192.168.20.112/projects_mvp/public/api/openapiconchat";
 let default_url;
 
+//Url to Remnove data from DB
+//let url_local = protocol + '//' + host + '/api/openapiconclearchat';
+let url_local_del = protocol + '//' + host + ':8080/api/openapiconclearchat';
+let url_stage_del = "http://192.168.20.112/projects_mvp/public/api/openapiconclearchat";
+let default_url_del;
+
+//List of Urls
+let listDefaultUrl = [];
+
 //Get Base Search Url
 window.addEventListener('load', function(){
 
-    return default_url = host.includes('projects_mvp.test') ? url_local : url_stage;
+  //Verify Url
+  listDefaultUrl.push(getUrlToApi(default_url, url_local, url_stage));
+  listDefaultUrl.push(getUrlToApi(default_url_del, url_local_del, url_stage_del));
+
+  return listDefaultUrl;
 
 });
 
@@ -108,7 +123,7 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
     if(typeof prompt === 'string' && !containsOnlyNumbers(prompt) && prompt !== ''){
 
         //Verify url to send Data from post
-        let url = default_url !== undefined ? default_url : '';
+        let url = listDefaultUrl[0] !== undefined ? listDefaultUrl[0] : '';
 
         //Send value to search in the Api
         let contentResponse = getDataOpenApi(url, {chatindicateprompt: prompt.trim()});
@@ -193,7 +208,7 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
 
         }).catch((error) => {
 
-            console.error(error.message);
+          console.error(error.message);
 
         });
 
@@ -231,23 +246,40 @@ $('#chatgptbtnconvdel').on('click', function(){
     }
 
     //Get Children chat elements
-    let resultList = [...document.getElementById('resultgptchat').children];
+    let resultList = [...$('#resultgptchat').children()];
 
     //Validate children existent 
     if(resultList !== undefined){
 
       if(resultList.length > 0){
 
-        //Remove old search
-        let i = 0;
+        //Verify url to send Data from post
+        let url = listDefaultUrl[1] !== undefined ? listDefaultUrl[1] : '';
 
-        do{
+        //Send value to search in the Api
+        let response = getDataOpenApi(url, {removechatdata: true});
 
-          resultList[i].remove();
-          i++;
+        //Get object confirm
+        response.then((data) => {
 
-        }while(i <= resultList.length);
+          if(data.confirm === true){
 
+            //Remove old chat elements
+            removeElements(resultList);
+
+          }else{
+
+            alert("Ocorreu um Erro, Favor contatar a equipa do Software & Desenvolvimento da BiBright");
+
+          }
+
+        }).catch((error) => {
+
+          console.error(error.message);
+
+        });
+
+      
         //Remove Loader
         if(document.querySelector('.loadingform').classList.contains('activedload')){
 
@@ -283,6 +315,26 @@ $('#chatgptbtnconvdel').on('click', function(){
 //Check if the Value from Input contain only number
 function containsOnlyNumbers(str) {
     return /^[0-9]+$/.test(str);
+}
+
+//Remove Elements from Chat
+function removeElements(list){
+
+  list.forEach((value) => {
+
+    value.remove();
+
+  });
+
+  return list = [];
+
+}
+
+//Get Url to API
+function getUrlToApi(defaulturl, urlocal, urlstage){
+
+  return defaulturl = host.includes('projects_mvp.test') ? urlocal : urlstage;
+
 }
 
 /*===Typewrite Effect==*/

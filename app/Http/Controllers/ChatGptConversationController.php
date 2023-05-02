@@ -76,8 +76,8 @@ class ChatGptConversationController extends ChatGptController
      */
     protected function openApiChat(Request $request):object|array
     {
-        //Delay Execution for better performance
-        usleep(500000);
+        //Delay Execution for better performance - param 1000000 = 1s
+        usleep(50000);
 
         //Create User Object
         $userMessageDefault = new stdClass();
@@ -279,11 +279,23 @@ class ChatGptConversationController extends ChatGptController
 
     }
 
-    public function openApiClearChat()
+    public function openApiClearChat(Request $request, ChatMessages $chatmessages)
     {
 
-        return "Lorem Ipsum";
+        //Get True from request
+        if($request->removechatdata == true){
 
+            //Truncate Table
+            $chatmessages::truncate();
+
+            $messageConfirm = ['confirm' => true];
+
+            return json_encode($messageConfirm);
+
+        }
+
+        //Finished Execution
+        die;
 
     }
 
