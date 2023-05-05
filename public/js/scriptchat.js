@@ -6,30 +6,10 @@ let protocol = window.location.protocol;
 let base_url = document.getElementById('baseurl').getAttribute('data-url');
 
 //Url To Serach data 
-//let url_local = protocol + '//' + host + '/api/openapiconchat';
-let url_local = base_url + '/api/openapiconchat';
-let url_stage = base_url + "/projects_mvp/public/api/openapiconchat";
-let default_url;
+let url_chat = base_url + '/api/openapiconchat';
 
 //Url to Remnove data from DB
-//let url_local = protocol + '//' + host + '/api/openapiconclearchat';
-let url_local_del = base_url + '/api/openapiconclearchat';
-let url_stage_del = base_url + "/projects_mvp/public/api/openapiconclearchat";
-let default_url_del;
-
-//List of Urls
-let listDefaultUrl = [];
-
-//Get Base Search Url
-window.addEventListener('load', function(){
-
-  //Verify Url
-  listDefaultUrl.push(getUrlToApi(default_url, url_local, url_stage));
-  listDefaultUrl.push(getUrlToApi(default_url_del, url_local_del, url_stage_del));
-
-  return listDefaultUrl;
-
-});
+let url_chat_del = base_url + '/api/openapiconclearchat';
 
 //Get Data From Open Api with a Promise
 async function getDataOpenApi(url, prompt) {
@@ -125,11 +105,8 @@ document.querySelector('.chatgptform').addEventListener('submit', function(e){
     //Verify prompt Value
     if(typeof prompt === 'string' && !containsOnlyNumbers(prompt) && prompt !== ''){
 
-        //Verify url to send Data from post
-        let url = listDefaultUrl[0] !== undefined ? listDefaultUrl[0] : '';
-
         //Send value to search in the Api
-        let contentResponse = getDataOpenApi(url, {chatindicateprompt: prompt.trim()});
+        let contentResponse = getDataOpenApi(url_chat, {chatindicateprompt: prompt.trim()});
 
         console.log(contentResponse);
 
@@ -259,11 +236,8 @@ $('#chatgptbtnconvdel').on('click', function(){
 
         if(resultList.length > 0){
 
-          //Verify url to send Data from post
-          let url = listDefaultUrl[1] !== undefined ? listDefaultUrl[1] : '';
-
           //Send value to search in the Api
-          let response = getDataOpenApi(url, {removechatdata: true});
+          let response = getDataOpenApi(url_chat_del, {removechatdata: true});
 
           //Get object confirm
           response.then((data) => {

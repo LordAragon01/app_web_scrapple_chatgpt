@@ -5,9 +5,8 @@ let protocol = window.location.protocol;
 //Base Url from Project
 let base_url = document.getElementById('baseurl').getAttribute('data-url');
 
-let url_local = base_url + '/api/searchapi';
-let url_stage =  base_url + "/project_fox/public/api/searchapi";
-let default_url;
+//Api Url
+let url_api = base_url + '/api/searchapi';
 
 //Get Date
 const d = new Date();
@@ -17,15 +16,6 @@ let count = 0;
 
 //List of Sites for search
 const listOfSites = ["staples", "worten", "amazon"];
-
-let responseData;
-
-//Get Base Search Url
-window.addEventListener('load', function(){
-
-    return default_url = host.includes('projects_mvp.test') ? url_local : url_stage;
-
-});
 
 
 //Logic for search data from url
@@ -48,7 +38,7 @@ $(function(){
 
         $.ajax({
             type: 'POST',
-            url: default_url !== undefined ? default_url : '',
+            url: url_api,
             //timeout: 500,
             dataType: 'json',
             data: {

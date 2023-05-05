@@ -5,27 +5,17 @@ let protocol = window.location.protocol;
 //Base Url from Project
 let base_url = document.getElementById('baseurl').getAttribute('data-url');
 
-//let url_local = protocol + '//' + host + '/api/openapicon';
-let url_local = base_url + '/api/openapicon';
-let url_stage = base_url + "/projects_mvp/public/api/openapicon";
-let default_url;
+//Api Url
+let url_con = base_url + '/api/openapicon';
 
-//Get Base Search Url
-window.addEventListener('load', function(){
-
-    return default_url = host.includes('projects_mvp.test') ? url_local : url_stage;
-
-});
 
 //Get Data From Open Api with a Promise
 async function getDataOpenApi(prompt) {
 
     "use strict";
-
-    let url = default_url !== undefined ? default_url : '';
     
     try {
-      const response = await fetch(url, {
+      const response = await fetch(url_con, {
         method: "POST",
         headers: {
           'Content-Type': "application/json",
