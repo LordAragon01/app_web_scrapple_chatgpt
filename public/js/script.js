@@ -1,8 +1,12 @@
 let href = window.location.href;
 let host = window.location.hostname;
 let protocol = window.location.protocol;
-let url_local = protocol + '//' + host + ':8080/api/searchapi';
-let url_stage = "http://192.168.20.112/project_fox/public/api/searchapi";
+
+//Base Url from Project
+let base_url = document.getElementById('baseurl').getAttribute('data-url');
+
+let url_local = base_url + '/api/searchapi';
+let url_stage =  base_url + "/project_fox/public/api/searchapi";
 let default_url;
 
 //Get Date
@@ -19,7 +23,7 @@ let responseData;
 //Get Base Search Url
 window.addEventListener('load', function(){
 
-    return default_url = host.includes('projeto_fox.test') ? url_local : url_stage;
+    return default_url = host.includes('projects_mvp.test') ? url_local : url_stage;
 
 });
 

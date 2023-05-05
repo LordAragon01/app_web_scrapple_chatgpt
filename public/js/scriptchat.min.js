@@ -2,16 +2,19 @@ let href = window.location.href;
 let host = window.location.hostname;
 let protocol = window.location.protocol;
 
+//Base Url from Project
+let base_url = document.getElementById('baseurl').getAttribute('data-url');
+
 //Url To Serach data 
 //let url_local = protocol + '//' + host + '/api/openapiconchat';
-let url_local = protocol + '//' + host + ':8080/api/openapiconchat';
-let url_stage = "http://192.168.20.112/projects_mvp/public/api/openapiconchat";
+let url_local = base_url + '/api/openapiconchat';
+let url_stage = base_url + "/projects_mvp/public/api/openapiconchat";
 let default_url;
 
 //Url to Remnove data from DB
 //let url_local = protocol + '//' + host + '/api/openapiconclearchat';
-let url_local_del = protocol + '//' + host + ':8080/api/openapiconclearchat';
-let url_stage_del = "http://192.168.20.112/projects_mvp/public/api/openapiconclearchat";
+let url_local_del = base_url + '/api/openapiconclearchat';
+let url_stage_del = base_url + "/projects_mvp/public/api/openapiconclearchat";
 let default_url_del;
 
 //List of Urls
