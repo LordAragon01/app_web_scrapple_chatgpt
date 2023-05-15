@@ -34,3 +34,7 @@ mix.scripts([
 mix.scripts([
     'resources/js/scriptchat.js'
 ], 'public/js/scriptchat.js').minify('public/js/scriptchat.js');
+
+mix.scripts([
+    'resources/js/scriptpenguin.js'
+], 'public/js/scriptpenguin.js').minify('public/js/scriptpenguin.js');

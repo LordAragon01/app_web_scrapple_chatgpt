@@ -6,5 +6,7 @@
     "/js/scriptcon.js": "/js/scriptcon.js",
     "/js/scriptcon.min.js": "/js/scriptcon.min.js",
     "/js/scriptchat.js": "/js/scriptchat.js",
-    "/js/scriptchat.min.js": "/js/scriptchat.min.js"
+    "/js/scriptchat.min.js": "/js/scriptchat.min.js",
+    "/js/scriptpenguin.js": "/js/scriptpenguin.js",
+    "/js/scriptpenguin.min.js": "/js/scriptpenguin.min.js"
 }
