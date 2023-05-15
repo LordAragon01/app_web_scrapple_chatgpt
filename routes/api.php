@@ -3,6 +3,7 @@
 use App\Http\Controllers\ApiFoxController;
 use App\Http\Controllers\ChatGptController;
 use App\Http\Controllers\ChatGptConversationController;
+use App\Http\Controllers\PenguinApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -32,3 +33,7 @@ Route::post('/openapicon', [ChatGptController::class, 'openApiCon'])->name('open
 //Route::get('/openapiconchat', [ChatGptConversationController::class, 'openApiChat'])->name('openapiconchat');
 Route::post('/openapiconchat', [ChatGptConversationController::class, 'openApiChat'])->name('openapiconchat');
 Route::post('/openapiconclearchat', [ChatGptConversationController::class, 'openApiClearChat'])->name('openapiconclearchat');
+
+/*=== Penguin Project ===*/
+Route::post('/generatenumber', [PenguinApiController::class, 'generateNumber'])->name('generatenumber');
+Route::get('/customerdata', [PenguinApiController::class, 'customerData'])->name('customerdata');
