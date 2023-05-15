@@ -106,10 +106,57 @@ body{
   }
 
 /*===Link Web==*/
-.linkweb{
-    position:absolute;
-    top:0;
-    bottom:1rem;
+
+.navlistdefault{
+
+  height:3rem;
+  margin-right:3rem !important;
+
+  li{
+    width:auto;
+    height:inherit;
+    border:none;
+
+    &.penguinnav{
+
+        div{
+
+          ul{
+
+            display:none;
+            flex-direction:column;
+            width:7.5rem;
+            height:5rem;
+            list-style-type: none;
+            position: absolute;
+            padding: 0;
+            /* margin-top: 1rem; */
+          }
+  
+          &:hover{
+
+            cursor:pointer;
+
+            span{
+  
+              text-decoration: underline;
+              
+            }
+
+            ul{
+              display:flex !important;
+            }
+
+          }
+
+
+        }
+      
+
+    }
+
+  }
+
 }
 
 /*===Base Galery===*/

@@ -20,26 +20,40 @@
     <header>
         <nav class="d-flex flex-row justify-content-end w-100 mt-3">
 
-            <ul class="list-group list-group-horizontal d-flex flex-row justify-content-between mr-3">
+            <ul class="list-group list-group-horizontal d-flex flex-row justify-content-between mr-3 navlistdefault">
 
-                <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
+                <li class="list-group-item">
                     <a href="{{ route('home') }}" class="my-3 linkweb" target="_self">Home</a>
                 </li>
     
-                <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
+                <li class="list-group-item">
                     <a href="{{ route('webcrawler') }}" class="my-3 linkweb" target="_self">Web Crawler</a>
                 </li>
     
-                <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
+                <li class="list-group-item">
                     <a href="{{ route('fox_search') }}" class="my-3 linkweb" target="_self">Search Data</a>
                 </li>
 
-                <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
+                <li class="list-group-item">
                     <a href="{{ route('chatgpt') }}" class="my-3 linkweb" target="_self">Q&AGpt</a>
                 </li>
 
-                <li class="list-group-item" style="width:10rem;height:3rem;border:none;">
+                <li class="list-group-item">
                     <a href="{{ route('chatgptconversation') }}" class="my-3 linkweb" target="_self">ChatGpt</a>
+                </li>
+
+                <li class="list-group-item penguinnav">
+                    <div>
+                        <span>Penguin</span>
+                        <ul class="penguindrop">
+                            <li>
+                                <a href="{{ route('penguinb2b') }}" class="my-3 linkweb" target="_self">Penguin B2B</a>
+                            </li>
+                            <li>
+                                <a href="{{ route('penguinb2c') }}" class="my-3 linkweb" target="_self">Penguin B2C</a>
+                            </li>
+                        </ul>
+                    </div>
                 </li>
     
             </ul>
