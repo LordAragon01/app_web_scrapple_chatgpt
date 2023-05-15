@@ -22,8 +22,8 @@ class PenguinApiController extends Controller
         try{
 
             //Save Data in DB
-            $penguin->counter_number = $datab2c->counternumber;
-            $penguin->ip = $datab2c->ip;
+            $penguin->counter_number = filter_var(strip_tags($datab2c->counternumber), FILTER_DEFAULT);
+            $penguin->ip = filter_var(strip_tags($datab2c->ip), FILTER_DEFAULT);
             $penguin->save();
 
             //Confirmation Message

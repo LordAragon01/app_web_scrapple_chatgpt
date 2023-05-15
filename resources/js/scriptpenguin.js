@@ -12,13 +12,10 @@
     let url_generatenumber = base_url + '/api/generatenumber';
 
     //Url to get total of count
-    let url_totalcustomer = base_url + '/api/totalcustomer';
+    let url_customerdata = base_url + '/api/customerdata';
 
     //Get Element Tag for generate Number
     let nextnumberel = document.querySelector('.nextnumber');
-
-    //Current Number from B2C 
-    let currentNumberBc = 0;
 
     //Generate Number
     async function generateNumber(url, sendnumber, method = 'POST'){
@@ -46,7 +43,7 @@
     }
 
     //Get Total of Customer
-    async function getTotalOfCustomer(url){
+    async function getAllCustomerData(url){
 
         const response  = await fetch(url, {
             headers:{
@@ -72,9 +69,13 @@
         //Check correct route
         if(href.includes('penguinb2c')){
 
-            //Counter init
-            currentNumberBc ++;
+            let prevnumber = document.querySelector('.generatenumber').getAttribute('data-prevnumber');
 
+            //Current Number from B2C 
+            let currentNumberBc = parseInt(prevnumber) + 1;
+
+            //console.log(currentNumberBc);
+            
            let generatenumberdata = {
                 sendnumber: parseInt(currentNumberBc)
            };
@@ -82,8 +83,24 @@
            //Send Data from DB
            generateNumber(url_generatenumber, generatenumberdata);
 
-           //transform promisse and get data
-           console.log(getTotalOfCustomer(url_totalcustomer));
+           //Generate Number in the front
+           document.querySelector('.generatenumber').textContent = currentNumberBc;
+
+           //Verify Data is the same from DB
+           getAllCustomerData(url_customerdata).then((data) => {
+
+                //transform promisse and get data
+                if(data.lastId == prevnumber){
+
+                    document.querySelector('.generatenumber').textContent = currentNumberBc;
+
+                }
+
+           }).catch((error) => {
+
+                throw new Error(error);
+
+           });
 
         }
         

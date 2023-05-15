@@ -13,7 +13,8 @@
 
                 <h1 class="currentnumber d-flex flex-row justify-content-between">
                     <p>Seu número é:</p>
-                    <strong class="ml-3 generatenumber" id="generatenumber">1</strong>
+                    <strong class="ml-3 generatenumber" id="generatenumber" data-prevnumber=" @if(isset($prevcustomernumber)){{ $prevcustomernumber }}@endif">
+                    </strong>
                 </h1>
 
             </div>

@@ -20,13 +20,18 @@ class PenguinController extends Controller
     }
 
 
-    public function indexB2C()
+    public function indexB2C(PenguinApiController $penguinApi)
     {
+
+        $prevcustomernumber = $penguinApi->getTheLastCustomerId() === null ? 0 : $penguinApi->getTheLastCustomerId();
+        $totalcustomerlist = $penguinApi->getTotalCountCustomer();
 
         $title = "Penguin B2C";
 
         return view('pages.penguin_b2c_project', compact(
-            'title'
+            'title',
+            'prevcustomernumber',
+            'totalcustomerlist'
         ));
 
 
