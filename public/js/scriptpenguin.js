@@ -193,7 +193,7 @@
                     //Verify if the localStorage is not null and id is not 0
                     if(cleanDataFromLocalSotarge.lastId !== 0){
 
-                        //Verify if is the same IP
+                        //Verify if is the same IP in LocalStorage
                         if(data.ip == cleanDataFromLocalSotarge.ip){
 
                             //Atualize Front
@@ -215,7 +215,7 @@
                                 //Alterar LocalStorage when the value is bigger then 0
                                 let currentCustomer = {
                                     lastId: currentNumberBc,
-                                    ip: data.ip,
+                                    ip: currentip,
                                     call_number: data.call_number,
                                     created_at: data.created_at
                                 };
@@ -226,6 +226,11 @@
                                 console.log(cleanDataFromLocalSotarge.lastId);
 
                                 document.querySelector('.generatenumber').textContent = currentNumberBc;
+
+                            }else{
+
+                                //Atualize Front
+                                document.querySelector('.generatenumber').textContent = cleanDataFromLocalSotarge.lastId;
 
                             }
 
