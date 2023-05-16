@@ -202,19 +202,26 @@
 
                             console.log('Not the same IP');
 
-                            //When is not the same ip save in DB
-                            generateNumber(url_generatenumber, generatenumberdata); 
+                            //Atualize Front
+                            if(data.lastId == prevnumber){
 
-                            //Alterar LocalStorage when the value is bigger then 0
-                            let currentCustomer = {
-                                lastId: data.lastId,
-                                ip: data.ip,
-                                call_number: data.call_number,
-                                created_at: data.created_at
-                            };
+                                //Send Data from DB and json Response
+                                generateNumber(url_generatenumber, generatenumberdata); 
 
-                            //Create localstorage
-                            localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+                                //Alterar LocalStorage when the value is bigger then 0
+                                let currentCustomer = {
+                                    lastId: currentNumberBc,
+                                    ip: data.ip,
+                                    call_number: data.call_number,
+                                    created_at: data.created_at
+                                };
+
+                                //Create localstorage
+                                localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+
+                                document.querySelector('.generatenumber').textContent = currentNumberBc;
+
+                            }
 
                         }
 
@@ -227,7 +234,7 @@
 
                         }
 
-                        console.log(cleanDataFromLocalSotarge);
+                        console.log('Fim do Script');
 
                     }
 
