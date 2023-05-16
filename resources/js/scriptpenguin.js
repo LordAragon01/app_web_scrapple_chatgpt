@@ -109,11 +109,38 @@
             //Verify Data is the same from DB
             getAllCustomerData(url_customerdata).then((data) => {
 
+                //console.log(data.lastId);
+
                 //Set data in the localStorage and Verify if is null
-                if(cleanDataFromLocalSotarge === null){
+                if(data.lastId === 0){
 
                     //Current Data from Customer when access Page
-                    if(data.lastId !== 0){
+                    let currentCustomer = {
+                        lastId: data.lastId,
+                        ip: data.ip,
+                        call_number: data.call_number,
+                        created_at: data.created_at
+                    };
+
+                    //Create localstorage
+                    localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+                    
+                    //Atualize Front
+                    if(data.lastId == prevnumber){
+
+                        document.querySelector('.generatenumber').textContent = currentNumberBc;
+
+                    }
+
+                }
+
+                //Check if localStorage exist
+                if(cleanDataFromLocalSotarge !== null){
+
+                    console.log(cleanDataFromLocalSotarge);
+
+                    //After set Data verify if the Id
+                    if(cleanDataFromLocalSotarge.lastId === 0){
 
                         let currentCustomer = {
                             lastId: data.lastId,
@@ -125,48 +152,38 @@
                         //Create localstorage
                         localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
 
-                    }else{
 
-                        console.log("Aqui");
+                    }
 
-                        //Get data from Promisse
-                        if(data.lastId == prevnumber){
+                    //Verify if the localStorage is not null and id is not 0
+                    if(cleanDataFromLocalSotarge.lastId !== 0){
 
-                            document.querySelector('.generatenumber').textContent = currentNumberBc;
+                        //Verify if is the same IP
+                        if(data.ip == cleanDataFromLocalSotarge.ip){
 
-                        }else{
-
-                            document.querySelector('.generatenumber').textContent = data.lastId;
+                            //Atualize Front
+                            document.querySelector('.generatenumber').textContent = cleanDataFromLocalSotarge.lastId;
 
                         }
 
-                    }
-                    
+                        //Verify if the current number is call
+                        if(callCurrentNumber.textContent == cleanDataFromLocalSotarge.lastId){
 
-                }else{
+                            //console.log(callCurrentNumber.textContent);
+                            //Remove data from LocalStorage
+                            localStorage.removeItem('currentCustomer');
 
-                    //Verify if is the same IP
-                    if(data.ip == cleanDataFromLocalSotarge.ip){
+                        }
 
-                        //Atualize Front
-                        document.querySelector('.generatenumber').textContent = cleanDataFromLocalSotarge.lastId;
-
-                    }
-
-                    //Verify if the current number is call
-                    if(callCurrentNumber.textContent == cleanDataFromLocalSotarge.lastId){
-
-                        //console.log(callCurrentNumber.textContent);
-                        //Remove data from LocalStorage
-                        localStorage.removeItem('currentCustomer');
+                        console.log(cleanDataFromLocalSotarge);
 
                     }
 
-                    console.log(cleanDataFromLocalSotarge);
+                    console.log("Zona Neutra", cleanDataFromLocalSotarge);
 
                 }
 
-                console.log("Zona Neutra", cleanDataFromLocalSotarge);
+                return;
 
             }).catch((error) => {
 
