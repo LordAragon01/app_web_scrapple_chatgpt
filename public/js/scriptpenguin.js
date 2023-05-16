@@ -203,9 +203,10 @@
 
                             console.log('Not the same IP', data.lastId);
                             console.log(cleanDataFromLocalSotarge.lastId);
+                            console.log(data.allips.includes(currentip));
 
                             //Atualize Front
-                            if(data.ip !== currentip){
+                            if(data.ip !== currentip && !data.allips.includes(currentip)){
 
                                 console.log('Not the same IP - scopo', data.lastId);
 

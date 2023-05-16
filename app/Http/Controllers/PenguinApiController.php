@@ -95,10 +95,9 @@ class PenguinApiController extends Controller
         $customerData->ip = !is_null($allDataFromCustomer) ? $allDataFromCustomer->ip : null;
         $customerData->call_number = !is_null($allDataFromCustomer) ? $allDataFromCustomer->call_number : null;
         $customerData->created_at = !is_null($allDataFromCustomer) ? $allDataFromCustomer->created_at : null;
+        $customerData->allips = !empty($this->getAllIps()) ? $this->getAllIps() : null;
 
         return response()->json($customerData, 200);
-
-
 
     }
 
@@ -172,6 +171,33 @@ class PenguinApiController extends Controller
             $result = $db::select("SELECT id, ip, call_number, created_at FROM `penguin_customer` WHERE id = " . intval($this->getTheLastCustomerId()));
 
             return !empty($result) ? $result[0] : null;
+
+        }catch(PDOException $exception){
+
+            $errorMessage = $exception->getMessage();
+
+            return $errorMessage;
+
+        }
+
+
+    }
+
+    /**
+     * Get all data from Customer
+     *
+     * @return
+     */
+    public function getAllIps()
+    {
+
+        try{
+
+            //Get All Ips
+            $db = new Db();
+            $result = $db::select("SELECT ip AS allips FROM `penguin_customer`");
+
+            return !empty($result) ? $result : null;
 
         }catch(PDOException $exception){
 
