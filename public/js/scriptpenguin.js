@@ -15,7 +15,7 @@
     let url_customerdata = base_url + '/api/customerdata';
 
     //Get Element Tag for generate Number
-    let nextnumberel = document.querySelector('.nextnumber');
+    var nextnumberel = document.querySelector('.nextnumber');
 
     //Generate Number
     async function generateNumber(url, sendnumber, method = 'POST'){
@@ -63,11 +63,18 @@
 
     }
 
-    //Dynamic Generate Number when the page is loaded
-    document.addEventListener('DOMContentLoaded', function(e){
+    
+    //Check correct route
+    if(href.includes('penguinb2c')){
 
-        //Check correct route
-        if(href.includes('penguinb2c')){
+        //Get LocalStorage Data
+        let getLocalStorageData = localStorage.getItem('currentCustomer');
+
+        //Clean data from LocalStorage
+        let cleanDataFromLocalSotarge = getLocalStorageData ? JSON.parse(getLocalStorageData) : null;
+
+        //Dynamic Generate Number when the page is loaded
+        document.addEventListener('DOMContentLoaded', function(e){
 
             let prevnumber = document.querySelector('.generatenumber').getAttribute('data-prevnumber');
 
@@ -76,40 +83,104 @@
 
             //console.log(currentNumberBc);
             
-           let generatenumberdata = {
+            let generatenumberdata = {
                 sendnumber: parseInt(currentNumberBc)
-           };
-           
-           //Send Data from DB and json Response
-           generateNumber(url_generatenumber, generatenumberdata);
+            };
+            
+            //Send Data from DB and json Response
+            if(cleanDataFromLocalSotarge === null){
 
-           //Generate Number in the front
-           //document.querySelector('.generatenumber').textContent = currentNumberBc;
+                generateNumber(url_generatenumber, generatenumberdata); 
 
-           //Get data from API
-           //getAllCustomerData(url_customerdata);
+            }
+            
+            //Get Html Element for show call number
+            let callCurrentNumber = document.querySelector('.callcurrentnumber');
 
-           //Verify Data is the same from DB
-           getAllCustomerData(url_customerdata).then((data) => {
+            //Add Dynamic Number for Call Current Customer
+            callCurrentNumber.textContent = 2;
 
-                //transform promisse and get data
-                if(data.lastId == prevnumber){
+            //Generate Number in the front
+            //document.querySelector('.generatenumber').textContent = currentNumberBc;
 
-                    document.querySelector('.generatenumber').textContent = currentNumberBc;
+            //Get data from API
+            //getAllCustomerData(url_customerdata);
+
+            //Verify Data is the same from DB
+            getAllCustomerData(url_customerdata).then((data) => {
+
+                //Set data in the localStorage and Verify if is null
+                if(cleanDataFromLocalSotarge === null){
+
+                    //Current Data from Customer when access Page
+                    if(data.lastId !== 0){
+
+                        let currentCustomer = {
+                            lastId: data.lastId,
+                            ip: data.ip,
+                            call_number: data.call_number,
+                            created_at: data.created_at
+                        };
+
+                        //Create localstorage
+                        localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+
+                    }else{
+
+                        console.log("Aqui");
+
+                        //Get data from Promisse
+                        if(data.lastId == prevnumber){
+
+                            document.querySelector('.generatenumber').textContent = currentNumberBc;
+
+                        }else{
+
+                            document.querySelector('.generatenumber').textContent = data.lastId;
+
+                        }
+
+                    }
+                    
+
+                }else{
+
+                    //Verify if is the same IP
+                    if(data.ip == cleanDataFromLocalSotarge.ip){
+
+                        //Atualize Front
+                        document.querySelector('.generatenumber').textContent = cleanDataFromLocalSotarge.lastId;
+
+                    }
+
+                    //Verify if the current number is call
+                    if(callCurrentNumber.textContent == cleanDataFromLocalSotarge.lastId){
+
+                        //console.log(callCurrentNumber.textContent);
+                        //Remove data from LocalStorage
+                        localStorage.removeItem('currentCustomer');
+
+                    }
+
+                    console.log(cleanDataFromLocalSotarge);
 
                 }
 
-           }).catch((error) => {
+                console.log("Zona Neutra", cleanDataFromLocalSotarge);
+
+            }).catch((error) => {
 
                 throw new Error(error);
 
-           });
+            });
 
-        }
+            return;
+
+        });
+
+    }
         
-        return;
-
-    });
+    
 
     //Call Number after Click
     if(nextnumberel !== null){

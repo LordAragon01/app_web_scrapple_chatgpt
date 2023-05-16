@@ -13,7 +13,7 @@
 
                 <h1 class="currentnumber d-flex flex-row justify-content-between">
                     <p>Seu número é:</p>
-                    <strong class="ml-3 generatenumber" id="generatenumber" data-prevnumber=" @if(isset($prevcustomernumber)){{ $prevcustomernumber }}@endif">
+                    <strong class="ml-3 generatenumber" id="generatenumber" data-prevnumber="@if(isset($prevcustomernumber)){{$prevcustomernumber}}@endif">
                     </strong>
                 </h1>
 
@@ -26,7 +26,7 @@
 
                     <h1 class="currentnumber d-flex flex-row justify-content-between order-1">
                         <p>Número convocado:</p>
-                        <strong class="ml-3 currentnumber" id="currentnumber">1</strong>
+                        <strong class="ml-3 callcurrentnumber" id="callcurrentnumber"></strong>
                     </h1>
     
                     <h1 class="currentnumber d-flex flex-row justify-content-between order-2">
