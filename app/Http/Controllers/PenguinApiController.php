@@ -58,7 +58,7 @@ class PenguinApiController extends Controller
      *
      * @return string
      */
-    private function getIp():string
+    public function getIp():string
     {
 
         //whether ip is from the share internet  

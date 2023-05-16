@@ -77,6 +77,7 @@
         document.addEventListener('DOMContentLoaded', function(e){
 
             let prevnumber = document.querySelector('.generatenumber').getAttribute('data-prevnumber');
+            let currentip = document.querySelector('.generatenumber').getAttribute('data-ipcurrent');
 
             //Current Number from B2C 
             let currentNumberBc = parseInt(prevnumber) + 1;
@@ -200,10 +201,13 @@
 
                         }else{
 
-                            console.log('Not the same IP');
+                            console.log('Not the same IP', data.lastId);
+                            console.log(cleanDataFromLocalSotarge.lastId);
 
                             //Atualize Front
-                            if(data.lastId == prevnumber){
+                            if(data.ip !== currentip){
+
+                                console.log('Not the same IP - scopo', data.lastId);
 
                                 //Send Data from DB and json Response
                                 generateNumber(url_generatenumber, generatenumberdata); 
@@ -218,6 +222,8 @@
 
                                 //Create localstorage
                                 localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+
+                                console.log(cleanDataFromLocalSotarge.lastId);
 
                                 document.querySelector('.generatenumber').textContent = currentNumberBc;
 
