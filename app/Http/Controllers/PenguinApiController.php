@@ -21,6 +21,9 @@ class PenguinApiController extends Controller
 
         try{
 
+            //Delay for process
+            usleep(500000);
+
             //Save Data in DB
             $penguin->counter_number = filter_var(strip_tags($datab2c->counternumber), FILTER_DEFAULT);
             $penguin->ip = filter_var(strip_tags($datab2c->ip), FILTER_DEFAULT);
@@ -28,8 +31,14 @@ class PenguinApiController extends Controller
 
             //Confirmation Message
             $success = [
-                'generateNumber' => true
+                'generateNumber' => true,
             ];
+
+          /*   $success = [
+                'generateNumber' => true,
+                'lastId' => $this->getTheLastCustomerId(),
+                'totaCustomer' => $this->getTotalCountCustomer()
+            ]; */
 
             return response()->json($success, 200);
 

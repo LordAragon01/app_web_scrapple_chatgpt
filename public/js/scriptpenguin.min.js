@@ -80,11 +80,14 @@
                 sendnumber: parseInt(currentNumberBc)
            };
            
-           //Send Data from DB
+           //Send Data from DB and json Response
            generateNumber(url_generatenumber, generatenumberdata);
 
            //Generate Number in the front
-           document.querySelector('.generatenumber').textContent = currentNumberBc;
+           //document.querySelector('.generatenumber').textContent = currentNumberBc;
+
+           //Get data from API
+           //getAllCustomerData(url_customerdata);
 
            //Verify Data is the same from DB
            getAllCustomerData(url_customerdata).then((data) => {
