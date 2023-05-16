@@ -112,7 +112,7 @@
                 //console.log(data.lastId);
 
                 //Set data in the localStorage and Verify if is null
-                if(data.lastId === 0){
+                if(data.lastId === 0 && cleanDataFromLocalSotarge === null){
 
                     //Current Data from Customer when access Page
                     let currentCustomer = {
@@ -135,13 +135,12 @@
                 }
 
                 //Check if localStorage exist
-                if(cleanDataFromLocalSotarge !== null){
-
-                    console.log(cleanDataFromLocalSotarge);
+                if(data.lastId > 0 && cleanDataFromLocalSotarge !== null){
 
                     //After set Data verify if the Id
                     if(cleanDataFromLocalSotarge.lastId === 0){
-
+   
+                        //Alterar LocalStorage when the value is 0
                         let currentCustomer = {
                             lastId: data.lastId,
                             ip: data.ip,
@@ -152,6 +151,12 @@
                         //Create localstorage
                         localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
 
+                        //Atualize Front
+                        if(data.lastId == prevnumber){
+
+                            document.querySelector('.generatenumber').textContent = data.lastId;
+
+                        }
 
                     }
 
@@ -164,6 +169,15 @@
                             //Atualize Front
                             document.querySelector('.generatenumber').textContent = cleanDataFromLocalSotarge.lastId;
 
+                        }else{
+
+                            //Remove data from LocalStorage
+                            localStorage.removeItem('currentCustomer');
+
+                            //When is not the same ip save in DB
+                            generateNumber(url_generatenumber, generatenumberdata); 
+
+                            return;
                         }
 
                         //Verify if the current number is call
@@ -179,7 +193,7 @@
 
                     }
 
-                    console.log("Zona Neutra", cleanDataFromLocalSotarge);
+                    //console.log("Zona Neutra", cleanDataFromLocalSotarge);
 
                 }
 
