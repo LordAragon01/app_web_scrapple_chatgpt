@@ -14,6 +14,9 @@
     //Url to get total of count
     let url_customerdata = base_url + '/api/customerdata';
 
+    //Url to get select data from customer
+    let url_selectdata = base_url + '/api/currentnumber';
+
     //Get Element Tag for generate Number
     var nextnumberel = document.querySelector('.nextnumber');
 
@@ -78,6 +81,8 @@
 
             let prevnumber = document.querySelector('.generatenumber').getAttribute('data-prevnumber');
             let currentip = document.querySelector('.generatenumber').getAttribute('data-ipcurrent');
+            let selecteid = document.querySelector('.generatenumber').getAttribute('data-selectid');
+            let totalcustomer = document.querySelector('.missingnumber').getAttribute('data-totalcustomer');
 
             //Current Number from B2C 
             let currentNumberBc = parseInt(prevnumber) + 1;
@@ -251,23 +256,78 @@
 
                     console.log(allips.includes(currentip));
 
-                    //Current Data from Customer when access Page
-                    let currentCustomer = {
-                        lastId: data.lastId,
-                        ip: data.ip,
-                        call_number: data.call_number,
-                        created_at: data.created_at
-                    };
+                    //Verify id
+                    if(cleanDataFromLocalSotarge.ip === null){
 
-                    //Create localstorage
-                    localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
-                    
-                    //Atualize Front
-                    if(data.lastId == prevnumber){
+                        //Get current Ip
+                        let indexIp = allips.indexOf(currentip);
+                        let currentIp = allips[indexIp];
 
-                        document.querySelector('.generatenumber').textContent = data.lastId;
+                        //Indicate method for post
+                        let indicateIp = {
+                            selectip: currentIp
+                        };
+
+                        //Get select Data from IP
+                        let selectDataFromCustomer = generateNumber(url_selectdata, indicateIp); 
+
+                        console.log(currentIp);
+                        console.log(selectDataFromCustomer);
+
+                        selectDataFromCustomer.then((valselect) => {
+
+                            //Current Data from Customer when access Page
+                            let currentCustomer = {
+                                id: valselect.id,
+                                ip: valselect.ip,
+                                call_number: valselect.call_number,
+                                created_at: valselect.created_at
+                            };
+
+                            //Create localstorage
+                            localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+
+                            console.log(selecteid);
+
+                            //Att Front
+                            document.querySelector('.generatenumber').textContent = selecteid;
+
+
+                        }).catch((error) => {
+
+                            throw new Error(error);
+
+                        });
+
+
+
+                    }else{
+
+                        //Att Front
+                        document.querySelector('.generatenumber').textContent = cleanDataFromLocalSotarge.id;
 
                     }
+                    
+
+                    //console.log(totalcustomer);
+                    //console.log(data.lastId);
+
+                    //Notification
+                    if(parseInt(totalcustomer) !== parseInt(cleanDataFromLocalSotarge.id)){
+
+                        //Estimate counter for menor value
+                        let estimateCounter = totalcustomer > 1 ? parseInt(totalcustomer) - parseInt(data.lastId) : data.lastId;
+
+                        //Add Missing Number
+                        document.querySelector('.missingnumber').textContent = estimateCounter;
+
+                    }else{
+
+                        //Send Notification
+                        document.querySelector('.missingnumber').textContent = "Sua Vez";
+
+                    }
+
 
                     return;
 

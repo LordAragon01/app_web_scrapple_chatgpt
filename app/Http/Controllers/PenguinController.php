@@ -27,13 +27,20 @@ class PenguinController extends Controller
         $totalcustomerlist = $penguinApi->getTotalCountCustomer();
         $currentcustomerIp = $penguinApi->getIp();
 
+        $getcurrentSelectId = $penguinApi->getSelectCurrentNumber($currentcustomerIp);
+
+        //dd($getcurrentSelectId );
+
+        $currentSelectId = !is_null($getcurrentSelectId) ? $getcurrentSelectId->id : 0;
+
         $title = "Penguin B2C";
 
         return view('pages.penguin_b2c_project', compact(
             'title',
             'prevcustomernumber',
             'totalcustomerlist',
-            'currentcustomerIp'
+            'currentcustomerIp',
+            'currentSelectId'
         ));
 
 

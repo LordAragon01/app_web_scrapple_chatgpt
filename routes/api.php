@@ -37,3 +37,4 @@ Route::post('/openapiconclearchat', [ChatGptConversationController::class, 'open
 /*=== Penguin Project ===*/
 Route::post('/generatenumber', [PenguinApiController::class, 'generateNumber'])->name('generatenumber');
 Route::get('/customerdata', [PenguinApiController::class, 'customerData'])->name('customerdata');
+Route::post('/currentnumber', [PenguinApiController::class, 'getCurrentNumber'])->name('currentnumber');

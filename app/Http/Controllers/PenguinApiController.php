@@ -79,7 +79,7 @@ class PenguinApiController extends Controller
     }
 
     /**
-     * Get All Data from Customer
+     * Get All Data from Customer API
      *
      * @return
      */
@@ -207,6 +207,50 @@ class PenguinApiController extends Controller
 
         }
 
+
+    }
+
+    /**
+     * Get all data from Customer
+     *
+     * @return
+     */
+    public function getSelectCurrentNumber($ip)
+    {
+
+        try{
+
+            //Get All Ips
+            $db = new Db();
+            $result = $db::select("SELECT id, counter_number AS counternumber, call_number, created_at FROM `penguin_customer` WHERE ip = '" . trim($ip) . "'") ;
+
+            return !empty($result) ? $result[0] : null;
+
+        }catch(PDOException $exception){
+
+            $errorMessage = $exception->getMessage();
+
+            return $errorMessage;
+
+        }
+
+
+    }
+
+    public function getCurrentNumber(Request $request)
+    {
+
+        //Get specific data from Customer
+        $allDataFromCustomer = $this->getAllDataFromCustomer($request->selectip);
+
+        $dataCurrentNumber = new stdClass();
+        $dataCurrentNumber->id = !is_null($allDataFromCustomer) ? $allDataFromCustomer->id : null;
+        $dataCurrentNumber->ip = !is_null($allDataFromCustomer) ? $allDataFromCustomer->ip : null;
+        //$dataCurrentNumber->counternumber = $allDataFromCustomer->counternumber;
+        $dataCurrentNumber->call_number = !is_null($allDataFromCustomer) ? $allDataFromCustomer->call_number : null;
+        $dataCurrentNumber->created_at = !is_null($allDataFromCustomer) ? $allDataFromCustomer->created_at : null;
+
+        return response()->json($dataCurrentNumber, 200);
 
     }
 

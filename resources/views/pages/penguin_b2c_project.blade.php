@@ -13,8 +13,7 @@
 
                 <h1 class="currentnumber d-flex flex-row justify-content-between">
                     <p>Seu número é:</p>
-                    <strong class="ml-3 generatenumber" id="generatenumber" data-ipcurrent="@if(isset($currentcustomerIp)){{$currentcustomerIp}}@endif"  data-prevnumber="@if(isset($prevcustomernumber)){{$prevcustomernumber}}@endif">
-                    </strong>
+                    <strong class="ml-3 generatenumber" id="generatenumber" data-selectid="@if(isset($currentSelectId)){{$currentSelectId}}@endif" data-ipcurrent="@if(isset($currentcustomerIp)){{$currentcustomerIp}}@endif"  data-prevnumber="@if(isset($prevcustomernumber)){{$prevcustomernumber}}@endif"></strong>
                 </h1>
 
             </div>
@@ -31,7 +30,7 @@
     
                     <h1 class="currentnumber d-flex flex-row justify-content-between order-2">
                         <p>Para sua vez faltam:</p>
-                        <strong class="ml-3 missingnumber" id="missingnumber">1</strong>
+                        <strong class="ml-3 missingnumber" id="missingnumber" data-totalcustomer="@if(isset($totalcustomerlist)){{$totalcustomerlist}}@endif"></strong>
                     </h1>
 
                 </div>
