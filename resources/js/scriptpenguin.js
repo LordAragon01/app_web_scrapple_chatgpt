@@ -92,6 +92,22 @@
            //Verify Data is the same from DB
            getAllCustomerData(url_customerdata).then((data) => {
 
+                //Set data in the localStorage
+                if(data.lastId === 0){
+
+                    //Current Data from Customer when access Page
+                    let currentCustomer = {
+                        lastId: data.lastId,
+                        ip: data.ip,
+                        call_number: data.call_number,
+                        created_at: data.created_at
+                    };
+
+                    //Create localstorage
+                    localStorage.setItem('currentCustomer', JSON-stringify(currentCustomer));
+
+                }
+
                 //transform promisse and get data
                 if(data.lastId == prevnumber){
 

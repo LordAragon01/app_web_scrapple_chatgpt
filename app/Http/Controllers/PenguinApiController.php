@@ -86,11 +86,19 @@ class PenguinApiController extends Controller
     public function customerData()
     {
 
+        //Get all data from Customer
+        $allDataFromCustomer = $this->getAllDataFromCustomer();
+
         $customerData = new stdClass();
-        $customerData->lastId = $this->getTheLastCustomerId();
+        $customerData->lastId = !is_null($this->getTheLastCustomerId()) ? $this->getTheLastCustomerId() : 0;
         $customerData->totaCustomer = $this->getTotalCountCustomer();
+        $customerData->ip = !is_null($allDataFromCustomer) ? $allDataFromCustomer->ip : null;
+        $customerData->call_number = !is_null($allDataFromCustomer) ? $allDataFromCustomer->call_number : null;
+        $customerData->created_at = !is_null($allDataFromCustomer) ? $allDataFromCustomer->created_at : null;
 
         return response()->json($customerData, 200);
+
+
 
     }
 
@@ -137,6 +145,33 @@ class PenguinApiController extends Controller
             $result = $db::select("SELECT MAX(id) AS lastid FROM `penguin_customer`");
 
             return $result[0]->lastid;
+
+        }catch(PDOException $exception){
+
+            $errorMessage = $exception->getMessage();
+
+            return $errorMessage;
+
+        }
+
+
+    }
+
+     /**
+     * Get all data from Customer
+     *
+     * @return
+     */
+    public function getAllDataFromCustomer()
+    {
+
+        try{
+
+            //Get Data Confirmarion
+            $db = new Db();
+            $result = $db::select("SELECT id, ip, call_number, created_at FROM `penguin_customer` WHERE id = " . intval($this->getTheLastCustomerId()));
+
+            return !empty($result) ? $result[0] : null;
 
         }catch(PDOException $exception){
 
