@@ -88,12 +88,6 @@
                 sendnumber: parseInt(currentNumberBc)
             };
             
-            //Send Data from DB and json Response
-            if(cleanDataFromLocalSotarge === null){
-
-                generateNumber(url_generatenumber, generatenumberdata); 
-
-            }
             
             //Get Html Element for show call number
             let callCurrentNumber = document.querySelector('.callcurrentnumber');
@@ -111,11 +105,27 @@
             getAllCustomerData(url_customerdata).then((data) => {
 
                 //console.log(data.lastId);
+                let allips = [];
 
-                //Set data in the localStorage and Verify if is null
-                if(data.lastId === 0 && cleanDataFromLocalSotarge === null){
+                //Get List of ips
+                if(data.allips !== null){
 
-                    console.log('Aqui LastId 0 e localStorage null');
+                    data.allips.forEach((value) => {
+
+                        console.log(value.allips);
+
+                        allips.push(value.allips);
+
+                    });
+
+                }
+
+                //Send Data to DB and json Response
+                if(cleanDataFromLocalSotarge === null && data.allips === null){
+
+                    console.log('Aqui 1');
+
+                    generateNumber(url_generatenumber, generatenumberdata); 
 
                     //Current Data from Customer when access Page
                     let currentCustomer = {
@@ -135,127 +145,133 @@
 
                     }
 
+                    return;
+
                 }
 
-                //When the value exist in DB and localStorage is null
-                if(data.lastId > 0 && cleanDataFromLocalSotarge === null){
+                //Verify db and create localStorage
+                if(cleanDataFromLocalSotarge === null && allips.includes(currentip)){
 
-                    console.log('Aqui LastId > 0 e localStorage null');
+                    console.log('Aqui 2');
 
+                    ///generateNumber(url_generatenumber, generatenumberdata); 
+
+                    //Current Data from Customer when access Page
+                    let currentCustomer = {
+                        lastId: data.lastId,
+                        ip: data.ip,
+                        call_number: data.call_number,
+                        created_at: data.created_at
+                    };
+
+                    //Create localstorage
+                    localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+                    
                     //Atualize Front
                     if(data.lastId == prevnumber){
 
-                        //Alterar LocalStorage when the value is bigger then 0
-                        let currentCustomer = {
-                            lastId: currentNumberBc,
-                            ip: data.ip,
-                            call_number: data.call_number,
-                            created_at: data.created_at
-                        };
-
-                        //Create localstorage
-                        localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
-
-                        document.querySelector('.generatenumber').textContent = currentNumberBc;
+                        document.querySelector('.generatenumber').textContent = data.lastId;
 
                     }
+
+                    return;
+
+                }
+
+                //Verify db and create localStorage and save data
+                if(cleanDataFromLocalSotarge === null && !allips.includes(currentip)){
+
+                    console.log('Aqui 3');
+
+                    generateNumber(url_generatenumber, generatenumberdata); 
+
+                    //Current Data from Customer when access Page
+                    let currentCustomer = {
+                        lastId: data.lastId,
+                        ip: data.ip,
+                        call_number: data.call_number,
+                        created_at: data.created_at
+                    };
+
+                    //Create localstorage
+                    localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
                     
-                }
+                    //Atualize Front
+                    if(data.lastId == prevnumber){
 
-                //Check if localStorage exist
-                if(data.lastId > 0 && cleanDataFromLocalSotarge !== null){
-
-                    console.log('Aqui LastId > 0 e localStorage is not null');
-
-                    //After set Data verify if the Id
-                    if(cleanDataFromLocalSotarge.lastId === 0){
-   
-                        //Alterar LocalStorage when the value is 0
-                        let currentCustomer = {
-                            lastId: data.lastId,
-                            ip: data.ip,
-                            call_number: data.call_number,
-                            created_at: data.created_at
-                        };
-
-                        //Create localstorage
-                        localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
-
-                        //Atualize Front
-                        if(data.lastId == prevnumber){
-
-                            document.querySelector('.generatenumber').textContent = data.lastId;
-
-                        }
+                        document.querySelector('.generatenumber').textContent = data.lastId;
 
                     }
 
-                    //Verify if the localStorage is not null and id is not 0
-                    if(cleanDataFromLocalSotarge.lastId !== 0){
-
-                        //Verify if is the same IP in LocalStorage
-                        if(data.ip == cleanDataFromLocalSotarge.ip){
-
-                            //Atualize Front
-                            document.querySelector('.generatenumber').textContent = cleanDataFromLocalSotarge.lastId;
-
-                        }else{
-
-                            console.log('Not the same IP', data.lastId);
-                            console.log(cleanDataFromLocalSotarge.lastId);
-                            console.log(data.allips.includes(currentip));
-
-                            //Atualize Front
-                            if(data.ip !== currentip && !data.allips.includes(currentip)){
-
-                                console.log('Not the same IP - scopo', data.lastId);
-
-                                //Send Data from DB and json Response
-                                generateNumber(url_generatenumber, generatenumberdata); 
-
-                                //Alterar LocalStorage when the value is bigger then 0
-                                let currentCustomer = {
-                                    lastId: currentNumberBc,
-                                    ip: currentip,
-                                    call_number: data.call_number,
-                                    created_at: data.created_at
-                                };
-
-                                //Create localstorage
-                                localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
-
-                                console.log(cleanDataFromLocalSotarge.lastId);
-
-                                document.querySelector('.generatenumber').textContent = currentNumberBc;
-
-                            }else{
-
-                                //Atualize Front
-                                document.querySelector('.generatenumber').textContent = cleanDataFromLocalSotarge.lastId;
-
-                            }
-
-                        }
-
-                        //Verify if the current number is call
-                        if(callCurrentNumber.textContent == cleanDataFromLocalSotarge.lastId){
-
-                            //console.log(callCurrentNumber.textContent);
-                            //Remove data from LocalStorage
-                            localStorage.removeItem('currentCustomer');
-
-                        }
-
-                        console.log('Fim do Script');
-
-                    }
-
-                    //console.log("Zona Neutra", cleanDataFromLocalSotarge);
+                    return;
 
                 }
 
-                //console.log(data.lastId);
-                //console.log(cleanDataFromLocalSotarge);
+                //Verify db and create localStorage and save data
+                if(cleanDataFromLocalSotarge !== null && !allips.includes(currentip)){
+
+                    console.log('Aqui 4');
+
+                    console.log(allips);
+
+                    console.log(allips.includes(currentip));
+
+                    generateNumber(url_generatenumber, generatenumberdata); 
+
+                    //Current Data from Customer when access Page
+                    let currentCustomer = {
+                        lastId: data.lastId,
+                        ip: data.ip,
+                        call_number: data.call_number,
+                        created_at: data.created_at
+                    };
+
+                    //Create localstorage
+                    localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+                    
+                    //Atualize Front
+                    if(data.lastId == prevnumber){
+
+                        document.querySelector('.generatenumber').textContent = data.lastId;
+
+                    }
+
+                    return;
+
+                }
+
+                //Verify ip insert in db when is true
+                if(cleanDataFromLocalSotarge !== null && allips.includes(currentip)){
+
+                    console.log('Aqui 5');
+
+                    //generateNumber(url_generatenumber, generatenumberdata); 
+
+                    console.log(allips);
+
+                    console.log(allips.includes(currentip));
+
+                    //Current Data from Customer when access Page
+                    let currentCustomer = {
+                        lastId: data.lastId,
+                        ip: data.ip,
+                        call_number: data.call_number,
+                        created_at: data.created_at
+                    };
+
+                    //Create localstorage
+                    localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+                    
+                    //Atualize Front
+                    if(data.lastId == prevnumber){
+
+                        document.querySelector('.generatenumber').textContent = data.lastId;
+
+                    }
+
+                    return;
+
+                }
 
                 return;
 
