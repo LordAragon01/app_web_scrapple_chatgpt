@@ -98,7 +98,7 @@
             let callCurrentNumber = document.querySelector('.callcurrentnumber');
 
             //Add Dynamic Number for Call Current Customer
-            callCurrentNumber.textContent = 2;
+            callCurrentNumber.textContent = 19;
 
             //Generate Number in the front
             //document.querySelector('.generatenumber').textContent = currentNumberBc;
@@ -113,6 +113,8 @@
 
                 //Set data in the localStorage and Verify if is null
                 if(data.lastId === 0 && cleanDataFromLocalSotarge === null){
+
+                    console.log('Aqui LastId 0 e localStorage null');
 
                     //Current Data from Customer when access Page
                     let currentCustomer = {
@@ -134,8 +136,35 @@
 
                 }
 
+                //When the value exist in DB and localStorage is null
+                if(data.lastId > 0 && cleanDataFromLocalSotarge === null){
+
+                    console.log('Aqui LastId > 0 e localStorage null');
+
+                    //Atualize Front
+                    if(data.lastId == prevnumber){
+
+                        //Alterar LocalStorage when the value is bigger then 0
+                        let currentCustomer = {
+                            lastId: currentNumberBc,
+                            ip: data.ip,
+                            call_number: data.call_number,
+                            created_at: data.created_at
+                        };
+
+                        //Create localstorage
+                        localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+
+                        document.querySelector('.generatenumber').textContent = currentNumberBc;
+
+                    }
+                    
+                }
+
                 //Check if localStorage exist
                 if(data.lastId > 0 && cleanDataFromLocalSotarge !== null){
+
+                    console.log('Aqui LastId > 0 e localStorage is not null');
 
                     //After set Data verify if the Id
                     if(cleanDataFromLocalSotarge.lastId === 0){
@@ -171,13 +200,22 @@
 
                         }else{
 
-                            //Remove data from LocalStorage
-                            localStorage.removeItem('currentCustomer');
+                            console.log('Not the same IP');
 
                             //When is not the same ip save in DB
                             generateNumber(url_generatenumber, generatenumberdata); 
 
-                            return;
+                            //Alterar LocalStorage when the value is bigger then 0
+                            let currentCustomer = {
+                                lastId: data.lastId,
+                                ip: data.ip,
+                                call_number: data.call_number,
+                                created_at: data.created_at
+                            };
+
+                            //Create localstorage
+                            localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+
                         }
 
                         //Verify if the current number is call
@@ -196,6 +234,9 @@
                     //console.log("Zona Neutra", cleanDataFromLocalSotarge);
 
                 }
+
+                //console.log(data.lastId);
+                //console.log(cleanDataFromLocalSotarge);
 
                 return;
 
