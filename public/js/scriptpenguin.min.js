@@ -269,7 +269,10 @@
                     let selectDataFromCustomer = generateNumber(url_selectdata, indicateIp); 
 
                     console.log(currentIp);
-                    console.log(selectDataFromCustomer);
+                    //console.log(selectDataFromCustomer);
+
+                    //Remove old LocalStorage
+                    localStorage.removeItem('currentCustomer');
 
                     selectDataFromCustomer.then((valselect) => {
 
