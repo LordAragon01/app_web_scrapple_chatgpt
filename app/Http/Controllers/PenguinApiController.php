@@ -222,7 +222,7 @@ class PenguinApiController extends Controller
 
             //Get All Ips
             $db = new Db();
-            $result = $db::select("SELECT id, counter_number AS counternumber, call_number, created_at FROM `penguin_customer` WHERE ip = '" . trim($ip) . "'") ;
+            $result = $db::select("SELECT id, counter_number AS counternumber, call_number, created_at FROM `penguin_customer` WHERE ip = '" . trim($ip) . "' ORDER BY id DESC LIMIT 1") ;
 
             return !empty($result) ? $result[0] : null;
 

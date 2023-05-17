@@ -256,67 +256,55 @@
 
                     console.log(allips.includes(currentip));
 
-                    //Verify id
-                    if(cleanDataFromLocalSotarge.ip === null){
+                    //Verify Current Number
+                    let indexIp = allips.indexOf(currentip);
+                    let currentIp = allips[indexIp];
 
-                        //Get current Ip
-                        let indexIp = allips.indexOf(currentip);
-                        let currentIp = allips[indexIp];
+                    //Indicate method for post
+                    let indicateIp = {
+                        selectip: currentIp
+                    };
 
-                        //Indicate method for post
-                        let indicateIp = {
-                            selectip: currentIp
+                    //Get select Data from IP
+                    let selectDataFromCustomer = generateNumber(url_selectdata, indicateIp); 
+
+                    console.log(currentIp);
+                    console.log(selectDataFromCustomer);
+
+                    selectDataFromCustomer.then((valselect) => {
+
+                        //Current Data from Customer when access Page
+                        let currentCustomer = {
+                            lastId: valselect.id,
+                            ip: valselect.ip,
+                            call_number: valselect.call_number,
+                            created_at: valselect.created_at
                         };
 
-                        //Get select Data from IP
-                        let selectDataFromCustomer = generateNumber(url_selectdata, indicateIp); 
+                        //Create localstorage
+                        localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
 
-                        console.log(currentIp);
-                        console.log(selectDataFromCustomer);
-
-                        selectDataFromCustomer.then((valselect) => {
-
-                            //Current Data from Customer when access Page
-                            let currentCustomer = {
-                                id: valselect.id,
-                                ip: valselect.ip,
-                                call_number: valselect.call_number,
-                                created_at: valselect.created_at
-                            };
-
-                            //Create localstorage
-                            localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
-
-                            console.log(selecteid);
-
-                            //Att Front
-                            document.querySelector('.generatenumber').textContent = selecteid;
-
-
-                        }).catch((error) => {
-
-                            throw new Error(error);
-
-                        });
-
-
-
-                    }else{
+                        console.log(selecteid);
 
                         //Att Front
-                        document.querySelector('.generatenumber').textContent = cleanDataFromLocalSotarge.id;
+                        document.querySelector('.generatenumber').textContent = selecteid;
 
-                    }
-                    
+
+                    }).catch((error) => {
+
+                        throw new Error(error);
+
+                    });
+
 
                     //console.log(totalcustomer);
                     //console.log(data.lastId);
 
                     //Notification
-                    if(parseInt(totalcustomer) !== parseInt(cleanDataFromLocalSotarge.id)){
+                    if(parseInt(totalcustomer) !== parseInt(cleanDataFromLocalSotarge.lastId)){
 
                         //Estimate counter for menor value
-                        let estimateCounter = totalcustomer > 1 ? parseInt(totalcustomer) - parseInt(data.lastId) : data.lastId;
+                        let estimateCounter = totalcustomer > 1 ? parseInt(totalcustomer) - parseInt(selecteid) : selecteid;
 
                         //Add Missing Number
                         document.querySelector('.missingnumber').textContent = estimateCounter;
