@@ -301,7 +301,7 @@
                     //console.log(data.lastId);
 
                     //Notification
-                    if(parseInt(totalcustomer) !== parseInt(cleanDataFromLocalSotarge.lastId)){
+                    if(parseInt(totalcustomer) !== parseInt(selecteid)){
 
                         //Estimate counter for menor value
                         let estimateCounter = totalcustomer > 1 ? parseInt(totalcustomer) - parseInt(selecteid) : selecteid;
