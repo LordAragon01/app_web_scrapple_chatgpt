@@ -161,21 +161,70 @@
 
                     ///generateNumber(url_generatenumber, generatenumberdata); 
 
-                    //Current Data from Customer when access Page
-                    let currentCustomer = {
-                        lastId: data.lastId,
-                        ip: data.ip,
-                        call_number: data.call_number,
-                        created_at: data.created_at
+                    console.log(allips);
+
+                    console.log(allips.includes(currentip));
+
+                    //Verify Current Number
+                    let indexIp = allips.indexOf(currentip);
+                    let currentIp = allips[indexIp];
+
+                    //Indicate method for post
+                    let indicateIp = {
+                        selectip: currentIp
                     };
 
-                    //Create localstorage
-                    localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
-                    
-                    //Atualize Front
-                    if(data.lastId == prevnumber){
+                    //Get select Data from IP
+                    let selectDataFromCustomer = generateNumber(url_selectdata, indicateIp); 
 
-                        document.querySelector('.generatenumber').textContent = data.lastId;
+                    console.log(currentIp);
+                    //console.log(selectDataFromCustomer);
+
+                    //Remove old LocalStorage
+                    localStorage.removeItem('currentCustomer');
+
+                    selectDataFromCustomer.then((valselect) => {
+
+                        //Current Data from Customer when access Page
+                        let currentCustomer = {
+                            lastId: valselect.id,
+                            ip: valselect.ip,
+                            call_number: valselect.call_number,
+                            created_at: valselect.created_at
+                        };
+
+                        //Create localstorage
+                        localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+
+                        console.log(selecteid);
+
+                        //Att Front
+                        document.querySelector('.generatenumber').textContent = selecteid;
+
+
+                    }).catch((error) => {
+
+                        throw new Error(error);
+
+                    });
+
+
+                    //console.log(totalcustomer);
+                    //console.log(data.lastId);
+
+                    //Notification
+                    if(parseInt(totalcustomer) !== parseInt(selecteid)){
+
+                        //Estimate counter for menor value
+                        let estimateCounter = totalcustomer > 1 ? parseInt(totalcustomer) - parseInt(selecteid) : selecteid;
+
+                        //Add Missing Number
+                        document.querySelector('.missingnumber').textContent = estimateCounter;
+
+                    }else{
+
+                        //Send Notification
+                        document.querySelector('.missingnumber').textContent = "Sua Vez";
 
                     }
 
