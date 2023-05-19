@@ -30,7 +30,7 @@
     
                     <h1 class="currentnumber d-flex flex-row justify-content-between order-2">
                         <p>Para sua vez faltam:</p>
-                        <strong class="ml-3 missingnumber" id="missingnumber" data-totalcustomer="@if(isset($totalcustomerlist)){{$totalcustomerlist}}@endif"></strong>
+                        <strong class="ml-3 missingnumber" id="missingnumber" data-totalcustomer="@if(!is_null($totalcustomerlist)){{$totalcustomerlist}}@endif"></strong>
                     </h1>
 
                 </div>

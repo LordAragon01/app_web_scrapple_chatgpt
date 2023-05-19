@@ -115,7 +115,7 @@ class PenguinApiController extends Controller
             $db = new DB();
             $result = $db::select("SELECT COUNT(id) AS total_customer FROM `penguin_customer`");
 
-            return $result[0]->total_customer;
+            return !empty($result[0]->total_customer) ? $result[0]->total_customer : null ;
 
 
         }catch(PDOException $exception){
@@ -286,6 +286,31 @@ class PenguinApiController extends Controller
 
         }
 
+
+    }
+
+    public function callNumber(Request $request){
+
+
+        try{
+
+            $db = new DB();
+            $result = $db::update("UPDATE `penguin_customer` SET `call_number` = 1 WHERE `id` = ". intval($request->callnumber) ." AND `counter_number` = " . intval($request->callnumber));
+
+            //Confirmation Message
+            $success = [
+                'callNumber' => $result,
+            ];
+
+            return response()->json($success, 200);
+
+        }catch(PDOException $exception){
+
+            $errorMessage = $exception->getMessage();
+
+            return $errorMessage;
+
+        }
 
     }
 

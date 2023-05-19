@@ -7,13 +7,20 @@ use Illuminate\Http\Request;
 class PenguinController extends Controller
 {
     
-    public function indexB2B()
+    public function indexB2B(PenguinApiController $penguinApi)
     {
+
+        $totalcustomerlist = $penguinApi->getTotalCountCustomer();
+        $convocate_number = $penguinApi->getCallNumber() + 1;
+
+        //dd($convocate_number);
 
         $title = "Penguin Dashboard";
 
         return view('pages.penguin_b2b_project', compact(
-            'title'
+            'title',
+            'totalcustomerlist',
+            'convocate_number'
         ));
 
 

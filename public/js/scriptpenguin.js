@@ -17,8 +17,8 @@
     //Url to get select data from customer
     let url_selectdata = base_url + '/api/currentnumber';
 
-    //Get Element Tag for generate Number
-    var nextnumberel = document.querySelector('.nextnumber');
+    //Url to update Call Number 
+    let url_callnumber = base_url + '/api/callnumber';
 
     //Generate Number
     async function generateNumber(url, sendnumber, method = 'POST'){
@@ -390,43 +390,106 @@
     
 
     //Call Number after Click
-    if(nextnumberel !== null){
+    if(href.includes('penguinb2b')){
 
-        let nextnumbercount = document.querySelector('.nextnumber').textContent;
+        //Get Element Tag for generate Number
+        let nextnumberel = document.querySelector('.nextnumber');
 
         let totalnumberel = document.querySelector('.totalnumber');
-    
-        let currentnumber;    
 
-        document.getElementById('callnumber').addEventListener('click', function(e){
+        //When the document is loaded
+        document.addEventListener("DOMContentLoaded", function(e){
 
-            if(nextnumbercount !== null){
 
-                //Counter for nextNumber
-                nextnumbercount++;
+            //Get value for total of number generate
+            let currentTotalNumber = totalnumberel.getAttribute('data-totalcustomer');
 
-                currentnumber = nextnumbercount;
-
-                //Check if the nextnumberelemnt is the same of nextnumber value
-                if(document.querySelector('.nextnumber').textContent !== 0){
-
-                    nextnumberel.textContent = currentnumber;
-
-                } 
-
-                console.log('Current Number = ', currentnumber);
-            
-
-                return currentnumber;
-
-            }
-
-            return;
+            //Att value for totalnumber
+            totalnumberel.textContent = currentTotalNumber;
 
         });
 
-    }
+        if(nextnumberel !== null){
 
+            let nextnumbercount = document.querySelector('.nextnumber').textContent;
+        
+            let currentnumber;    
+    
+            document.getElementById('callnumber').addEventListener('click', function(e){
+    
+                if(nextnumbercount !== null){
+    
+                    //Counter for nextNumber
+                    nextnumbercount++;
+    
+                    currentnumber = nextnumbercount;
+    
+                    //Check if the nextnumberelemnt is the same of nextnumber value
+                    if(document.querySelector('.nextnumber').textContent !== 0){
+
+                        //Call Number
+                        let callnumberval = nextnumbercount === 0 ? 1 : nextnumbercount;
+
+                        $.ajax({
+                            type: 'POST',
+                            url: url_callnumber,
+                            datatype: 'json',
+                            data: {
+                                callnumber: callnumberval
+                            },
+                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                            beforeSend: (() => {
+
+
+
+                            }),
+                            success: ((data, status, xhr) => {
+
+                                if(status === 'success'){
+
+                                    console.log(data);
+                                    console.log(xhr);
+
+                                    //Get value for total of number generate
+                                    let currentTotalNumber = totalnumberel.getAttribute('data-totalcustomer');
+
+                                    //Att value for totalnumber
+                                    totalnumberel.textContent = currentTotalNumber - currentnumber;
+
+                                }
+
+                            }),
+                            error: ((jqXhr, textStatus, errorMessage) => {
+
+                                console.log(jqXhr);
+                                console.log(textStatus);
+                                console.log(errorMessage);
+
+                            })
+
+                        });
+    
+                        nextnumberel.textContent = currentnumber;
+    
+                    } 
+    
+                    console.log('Current Number = ', currentnumber);
+                
+    
+                    return currentnumber;
+    
+                }
+    
+                return;
+    
+            });
+
+    
+        }
+
+    }    
+
+  
     return;
 
 })();

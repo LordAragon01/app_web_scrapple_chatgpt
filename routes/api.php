@@ -38,3 +38,4 @@ Route::post('/openapiconclearchat', [ChatGptConversationController::class, 'open
 Route::post('/generatenumber', [PenguinApiController::class, 'generateNumber'])->name('generatenumber');
 Route::get('/customerdata', [PenguinApiController::class, 'customerData'])->name('customerdata');
 Route::post('/currentnumber', [PenguinApiController::class, 'getCurrentNumber'])->name('currentnumber');
+Route::post('/callnumber', [PenguinApiController::class, 'callNumber'])->name('callnumber');

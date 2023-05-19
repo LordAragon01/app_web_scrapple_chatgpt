@@ -13,7 +13,7 @@
                 
                 <h1 class="currentnumber d-flex flex-row justify-content-between">
                     <p>Número a Chamar:</p>
-                    <strong class="ml-3 nextnumber" id="nextnumber">1</strong>
+                    <strong class="ml-3 nextnumber" id="nextnumber">@if(!is_null($convocate_number)){{$convocate_number}}@else 0 @endif</strong>
                 </h1>
 
             </div>
@@ -50,7 +50,7 @@
 
                     <h1 class="currentnumber d-flex flex-row justify-content-between order-2">
                         <p>Total de Números a chamar:</p>
-                        <strong class="ml-3 totalnumber" id="totalnumber">10</strong>
+                        <strong class="ml-3 totalnumber" id="totalnumber" data-totalcustomer="@if(!is_null($totalcustomerlist)){{$totalcustomerlist}}@endif">10</strong>
                     </h1>
 
                 </div>
