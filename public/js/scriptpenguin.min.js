@@ -356,7 +356,7 @@
                     if(parseInt(totalcustomer) !== parseInt(callCurrentNumber)){
 
                         //Estimate counter for menor value
-                        let estimateCounter = totalcustomer > 1 ? parseInt(totalcustomer) - parseInt(callCurrentNumber) : "error";
+                        let estimateCounter = totalcustomer >= 1 ? parseInt(totalcustomer) : 0;
 
                         //Add Missing Number
                         document.querySelector('.missingnumber').textContent = estimateCounter;
@@ -406,11 +406,15 @@
             //Att value for totalnumber
             totalnumberel.textContent = currentTotalNumber;
 
-            //Disabled Button when all customer is convocate
-            if(currentTotalNumber == 0){
+            //Disabled Button when all customer is convocate conditional TotalNumber
+            if(currentTotalNumber == 0 && nextnumberel.textContent == 0){
 
+                $('#callnumber').prop("disabled", false);
+
+            }else if(currentTotalNumber == 0 && nextnumberel.textContent !== 0){
+                
                 $('#callnumber').prop("disabled", true);
-
+                
             }else{
 
                 $('#callnumber').prop("disabled", false);

@@ -26,7 +26,7 @@
 
                     <figure class="d-flex flex-column align-items-center justify-content-center">
 
-                        <img src="{{ asset('images/qr-code.png') }}" alt="QrCode" style="width: 100%;height: 20rem;object-fit: contain;">
+                        {{-- <img src="{{ asset('images/qr-code.png') }}" alt="QrCode" style="width: 100%;height: 20rem;object-fit: contain;"> --}}
 
                         <figcaption>
                             <button type="button" class="btn btn-primary callnumber" id="callnumber"> Chamar </button>
