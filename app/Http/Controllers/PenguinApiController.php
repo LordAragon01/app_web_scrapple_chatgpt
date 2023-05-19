@@ -237,6 +237,12 @@ class PenguinApiController extends Controller
 
     }
 
+    /**
+     * Get Current Number by select IP
+     *
+     * @param Request $request
+     * @return
+     */
     public function getCurrentNumber(Request $request)
     {
 
@@ -251,6 +257,35 @@ class PenguinApiController extends Controller
         $dataCurrentNumber->created_at = !is_null($allDataFromCustomer) ? $allDataFromCustomer->created_at : null;
 
         return response()->json($dataCurrentNumber, 200);
+
+    }
+
+
+    /**
+     * Get the actual Convocate Number
+     *
+     * @return
+     */
+    public function getCallNumber(){
+
+
+        try{
+
+
+            $db = new DB();
+            $result = $db::select("SELECT COUNT(call_number) AS convocate_number FROM `penguin_customer`");
+
+            return !empty($result[0]) ? $result[0]->convocate_number : null;
+
+
+        }catch(PDOException $exception){
+
+            $errorMessage = $exception->getMessage();
+
+            return $errorMessage;
+
+        }
+
 
     }
 

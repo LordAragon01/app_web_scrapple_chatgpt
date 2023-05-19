@@ -95,10 +95,10 @@
             
             
             //Get Html Element for show call number
-            let callCurrentNumber = document.querySelector('.callcurrentnumber');
+            let callCurrentNumber = document.querySelector('.callcurrentnumber').textContent;
 
             //Add Dynamic Number for Call Current Customer
-            callCurrentNumber.textContent = 19;
+            //callCurrentNumber.textContent = 10;
 
             //Generate Number in the front
             //document.querySelector('.generatenumber').textContent = currentNumberBc;
@@ -353,10 +353,10 @@
                     //console.log(data.lastId);
 
                     //Notification
-                    if(parseInt(totalcustomer) !== parseInt(selecteid)){
+                    if(parseInt(totalcustomer) !== parseInt(callCurrentNumber)){
 
                         //Estimate counter for menor value
-                        let estimateCounter = totalcustomer > 1 ? parseInt(totalcustomer) - parseInt(selecteid) : selecteid;
+                        let estimateCounter = totalcustomer > 1 ? parseInt(totalcustomer) - parseInt(callCurrentNumber) : "error";
 
                         //Add Missing Number
                         document.querySelector('.missingnumber').textContent = estimateCounter;

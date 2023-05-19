@@ -29,9 +29,11 @@ class PenguinController extends Controller
 
         $getcurrentSelectId = $penguinApi->getSelectCurrentNumber($currentcustomerIp);
 
-        //dd($getcurrentSelectId );
-
         $currentSelectId = !is_null($getcurrentSelectId) ? $getcurrentSelectId->id : 0;
+
+        $convocate_number = $penguinApi->getCallNumber();
+
+        //dd($convocate_number);
 
         $title = "Penguin B2C";
 
@@ -40,7 +42,8 @@ class PenguinController extends Controller
             'prevcustomernumber',
             'totalcustomerlist',
             'currentcustomerIp',
-            'currentSelectId'
+            'currentSelectId',
+            'convocate_number'
         ));
 
 
