@@ -343,7 +343,7 @@
                     if(parseInt(totalcustomer) !== parseInt(callCurrentNumber)){
 
                         //Estimate counter for menor value
-                        let estimateCounter = totalcustomer >= 1 ? parseInt(totalcustomer) : 0;
+                        let estimateCounter = totalcustomer >= 1 ? parseInt(totalcustomer) - parseInt(callCurrentNumber) : 0;
 
                         //Add Missing Number
                         document.querySelector('.missingnumber').textContent = estimateCounter;
@@ -373,13 +373,13 @@
         });
 
         //Add Timeout to dynamic verification number
-        setTimeout(() => {
+        /* setTimeout(() => {
 
             console.log("Reload B2c");
 
             window.location.reload();
 
-        }, 5000);
+        }, 5000); */
 
     }
         
@@ -527,13 +527,13 @@
         }
 
         //Add Timeout to dynamic verification number
-        setTimeout(() => {
+       /*  setTimeout(() => {
 
             console.log("Reload B2b");
 
             window.location.reload();
 
-        }, 5000);
+        }, 5000); */
 
     }    
 
