@@ -332,8 +332,16 @@
 
                         console.log("LocalStorage - ", cleanDataFromLocalSotarge);
 
+                                      
+                        if(cleanDataFromLocalSotarge.call_number == 1){
+
+                            //Send Notification
+                            document.querySelector('.missingnumber').textContent = "Foi atendido";
+
+                        }
+
                         ///Verify if the customer is convocated
-                        if(cleanDataFromLocalSotarge.call_number !== null){
+                        if(cleanDataFromLocalSotarge.call_number !== 1 || cleanDataFromLocalSotarge.call_number === null){
 
                             //Estimate counter for menor value
                             let estimateCounter = parseInt(totalcustomer) >= 1 ? parseInt(totalcustomer) - parseInt(callCurrentNumber) : 0;
@@ -341,12 +349,8 @@
                             //Add Missing Number
                             document.querySelector('.missingnumber').textContent = estimateCounter;
 
-                        }else{
-
-                            //Send Notification
-                            document.querySelector('.missingnumber').textContent = "Foi atendido";
-
                         }
+          
                      
     
                     }else{
@@ -470,7 +474,7 @@
                                         totalnumberel.textContent =  calcNewTotalNumber;
 
                                         //Counter for nextNumber
-                                        nextnumbercount++;
+                                        //nextnumbercount++;
     
                                         //Disabled Button
                                         if(calcNewTotalNumber == 0){
@@ -483,10 +487,19 @@
                                         }else{
                             
                                             $(this).prop("disabled", false);
+                            
+                                        }
+
+                                        if(calcNewTotalNumber > 0){
+
+
+                                            let currentNextNumber = parseInt(currentTotalNumber) + 1; 
+
+                                            console.log("Aparecer Aqui", currentNextNumber);
 
                                             //Att Current Number
-                                            nextnumberel.textContent = nextnumbercount + "Posição";
-                            
+                                            nextnumberel.textContent = currentNextNumber + "Posição";
+
                                         }
     
                                         //console.log(currentTotalNumber);
