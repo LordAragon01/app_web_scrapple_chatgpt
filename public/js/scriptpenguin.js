@@ -199,25 +199,6 @@
                     });
 
 
-                    //console.log(totalcustomer);
-                    //console.log(data.lastId);
-
-                    //Notification
-                    if(parseInt(totalcustomer) !== parseInt(callCurrentNumber)){
-
-                        //Estimate counter for menor value
-                        let estimateCounter = totalcustomer >= 1 ? parseInt(totalcustomer) - parseInt(callCurrentNumber) : 0;
-
-                        //Add Missing Number
-                        document.querySelector('.missingnumber').textContent = estimateCounter;
-
-                    }else{
-
-                        //Send Notification
-                        document.querySelector('.missingnumber').textContent = "Sua Vez";
-
-                    }
-
                     //Reload Page
                     setTimeout(() => {
 
@@ -338,20 +319,41 @@
 
                     console.log(totalcustomer);
                     console.log(callCurrentNumber);
+                    console.log(selecteid);
+
 
                     //Notification
-                    if(parseInt(totalcustomer) !== parseInt(callCurrentNumber)){
-
-                        //Estimate counter for menor value
-                        let estimateCounter = totalcustomer >= 1 ? parseInt(totalcustomer) - parseInt(callCurrentNumber) : 0;
-
-                        //Add Missing Number
-                        document.querySelector('.missingnumber').textContent = estimateCounter;
-
-                    }else{
+                    if(parseInt(selecteid) == parseInt(callCurrentNumber)){
 
                         //Send Notification
                         document.querySelector('.missingnumber').textContent = "Sua Vez";
+
+                    }else if(parseInt(selecteid) < parseInt(callCurrentNumber)){
+
+                        console.log("LocalStorage - ", cleanDataFromLocalSotarge);
+
+                        ///Verify if the customer is convocated
+                        if(cleanDataFromLocalSotarge.call_number !== null){
+
+                            //Estimate counter for menor value
+                            let estimateCounter = parseInt(totalcustomer) >= 1 ? parseInt(totalcustomer) - parseInt(callCurrentNumber) : 0;
+
+                            //Add Missing Number
+                            document.querySelector('.missingnumber').textContent = estimateCounter;
+
+                        }else{
+
+                            //Send Notification
+                            document.querySelector('.missingnumber').textContent = "Foi atendido";
+
+                        }
+                     
+    
+                    }else{
+
+
+                        //Send Notification
+                        document.querySelector('.missingnumber').textContent = "Favor Aguardar";
 
                     }
 
@@ -373,13 +375,13 @@
         });
 
         //Add Timeout to dynamic verification number
-        /* setTimeout(() => {
+        setTimeout(() => {
 
             console.log("Reload B2c");
 
             window.location.reload();
 
-        }, 5000); */
+        }, 5000);
 
     }
         
@@ -424,8 +426,6 @@
         if(nextnumberel !== null){
 
             let nextnumbercount = document.querySelector('.nextnumber').textContent;
-        
-            let currentnumber;  
             
             //Verify if the all customer is called
             if(currentTotalNumber !== 0){
@@ -446,7 +446,7 @@
                                 url: url_callnumber,
                                 datatype: 'json',
                                 data: {
-                                    callnumber: callnumberval
+                                    callnumber: parseInt(callnumberval)
                                 },
                                 headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
                                 beforeSend: (() => {
@@ -491,6 +491,16 @@
     
                                         //console.log(currentTotalNumber);
                                         //console.log(currentnumber);
+
+                                        //Add Timeout to dynamic verification number
+                                        /* setTimeout(() => {
+
+                                            console.log("Reload B2b");
+
+                                            window.location.reload();
+
+                                        }, 1500); */
+
     
                                     }
     
@@ -500,19 +510,28 @@
                                     console.log(jqXhr);
                                     console.log(textStatus);
                                     console.log(errorMessage);
+
+                                    //Add Timeout to dynamic verification number
+                                    /* setTimeout(() => {
+
+                                        console.log("Reload B2b");
+
+                                        window.location.reload();
+
+                                    }, 5000); */
     
                                 })
     
                             });
         
-                            nextnumberel.textContent = currentnumber;
+                            //nextnumberel.textContent = currentnumber;
         
                         } 
         
-                        console.log('Current Number = ', currentnumber);
+                        //console.log('Current Number = ', currentnumber);
                     
         
-                        return currentnumber;
+                        //return currentnumber;
         
                     }
         
@@ -527,7 +546,7 @@
         }
 
         //Add Timeout to dynamic verification number
-       /*  setTimeout(() => {
+        /* setTimeout(() => {
 
             console.log("Reload B2b");
 

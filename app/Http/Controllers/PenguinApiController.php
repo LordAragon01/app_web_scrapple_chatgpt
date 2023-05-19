@@ -222,7 +222,7 @@ class PenguinApiController extends Controller
 
             //Get All Ips
             $db = new Db();
-            $result = $db::select("SELECT id, counter_number AS counternumber, call_number, created_at FROM `penguin_customer` WHERE ip = '" . trim($ip) . "' ORDER BY id DESC LIMIT 1") ;
+            $result = $db::select("SELECT id, ip, counter_number AS counternumber, call_number, created_at FROM `penguin_customer` WHERE ip = '" . trim($ip) . "' ORDER BY id DESC LIMIT 1") ;
 
             return !empty($result) ? $result[0] : null;
 
@@ -247,7 +247,7 @@ class PenguinApiController extends Controller
     {
 
         //Get specific data from Customer
-        $allDataFromCustomer = $this->getAllDataFromCustomer($request->selectip);
+        $allDataFromCustomer = $this->getSelectCurrentNumber($request->selectip);
 
         $dataCurrentNumber = new stdClass();
         $dataCurrentNumber->id = !is_null($allDataFromCustomer) ? $allDataFromCustomer->id : null;
@@ -295,11 +295,11 @@ class PenguinApiController extends Controller
         try{
 
             $db = new DB();
-            $result = $db::update("UPDATE `penguin_customer` SET `call_number` = 1 WHERE `id` = ". intval($request->callnumber) ." AND `counter_number` = " . intval($request->callnumber));
+            $db::update("UPDATE `penguin_customer` SET `call_number` = 1 WHERE `id` = ". intval($request->callnumber));
 
             //Confirmation Message
             $success = [
-                'callNumber' => $result,
+                'callNumber' => true,
             ];
 
             return response()->json($success, 200);

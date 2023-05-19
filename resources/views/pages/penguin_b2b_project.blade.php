@@ -12,7 +12,7 @@
             <div class="order-2 d-flex flex-row w-100 justify-content-start" style="margin-top:2rem;">
                 
                 <h1 class="currentnumber d-flex flex-row justify-content-between">
-                    <p>Número a Chamar:</p>
+                    <p>Próximo Número a Chamar:</p>
                     <strong class="ml-3 nextnumber" id="nextnumber" data-convocate="@if(!is_null($convocate_number)){{$convocate_number}}@else 1 @endif">@if(!is_null($convocate_number) && is_string($convocate_number)){{$convocate_number}}@else{{$convocate_number}} Posição @endif</strong>
                 </h1>
 
