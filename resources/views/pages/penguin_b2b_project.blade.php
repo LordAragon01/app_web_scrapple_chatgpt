@@ -13,7 +13,7 @@
                 
                 <h1 class="currentnumber d-flex flex-row justify-content-between">
                     <p>Número a Chamar:</p>
-                    <strong class="ml-3 nextnumber" id="nextnumber">@if(!is_null($convocate_number)){{$convocate_number}}@else 0 @endif</strong>
+                    <strong class="ml-3 nextnumber" id="nextnumber" data-convocate="@if(!is_null($convocate_number)){{$convocate_number}}@else 1 @endif">@if(!is_null($convocate_number) && is_string($convocate_number)){{$convocate_number}}@else{{$convocate_number}} Posição @endif</strong>
                 </h1>
 
             </div>
@@ -43,10 +43,10 @@
 
                 <div class="d-flex flex-column">
 
-                   {{--  <h1 class="currentnumber d-flex flex-row justify-content-between order-1">
-                        <p>Último número convocado:</p>
-                        <strong>1</strong>
-                    </h1> --}}
+                    <h1 class="currentnumber d-flex flex-row justify-content-between order-1">
+                        <p>Total de Clientes do Dia:</p>
+                        <strong class="totalclientes" id="totalclientes">@if(!is_null($totalcustomer)){{$totalcustomer}}@endif</strong>
+                    </h1>
 
                     <h1 class="currentnumber d-flex flex-row justify-content-between order-2">
                         <p>Total de Números a chamar:</p>

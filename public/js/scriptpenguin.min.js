@@ -409,11 +409,14 @@
             //Disabled Button when all customer is convocate conditional TotalNumber
             if(currentTotalNumber == 0 && nextnumberel.textContent == 0){
 
-                $('#callnumber').prop("disabled", false);
+                $('#callnumber').prop("disabled", true);
 
             }else if(currentTotalNumber == 0 && nextnumberel.textContent !== 0){
                 
                 $('#callnumber').prop("disabled", true);
+
+                //Inform B2b all clients is called
+                //nextnumberel.textContent = "All customers have already been called";
                 
             }else{
 
@@ -427,93 +430,104 @@
 
             let nextnumbercount = document.querySelector('.nextnumber').textContent;
         
-            let currentnumber;    
+            let currentnumber;  
+            
+            //Verify if the all customer is called
+            if(currentTotalNumber !== 0){
+
+                document.getElementById('callnumber').addEventListener('click', function(e){
     
-            document.getElementById('callnumber').addEventListener('click', function(e){
+                    if(nextnumbercount !== null){
     
-                if(nextnumbercount !== null){
+        
+                        //Check if the nextnumberelemnt is the same of nextnumber value
+                        if(nextnumberel.textContent !== 0){
     
-                    //Counter for nextNumber
-                    nextnumbercount++;
+                            //Call Number
+                            let callnumberval = nextnumberel.getAttribute('data-convocate');
     
-                    currentnumber = nextnumbercount;
+                            $.ajax({
+                                type: 'POST',
+                                url: url_callnumber,
+                                datatype: 'json',
+                                data: {
+                                    callnumber: callnumberval
+                                },
+                                headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
+                                beforeSend: (() => {
     
-                    //Check if the nextnumberelemnt is the same of nextnumber value
-                    if(document.querySelector('.nextnumber').textContent !== 0){
+    
+    
+                                }),
+                                success: ((data, status, xhr) => {
+    
+                                    if(status === 'success'){
+    
+                                        console.log(data);
+                                        console.log(xhr);
+    
+                                        //Get value for total of number generate
+                                        let currentTotalNumber = totalnumberel.getAttribute('data-totalcustomer');
+    
+                                        let calcNewTotalNumber = currentTotalNumber - 1;
+    
+                                        //Att value for totalnumber
+                                        totalnumberel.textContent =  calcNewTotalNumber;
 
-                        //Call Number
-                        let callnumberval = nextnumbercount === 0 ? 1 : nextnumbercount;
+                                        //Counter for nextNumber
+                                        nextnumbercount++;
+    
+                                        //Disabled Button
+                                        if(calcNewTotalNumber == 0){
+    
+                                           //Inform B2b all clients is called
+                                            nextnumberel.textContent = "All customers have already been called";
 
-                        $.ajax({
-                            type: 'POST',
-                            url: url_callnumber,
-                            datatype: 'json',
-                            data: {
-                                callnumber: callnumberval
-                            },
-                            headers: {'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')},
-                            beforeSend: (() => {
+                                            $(this).prop("disabled", true);
+                            
+                                        }else{
+                            
+                                            $(this).prop("disabled", false);
 
-
-
-                            }),
-                            success: ((data, status, xhr) => {
-
-                                if(status === 'success'){
-
-                                    console.log(data);
-                                    console.log(xhr);
-
-                                    //Get value for total of number generate
-                                    let currentTotalNumber = totalnumberel.getAttribute('data-totalcustomer');
-
-                                    let calcNewTotalNumber = currentTotalNumber - 1;
-
-                                    //Att value for totalnumber
-                                    totalnumberel.textContent =  calcNewTotalNumber;
-
-                                    //Disabled Button
-                                    if(calcNewTotalNumber == 0){
-
-                                        $(this).prop("disabled", true);
-                        
-                                    }else{
-                        
-                                        $(this).prop("disabled", false);
-                        
+                                            //Att Current Number
+                                            nextnumberel.textContent = nextnumbercount + "Posição";
+                            
+                                        }
+    
+                                        //console.log(currentTotalNumber);
+                                        //console.log(currentnumber);
+    
                                     }
-
-                                    //console.log(currentTotalNumber);
-                                    //console.log(currentnumber);
-
-                                }
-
-                            }),
-                            error: ((jqXhr, textStatus, errorMessage) => {
-
-                                console.log(jqXhr);
-                                console.log(textStatus);
-                                console.log(errorMessage);
-
-                            })
-
-                        });
     
-                        nextnumberel.textContent = currentnumber;
+                                }),
+                                error: ((jqXhr, textStatus, errorMessage) => {
     
-                    } 
+                                    console.log(jqXhr);
+                                    console.log(textStatus);
+                                    console.log(errorMessage);
     
-                    console.log('Current Number = ', currentnumber);
-                
+                                })
     
-                    return currentnumber;
-    
-                }
-    
-                return;
-    
-            });
+                            });
+        
+                            nextnumberel.textContent = currentnumber;
+        
+                        } 
+        
+                        console.log('Current Number = ', currentnumber);
+                    
+        
+                        return currentnumber;
+        
+                    }
+        
+                    return;
+        
+                });
 
+
+            }
+    
     
         }
 

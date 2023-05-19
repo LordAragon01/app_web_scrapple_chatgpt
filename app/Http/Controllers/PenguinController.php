@@ -10,17 +10,34 @@ class PenguinController extends Controller
     public function indexB2B(PenguinApiController $penguinApi)
     {
 
-        $convocate_number = $penguinApi->getCallNumber();
+        //Conditinal for show the next number to call
+        if($penguinApi->getCallNumber() == 0 && $penguinApi->getTotalCountCustomer() == 0){
+
+            $convocate_number = "No clients";
+           
+        }elseif($penguinApi->getTotalCountCustomer() !== 0 & 
+        $penguinApi->getCallNumber() !== $penguinApi->getTotalCountCustomer()){
+
+            $convocate_number = $penguinApi->getCallNumber() == 0 ? 1 : $penguinApi->getCallNumber() + 1;
+
+        }else{
+
+            $convocate_number = "All customers have already been called";
+
+        }
+     
         $totalcustomerlist = $penguinApi->getTotalCountCustomer() - $penguinApi->getCallNumber();
-        
-        //dd($convocate_number);
+        $totalcustomer = !is_null($penguinApi->getTotalCountCustomer()) ? $penguinApi->getTotalCountCustomer() : 0;
+
+        //dd($penguinApi->getTotalCountCustomer());
 
         $title = "Penguin Dashboard";
 
         return view('pages.penguin_b2b_project', compact(
             'title',
             'totalcustomerlist',
-            'convocate_number'
+            'convocate_number',
+            'totalcustomer'
         ));
 
 
