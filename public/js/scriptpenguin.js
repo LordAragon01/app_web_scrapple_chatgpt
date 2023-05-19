@@ -206,7 +206,7 @@
                     if(parseInt(totalcustomer) !== parseInt(callCurrentNumber)){
 
                         //Estimate counter for menor value
-                        let estimateCounter = totalcustomer >= 1 ? parseInt(totalcustomer) : 0;
+                        let estimateCounter = totalcustomer >= 1 ? parseInt(totalcustomer) - parseInt(callCurrentNumber) : 0;
 
                         //Add Missing Number
                         document.querySelector('.missingnumber').textContent = estimateCounter;
@@ -336,8 +336,8 @@
                     });
 
 
-                    //console.log(totalcustomer);
-                    //console.log(data.lastId);
+                    console.log(totalcustomer);
+                    console.log(callCurrentNumber);
 
                     //Notification
                     if(parseInt(totalcustomer) !== parseInt(callCurrentNumber)){
