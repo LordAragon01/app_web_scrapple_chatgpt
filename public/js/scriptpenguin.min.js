@@ -397,15 +397,25 @@
 
         let totalnumberel = document.querySelector('.totalnumber');
 
+        //Get value for total of number generate
+        let currentTotalNumber = totalnumberel.getAttribute('data-totalcustomer');
+
         //When the document is loaded
         document.addEventListener("DOMContentLoaded", function(e){
 
-
-            //Get value for total of number generate
-            let currentTotalNumber = totalnumberel.getAttribute('data-totalcustomer');
-
             //Att value for totalnumber
             totalnumberel.textContent = currentTotalNumber;
+
+            //Disabled Button when all customer is convocate
+            if(currentTotalNumber == 0){
+
+                $('#callnumber').prop("disabled", true);
+
+            }else{
+
+                $('#callnumber').prop("disabled", false);
+
+            }
 
         });
 
@@ -453,8 +463,24 @@
                                     //Get value for total of number generate
                                     let currentTotalNumber = totalnumberel.getAttribute('data-totalcustomer');
 
+                                    let calcNewTotalNumber = currentTotalNumber - 1;
+
                                     //Att value for totalnumber
-                                    totalnumberel.textContent = currentTotalNumber - currentnumber;
+                                    totalnumberel.textContent =  calcNewTotalNumber;
+
+                                    //Disabled Button
+                                    if(calcNewTotalNumber == 0){
+
+                                        $(this).prop("disabled", true);
+                        
+                                    }else{
+                        
+                                        $(this).prop("disabled", false);
+                        
+                                    }
+
+                                    //console.log(currentTotalNumber);
+                                    //console.log(currentnumber);
 
                                 }
 

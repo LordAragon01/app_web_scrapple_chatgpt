@@ -10,9 +10,9 @@ class PenguinController extends Controller
     public function indexB2B(PenguinApiController $penguinApi)
     {
 
-        $totalcustomerlist = $penguinApi->getTotalCountCustomer();
-        $convocate_number = $penguinApi->getCallNumber() + 1;
-
+        $convocate_number = $penguinApi->getCallNumber();
+        $totalcustomerlist = $penguinApi->getTotalCountCustomer() - $penguinApi->getCallNumber();
+        
         //dd($convocate_number);
 
         $title = "Penguin Dashboard";
