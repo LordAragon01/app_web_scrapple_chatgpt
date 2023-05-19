@@ -130,26 +130,16 @@
 
                     console.log('Aqui 1');
 
+                    //Add data in DB
                     generateNumber(url_generatenumber, generatenumberdata); 
 
-                    //Current Data from Customer when access Page
-                    let currentCustomer = {
-                        lastId: data.lastId,
-                        ip: data.ip,
-                        call_number: data.call_number,
-                        created_at: data.created_at
-                    };
+                    //Reload Page
+                    setTimeout(() => {
 
-                    //Create localstorage
-                    localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+                        window.location.reload();
+
+                    }, 1500);
                     
-                    //Atualize Front
-                    if(data.lastId == prevnumber){
-
-                        document.querySelector('.generatenumber').textContent = currentNumberBc;
-
-                    }
-
                     return;
 
                 }
@@ -213,10 +203,10 @@
                     //console.log(data.lastId);
 
                     //Notification
-                    if(parseInt(totalcustomer) !== parseInt(selecteid)){
+                    if(parseInt(totalcustomer) !== parseInt(callCurrentNumber)){
 
                         //Estimate counter for menor value
-                        let estimateCounter = totalcustomer > 1 ? parseInt(totalcustomer) - parseInt(selecteid) : selecteid;
+                        let estimateCounter = totalcustomer >= 1 ? parseInt(totalcustomer) : 0;
 
                         //Add Missing Number
                         document.querySelector('.missingnumber').textContent = estimateCounter;
@@ -227,6 +217,13 @@
                         document.querySelector('.missingnumber').textContent = "Sua Vez";
 
                     }
+
+                    //Reload Page
+                    setTimeout(() => {
+
+                        window.location.reload();
+
+                    }, 1500);
 
                     return;
 
@@ -270,26 +267,16 @@
 
                     console.log(allips.includes(currentip));
 
+                    //Add data in DB
                     generateNumber(url_generatenumber, generatenumberdata); 
 
-                    //Current Data from Customer when access Page
-                    let currentCustomer = {
-                        lastId: data.lastId,
-                        ip: data.ip,
-                        call_number: data.call_number,
-                        created_at: data.created_at
-                    };
+                    //Reload Page
+                    setTimeout(() => {
 
-                    //Create localstorage
-                    localStorage.setItem('currentCustomer', JSON.stringify(currentCustomer));
+                        window.location.reload();
+
+                    }, 1500);
                     
-                    //Atualize Front
-                    if(data.lastId == prevnumber){
-
-                        document.querySelector('.generatenumber').textContent = data.lastId;
-
-                    }
-
                     return;
 
                 }
