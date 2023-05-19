@@ -25,7 +25,7 @@
 
                     <h1 class="currentnumber d-flex flex-row justify-content-between order-1">
                         <p>Número convocado:</p>
-                        <strong class="ml-3 callcurrentnumber" id="callcurrentnumber">@if(!is_null($convocate_number)){{$convocate_number}}@endif</strong>
+                        <strong class="ml-3 callcurrentnumber" id="callcurrentnumber">@if(!is_null($convocate_number)){{$convocate_number}}@else 0 @endif</strong>
                     </h1>
     
                     <h1 class="currentnumber d-flex flex-row justify-content-between order-2">
