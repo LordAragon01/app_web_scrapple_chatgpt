@@ -372,10 +372,18 @@
 
         });
 
+        //Add Timeout to dynamic verification number
+        setTimeout(() => {
+
+            console.log("Reload B2c");
+
+            window.location.reload();
+
+        }, 5000);
+
     }
         
     
-
     //Call Number after Click
     if(href.includes('penguinb2b')){
 
@@ -517,6 +525,15 @@
     
     
         }
+
+        //Add Timeout to dynamic verification number
+        setTimeout(() => {
+
+            console.log("Reload B2b");
+
+            window.location.reload();
+
+        }, 5000);
 
     }    
 
