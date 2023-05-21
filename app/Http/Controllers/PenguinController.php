@@ -18,7 +18,7 @@ class PenguinController extends Controller
         }elseif($penguinApi->getTotalCountCustomer() !== 0 & 
         $penguinApi->getCallNumber() !== $penguinApi->getTotalCountCustomer()){
 
-            $convocate_number = $penguinApi->getCallNumber() == 0 ? 1 : $penguinApi->getCallNumber() + 1;
+            $convocate_number = $penguinApi->getCallNumber() == 0 ? 1 : intval($penguinApi->getCallNumber()) + 1;
 
         }else{
 

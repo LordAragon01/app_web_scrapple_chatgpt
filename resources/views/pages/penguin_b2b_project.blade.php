@@ -49,7 +49,7 @@
                     </h1>
 
                     <h1 class="currentnumber d-flex flex-row justify-content-between order-2">
-                        <p>Total de Números que falta chamar:</p>
+                        <p>Total de Números que faltam chamar:</p>
                         <strong class="ml-3 totalnumber" id="totalnumber" data-totalcustomer="@if(!is_null($totalcustomerlist)){{$totalcustomerlist}}@endif">10</strong>
                     </h1>
 

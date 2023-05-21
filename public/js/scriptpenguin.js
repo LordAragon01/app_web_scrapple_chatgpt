@@ -405,13 +405,13 @@
         });
 
         //Add Timeout to dynamic verification number
-       /*  setTimeout(() => {
+        setTimeout(() => {
 
             console.log("Reload B2c");
 
             window.location.reload();
 
-        }, 5000); */
+        }, 5000);
 
     }
         
@@ -518,13 +518,14 @@
 
                                         if(calcNewTotalNumber > 0){
 
+                                            let confirmNumber = /^[0-9]+$/;
 
-                                            let currentNextNumber = parseInt(currentTotalNumber) + 1; 
+                                            let currentNextNumber = confirmNumber.test(callnumberval) ? parseInt(callnumberval) + 1 : console.error('Error ao Gerar Número') ; 
 
                                             console.log("Aparecer Aqui", currentNextNumber);
 
                                             //Att Current Number
-                                            nextnumberel.textContent = currentNextNumber + "Posição";
+                                            nextnumberel.textContent = currentNextNumber + " Posição";
 
                                         }
     
@@ -532,13 +533,13 @@
                                         //console.log(currentnumber);
 
                                         //Add Timeout to dynamic verification number
-                                        /* setTimeout(() => {
+                                        setTimeout(() => {
 
                                             console.log("Reload B2b");
 
                                             window.location.reload();
 
-                                        }, 1500); */
+                                        }, 1500);
 
     
                                     }
