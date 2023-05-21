@@ -143,7 +143,7 @@ class PenguinApiController extends Controller
             $db = new Db();
             $result = $db::select("SELECT MAX(id) AS lastid FROM `penguin_customer`");
 
-            return $result[0]->lastid;
+            return $result[0] ? $result[0]->lastid : null;
 
         }catch(PDOException $exception){
 

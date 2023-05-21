@@ -130,6 +130,11 @@
 
                     console.log('Aqui 1');
 
+                    //Clear Elements
+                    document.querySelector('.generatenumber').textContent = " ";
+                    document.querySelector('.callcurrentnumber').textContent = " ";
+                    document.querySelector('.missingnumber').textContent = " ";
+
                     //Add data in DB
                     generateNumber(url_generatenumber, generatenumberdata); 
 
