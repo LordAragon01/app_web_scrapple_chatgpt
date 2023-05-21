@@ -224,6 +224,8 @@ class PenguinApiController extends Controller
             $db = new Db();
             $result = $db::select("SELECT id, ip, counter_number AS counternumber, call_number, created_at FROM `penguin_customer` WHERE ip = '" . trim($ip) . "' ORDER BY id DESC LIMIT 1") ;
 
+            //dd($result);
+
             return !empty($result) ? $result[0] : null;
 
         }catch(PDOException $exception){

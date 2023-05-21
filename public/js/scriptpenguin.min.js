@@ -410,13 +410,13 @@
         });
 
         //Add Timeout to dynamic verification number
-        setTimeout(() => {
+        /* setTimeout(() => {
 
             console.log("Reload B2c");
 
             window.location.reload();
 
-        }, 5000);
+        }, 5000); */
 
     }
         
