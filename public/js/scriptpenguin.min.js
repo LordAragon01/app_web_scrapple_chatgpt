@@ -321,46 +321,72 @@
                     console.log(callCurrentNumber);
                     console.log(selecteid);
 
-
                     //Notification
-                    if(parseInt(selecteid) == parseInt(callCurrentNumber)){
+                    if(parseInt(callCurrentNumber) === 0){
+
+                        //Send Notification
+                        document.querySelector('.missingnumber').textContent = "Favor Aguardar";
+
+                    }else if(parseInt(selecteid) === parseInt(callCurrentNumber)){
 
                         //Send Notification
                         document.querySelector('.missingnumber').textContent = "Sua Vez";
 
                     }else if(parseInt(selecteid) < parseInt(callCurrentNumber)){
 
-                        console.log("LocalStorage - ", cleanDataFromLocalSotarge);
-
-                                      
-                        if(cleanDataFromLocalSotarge.call_number == 1){
-
-                            //Send Notification
-                            document.querySelector('.missingnumber').textContent = "Foi atendido";
-
-                        }
+                        console.log("LocalStorage - Select Id Menor que", cleanDataFromLocalSotarge);
 
                         ///Verify if the customer is convocated
                         if(cleanDataFromLocalSotarge.call_number !== 1 || cleanDataFromLocalSotarge.call_number === null){
 
                             //Estimate counter for menor value
-                            let estimateCounter = parseInt(totalcustomer) >= 1 ? parseInt(totalcustomer) - parseInt(callCurrentNumber) : 0;
+                            let estimateCounter = parseInt(totalcustomer) >= 1 ? parseInt(callCurrentNumber) - parseInt(selecteid) : 0;
 
                             //Add Missing Number
-                            document.querySelector('.missingnumber').textContent = estimateCounter;
+                            document.querySelector('.missingnumber').textContent = Math.abs(estimateCounter);
+
+                        }else{
+
+                            if(cleanDataFromLocalSotarge.call_number === 1){
+
+                                //Send Notification
+                                document.querySelector('.missingnumber').textContent = "Foi atendido";
+    
+                            }
 
                         }
           
-                     
     
+                    }else if(parseInt(selecteid) > parseInt(callCurrentNumber)){
+
+                        console.log("Select Id Maior que");
+
+                        ///Verify if the customer is convocated
+                        if(cleanDataFromLocalSotarge.call_number !== 1 || cleanDataFromLocalSotarge.call_number === null){
+
+                            //Estimate counter for menor value
+                            let estimateCounter = parseInt(totalcustomer) >= 1 ? parseInt(selecteid) - parseInt(callCurrentNumber) : 0;
+
+                            //Add Missing Number
+                            document.querySelector('.missingnumber').textContent = Math.abs(estimateCounter);
+
+                        }else{
+
+                            if(cleanDataFromLocalSotarge.call_number === 1){
+
+                                //Send Notification
+                                document.querySelector('.missingnumber').textContent = "Foi atendido";
+    
+                            }
+
+                        }
+
+
                     }else{
 
-
-                        //Send Notification
-                        document.querySelector('.missingnumber').textContent = "Favor Aguardar";
+                       console.log("Estou no else");
 
                     }
-
 
                     return;
 
@@ -379,13 +405,13 @@
         });
 
         //Add Timeout to dynamic verification number
-        setTimeout(() => {
+       /*  setTimeout(() => {
 
             console.log("Reload B2c");
 
             window.location.reload();
 
-        }, 5000);
+        }, 5000); */
 
     }
         

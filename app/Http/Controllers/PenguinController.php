@@ -29,7 +29,7 @@ class PenguinController extends Controller
         $totalcustomerlist = $penguinApi->getTotalCountCustomer() - $penguinApi->getCallNumber();
         $totalcustomer = !is_null($penguinApi->getTotalCountCustomer()) ? $penguinApi->getTotalCountCustomer() : 0;
 
-        //dd($penguinApi->getTotalCountCustomer());
+        //dd($penguinApi->getCallNumber());
 
         $title = "Penguin Dashboard";
 
